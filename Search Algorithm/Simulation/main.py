@@ -1,7 +1,9 @@
 from enum import Enum
-from typing import List
+from typing import List, Tuple
+import random
 
 class SquareType(Enum):
+    VISITED = '.'
     EMPTY = ' '
     BLOCKED = '*'
     TARGET = ''
@@ -38,7 +40,7 @@ def change_squares(grid: List[List[SquareType]], orientation: Orientation, offse
             grid[row][offset] = square_type
 
 
-def generate_grid() -> List[List[SquareType]]:
+def generate_building_grid() -> List[List[SquareType]]:
     """
     Creating map specified in https://ieeexplore.ieee.org/document/1389384
     Assume edges of grid are walls (BLOCKED)
@@ -54,7 +56,7 @@ def generate_grid() -> List[List[SquareType]]:
     # Add rooms
     third = int(1 / 3 * num_squares)
     half = int(1 / 2 * num_squares)
-    change_squares(building, Orientation.HORIZONTAL, third, 0, third)
+    change_squares(building, Orientation.HORIZONTAL, third, 0, third + 1)
     change_squares(building, Orientation.VERTICAL, third, 0, third)
 
     change_squares(building, Orientation.HORIZONTAL, 2 * third, 0, third)
@@ -79,8 +81,46 @@ def generate_grid() -> List[List[SquareType]]:
     # Add Hexapods
     building[5 * sixth][sixth] = SquareType.HEXAPOD
 
-    print_grid(building)
+    return building
+
+
+def find_hexapods(building: List[List[SquareType]]) -> List[Tuple[int, int]]:
+    res = []
+    for row in range(len(building)):
+        for col in range(len(building[0])):
+            if building[row][col] == SquareType.HEXAPOD:
+                res.append((row, col))
+    return res
+
+
+def simulate_step(building: List[List[SquareType]], optimize: bool = False) -> None:
+    """
+    optimize: avoid revisiting previously visited nodes
+    # TODO: Walk away from other hexapods
+    """
+    directions = [(i, j) for i in range(-1, 2) for j in range(-1, 2)]
+    directions.remove((0, 0))
+    rows, cols = len(building), len(building[0])
+    hexapods = find_hexapods(building)
+    for hexapod in hexapods:
+        row, col = hexapod
+        while True:
+            drow, dcol = random.choice(directions)
+            new_row, new_col = row + drow, col + dcol
+            if (0 <= new_row < rows and 0 <= new_col < cols and 
+                building[new_row][new_col] in [SquareType.EMPTY, SquareType.VISITED]):
+                # Unoccupied square, feel free to enter
+                break
+        building[new_row][new_col] = SquareType.HEXAPOD
+        building[row][col] = SquareType.VISITED
+        # TODO: Check if a target
+    return
 
 
 if __name__ == '__main__':
-    generate_grid()
+    building = generate_building_grid()
+    print_grid(building)
+    for step in range(500):
+        simulate_step(building)
+    print_grid(building)
+
