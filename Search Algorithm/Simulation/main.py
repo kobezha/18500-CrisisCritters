@@ -104,24 +104,30 @@ def simulate_step(building: List[List[SquareType]], optimize: bool = False) -> i
     TODO: Implement
     return: Number of targets found in this simulation step
     """
-    directions = [(i, j) for i in range(-1, 2) for j in range(-1, 2)]
+    directions = [(i, j) for i in range(-1, 2) for j in range(-1, 2) if not i == 0 == j]
     rows, cols = len(building), len(building[0])
     hexapods = find_obj(building, SquareType.HEXAPOD)
     found = 0
     for hexapod in hexapods:
         row, col = hexapod
-        while True:
-            drow, dcol = random.choice(directions)
+        empty_choices = []
+        visited_choices = []
+        for (drow, dcol) in directions:
             new_row, new_col = row + drow, col + dcol
             if 0 <= new_row < rows and 0 <= new_col < cols:
-                if optimize...:
-                if building[new_row][new_col] in [SquareType.EMPTY, SquareType.VISITED]:
-                    # Unoccupied square, feel free to enter
-                    break
-                if building[new_row][new_col] == SquareType.TARGET:
-                    # TODO: Notify Medbot in real simulation
-                    found += 1
-                    break
+                if building[new_row][new_col] in [SquareType.EMPTY, SquareType.TARGET]:
+                    empty_choices.append((new_row, new_col))
+                if building[new_row][new_col] == SquareType.VISITED:
+                    visited_choices.append((new_row, new_col))
+            if optimize and empty_choices:  # There are empty choices
+                choices = empty_choices
+            else:
+                choices = empty_choices + visited_choices
+        new_row, new_col = random.choice(choices)
+        if building[new_row][new_col] == SquareType.TARGET:
+            # TODO: Notify Medbot in real simulation
+            print("Found target!")
+            found += 1
         building[new_row][new_col] = SquareType.HEXAPOD
         building[row][col] = SquareType.VISITED
     return found
@@ -133,7 +139,7 @@ if __name__ == '__main__':
     print_grid(building)
     num_steps = 0
     while find_obj(building, SquareType.TARGET):
-        simulate_step(building)
+        simulate_step(building, True)
         num_steps += 1
     print(f"Number of steps taken: {num_steps}")
     print_grid(building)
