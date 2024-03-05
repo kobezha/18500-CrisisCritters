@@ -1,6 +1,9 @@
 from enum import Enum
 from typing import List, Tuple
 import random
+import copy
+import pandas as pd
+
 
 class SquareType(Enum):
     VISITED = '.'
@@ -98,7 +101,7 @@ def find_obj(building: List[List[SquareType]], obj: SquareType) -> List[Tuple[in
     return res
 
 
-def simulate_step(building: List[List[SquareType]], optimize: bool = False) -> int:
+def simulate_step(building: List[List[SquareType]], optimize: bool) -> int:
     """
     Optimize: avoid revisiting previously visited nodes
     TODO: Implement
@@ -126,21 +129,33 @@ def simulate_step(building: List[List[SquareType]], optimize: bool = False) -> i
         new_row, new_col = random.choice(choices)
         if building[new_row][new_col] == SquareType.TARGET:
             # TODO: Notify Medbot in real simulation
-            print("Found target!")
             found += 1
         building[new_row][new_col] = SquareType.HEXAPOD
         building[row][col] = SquareType.VISITED
     return found
 
 
+def profile_performance(num_hexapods: List[int], num_runs: int, optimize: bool = False) -> None:
+    results = pd.Series(index=num_hexapods)
+    for hexapods in num_hexapods:
+        total_steps = 0
+        for run in range(num_runs):
+            building = generate_building_grid(hexapods)
+            num_steps = 0
+            while find_obj(building, SquareType.TARGET):
+                simulate_step(building, optimize)
+                num_steps += 1
+            total_steps += num_steps
+        avg_steps = total_steps / num_runs
+        results[hexapods] = avg_steps
+        # print_grid(building)
+    print("Num Hexapods vs Number of Steps")
+    print(results)
+    return
+
+
 if __name__ == '__main__':
-    building = generate_building_grid(3)
+    building = generate_building_grid(1)
     print("Original map:")
     print_grid(building)
-    num_steps = 0
-    while find_obj(building, SquareType.TARGET):
-        simulate_step(building, True)
-        num_steps += 1
-    print(f"Number of steps taken: {num_steps}")
-    print_grid(building)
-
+    profile_performance([1, 3, 5, 10], 10, False)
