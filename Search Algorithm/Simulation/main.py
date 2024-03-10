@@ -3,6 +3,7 @@ from typing import List, Tuple
 import random
 import copy
 import pandas as pd
+import numpy as np
 
 
 class SquareType(Enum):
@@ -136,7 +137,7 @@ def simulate_step(building: List[List[SquareType]], optimize: bool) -> int:
 
 
 def profile_performance(num_hexapods: List[int], num_runs: int, optimize: bool = False) -> None:
-    results = pd.Series(index=num_hexapods)
+    results = pd.Series(index=num_hexapods, dtype=np.int64)
     for hexapods in num_hexapods:
         total_steps = 0
         for run in range(num_runs):
