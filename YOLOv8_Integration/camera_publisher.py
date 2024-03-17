@@ -23,7 +23,7 @@ class CameraPublisher:
         self.timer = rospy.Timer(rospy.Duration(1.0 / 5), self.timer_callback)  # Timer callback every 5 seconds
 
 
-       def timer_callback(self, event):
+    def timer_callback(self, event):
         if self.video_capture.isOpened():
             ret_val, frame = self.video_capture.read()
             if ret_val:
