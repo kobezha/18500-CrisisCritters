@@ -1,0 +1,851 @@
+[0.000000] (-) TimerEvent: {}
+[0.000871] (isaac_ros_yolov8) JobQueued: {'identifier': 'isaac_ros_yolov8', 'dependencies': OrderedDict()}
+[0.001960] (isaac_ros_yolov8) JobStarted: {'identifier': 'isaac_ros_yolov8'}
+[0.099144] (-) TimerEvent: {}
+[0.199738] (isaac_ros_yolov8) JobProgress: {'identifier': 'isaac_ros_yolov8', 'progress': 'cmake'}
+[0.200095] (-) TimerEvent: {}
+[0.202270] (isaac_ros_yolov8) JobProgress: {'identifier': 'isaac_ros_yolov8', 'progress': 'build'}
+[0.204318] (isaac_ros_yolov8) Command: {'cmd': ['/usr/bin/cmake', '--build', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8', '--', '-j6', '-l6'], 'cwd': '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('PYTHONWARNINGS', 'ignore:::setuptools.command.install,ignore:::setuptools.command.easy_install,ignore:::pkg_resources'), ('USER', 'e3h2'), ('HOSTNAME', 'e3h2-desktop'), ('SHLVL', '2'), ('LD_LIBRARY_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib:/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install/isaac_ros_yolov8/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/lib/aarch64-linux-gnu/tegra/weston:/usr/lib/aarch64-linux-gnu/tegra-egl:/usr/local/cuda-11.4/targets/aarch64-linux/lib:/usr/lib/aarch64-linux-gnu/tegra:/opt/nvidia/vpi2/lib64::/usr/lib/aarch64-linux-gnu-host:/opt/tritonserver/lib'), ('HOME', '/home/admin'), ('OLDPWD', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection'), ('ROS_PYTHON_VERSION', '3'), ('USER_UID', '1000'), ('COLCON_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install:/workspaces/isaac_ros-dev/install:/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('NVIDIA_DRIVER_CAPABILITIES', 'all'), ('USERNAME', 'admin'), ('TERM', 'xterm'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/nvidia/tao:/usr/local/cuda/bin'), ('FASTRTPS_DEFAULT_PROFILES_FILE', '/usr/local/share/middleware_profiles/rtps_udp_profile.xml'), ('DISPLAY', 'localhost:10.0'), ('LD_PRELOAD', '/usr/lib/aarch64-linux-gnu/libgomp.so.1'), ('LANG', 'en_US.UTF-8'), ('RMW_IMPLEMENTATION', 'rmw_fastrtps_cpp'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('ROS_ROOT', '/opt/ros/humble'), ('AMENT_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8:/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install/isaac_ros_yolov8:/workspaces/isaac_ros-dev/install/hexapod_detect:/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8'), ('PYTHONPATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages:/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install/isaac_ros_yolov8/lib/python3.8/site-packages:/opt/ros/humble/lib/python3.8/site-packages'), ('NVIDIA_VISIBLE_DEVICES', 'all'), ('USER_GID', '1000'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8:/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install/isaac_ros_yolov8:/workspaces/isaac_ros-dev/install/hexapod_detect:/opt/ros/humble')]), 'shell': False}
+[0.262743] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found ament_cmake_auto: 1.3.6 (/opt/ros/humble/share/ament_cmake_auto/cmake)\n'}
+[0.300284] (-) TimerEvent: {}
+[0.401487] (-) TimerEvent: {}
+[0.502463] (-) TimerEvent: {}
+[0.574014] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found rclcpp: 16.0.7 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[0.602540] (-) TimerEvent: {}
+[0.645530] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.650646] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.663531] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.686640] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.702627] (-) TimerEvent: {}
+[0.719167] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.802734] (-) TimerEvent: {}
+[0.834951] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.1 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[0.838049] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.5 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[0.902920] (-) TimerEvent: {}
+[1.003643] (-) TimerEvent: {}
+[1.104595] (-) TimerEvent: {}
+[1.167966] (isaac_ros_yolov8) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[1.204706] (-) TimerEvent: {}
+[1.305391] (-) TimerEvent: {}
+[1.405930] (-) TimerEvent: {}
+[1.466714] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found sensor_msgs: 4.2.3 (/opt/ros/humble/share/sensor_msgs/cmake)\n'}
+[1.506049] (-) TimerEvent: {}
+[1.606533] (-) TimerEvent: {}
+[1.695216] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found vision_msgs: 4.1.0 (/opt/ros/humble/share/vision_msgs/cmake)\n'}
+[1.706632] (-) TimerEvent: {}
+[1.807041] (-) TimerEvent: {}
+[1.819001] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found cv_bridge: 3.2.1 (/opt/ros/humble/share/cv_bridge/cmake)\n'}
+[1.907238] (-) TimerEvent: {}
+[1.997985] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Loading isaac_ros_common extras\n'}
+[1.998973] (isaac_ros_yolov8) StdoutLine: {'line': b'-- CMAKE_BUILD_TYPE: Release\n'}
+[2.007300] (-) TimerEvent: {}
+[2.030732] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Loading isaac_ros_common extras (modules)\n'}
+[2.107382] (-) TimerEvent: {}
+[2.165982] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)\n'}
+[2.168704] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Ensuring Eigen3 include directory is part of orocos-kdl CMake target\n'}
+[2.207500] (-) TimerEvent: {}
+[2.307998] (-) TimerEvent: {}
+[2.408531] (-) TimerEvent: {}
+[2.509113] (-) TimerEvent: {}
+[2.609619] (-) TimerEvent: {}
+[2.710109] (-) TimerEvent: {}
+[2.810591] (-) TimerEvent: {}
+[2.911035] (-) TimerEvent: {}
+[3.011506] (-) TimerEvent: {}
+[3.110147] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Loading isaac_ros_gxf extras\n'}
+[3.111608] (-) TimerEvent: {}
+[3.212045] (-) TimerEvent: {}
+[3.312562] (-) TimerEvent: {}
+[3.413055] (-) TimerEvent: {}
+[3.513605] (-) TimerEvent: {}
+[3.614144] (-) TimerEvent: {}
+[3.714730] (-) TimerEvent: {}
+[3.815251] (-) TimerEvent: {}
+[3.857151] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.9 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[3.908675] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found launch_testing_ament_cmake: 1.0.4 (/opt/ros/humble/share/launch_testing_ament_cmake/cmake)\n'}
+[4.051010] (-) TimerEvent: {}
+[4.051516] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)\n'}
+[4.051777] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[4.051937] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.8\n'}
+[4.052077] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/aarch64-linux-gnu/libpython3.8.so\n'}
+[4.063025] (isaac_ros_yolov8) StdoutLine: {'line': b"-- Added test 'copyright' to check source files copyright and LICENSE\n"}
+[4.107340] (isaac_ros_yolov8) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[4.108055] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Configured cppcheck include dirs: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/include\n'}
+[4.108328] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[4.150783] (isaac_ros_yolov8) StdoutLine: {'line': b"-- Added test 'cpplint' to check C / C++ code against the Google style\n"}
+[4.151137] (-) TimerEvent: {}
+[4.151477] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Configured cpplint exclude dirs and/or files: \n'}
+[4.157187] (isaac_ros_yolov8) StdoutLine: {'line': b"-- Added test 'flake8' to check Python code syntax and style conventions\n"}
+[4.168403] (isaac_ros_yolov8) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[4.174017] (isaac_ros_yolov8) StdoutLine: {'line': b"-- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257\n"}
+[4.216644] (isaac_ros_yolov8) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[4.217014] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[4.222613] (isaac_ros_yolov8) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[4.227707] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Configuring done\n'}
+[4.251240] (-) TimerEvent: {}
+[4.351831] (-) TimerEvent: {}
+[4.442904] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Generating done\n'}
+[4.451867] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Build files have been written to: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8\n'}
+[4.452362] (-) TimerEvent: {}
+[4.525838] (isaac_ros_yolov8) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target yolov8_decoder_node\x1b[0m\n'}
+[4.545861] (isaac_ros_yolov8) StdoutLine: {'line': b'[  0%] Built target ament_cmake_python_copy_isaac_ros_yolov8\n'}
+[4.552598] (-) TimerEvent: {}
+[4.571030] (isaac_ros_yolov8) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/yolov8_decoder_node.dir/src/yolov8_decoder_node.cpp.o\x1b[0m\n'}
+[4.652793] (-) TimerEvent: {}
+[4.753645] (-) TimerEvent: {}
+[4.854610] (-) TimerEvent: {}
+[4.955634] (-) TimerEvent: {}
+[5.056586] (-) TimerEvent: {}
+[5.157832] (-) TimerEvent: {}
+[5.258839] (-) TimerEvent: {}
+[5.359802] (-) TimerEvent: {}
+[5.402358] (isaac_ros_yolov8) StdoutLine: {'line': b'running egg_info\n'}
+[5.438360] (isaac_ros_yolov8) StdoutLine: {'line': b'writing isaac_ros_yolov8.egg-info/PKG-INFO\n'}
+[5.438926] (isaac_ros_yolov8) StdoutLine: {'line': b'writing dependency_links to isaac_ros_yolov8.egg-info/dependency_links.txt\n'}
+[5.439881] (isaac_ros_yolov8) StdoutLine: {'line': b'writing top-level names to isaac_ros_yolov8.egg-info/top_level.txt\n'}
+[5.459871] (-) TimerEvent: {}
+[5.542825] (isaac_ros_yolov8) StdoutLine: {'line': b"reading manifest file 'isaac_ros_yolov8.egg-info/SOURCES.txt'\n"}
+[5.544187] (isaac_ros_yolov8) StdoutLine: {'line': b"writing manifest file 'isaac_ros_yolov8.egg-info/SOURCES.txt'\n"}
+[5.559962] (-) TimerEvent: {}
+[5.660735] (-) TimerEvent: {}
+[5.697638] (isaac_ros_yolov8) StdoutLine: {'line': b'[ 50%] Built target ament_cmake_python_build_isaac_ros_yolov8_egg\n'}
+[5.760802] (-) TimerEvent: {}
+[5.861434] (-) TimerEvent: {}
+[5.962004] (-) TimerEvent: {}
+[6.062631] (-) TimerEvent: {}
+[6.163331] (-) TimerEvent: {}
+[6.264001] (-) TimerEvent: {}
+[6.364762] (-) TimerEvent: {}
+[6.465496] (-) TimerEvent: {}
+[6.566127] (-) TimerEvent: {}
+[6.666850] (-) TimerEvent: {}
+[6.767493] (-) TimerEvent: {}
+[6.868067] (-) TimerEvent: {}
+[6.968620] (-) TimerEvent: {}
+[7.069149] (-) TimerEvent: {}
+[7.169665] (-) TimerEvent: {}
+[7.270304] (-) TimerEvent: {}
+[7.371317] (-) TimerEvent: {}
+[7.471970] (-) TimerEvent: {}
+[7.572655] (-) TimerEvent: {}
+[7.673287] (-) TimerEvent: {}
+[7.773855] (-) TimerEvent: {}
+[7.874398] (-) TimerEvent: {}
+[7.974937] (-) TimerEvent: {}
+[8.075527] (-) TimerEvent: {}
+[8.176135] (-) TimerEvent: {}
+[8.276801] (-) TimerEvent: {}
+[8.377459] (-) TimerEvent: {}
+[8.478349] (-) TimerEvent: {}
+[8.579373] (-) TimerEvent: {}
+[8.680089] (-) TimerEvent: {}
+[8.780696] (-) TimerEvent: {}
+[8.881258] (-) TimerEvent: {}
+[8.981830] (-) TimerEvent: {}
+[9.082384] (-) TimerEvent: {}
+[9.227649] (-) TimerEvent: {}
+[9.328390] (-) TimerEvent: {}
+[9.429038] (-) TimerEvent: {}
+[9.529860] (-) TimerEvent: {}
+[9.630531] (-) TimerEvent: {}
+[9.731313] (-) TimerEvent: {}
+[9.831885] (-) TimerEvent: {}
+[9.932463] (-) TimerEvent: {}
+[10.033009] (-) TimerEvent: {}
+[10.133807] (-) TimerEvent: {}
+[10.234471] (-) TimerEvent: {}
+[10.335165] (-) TimerEvent: {}
+[10.435868] (-) TimerEvent: {}
+[10.536723] (-) TimerEvent: {}
+[10.637573] (-) TimerEvent: {}
+[10.738377] (-) TimerEvent: {}
+[10.839162] (-) TimerEvent: {}
+[10.939940] (-) TimerEvent: {}
+[11.040680] (-) TimerEvent: {}
+[11.141197] (-) TimerEvent: {}
+[11.241726] (-) TimerEvent: {}
+[11.342386] (-) TimerEvent: {}
+[11.442996] (-) TimerEvent: {}
+[11.543839] (-) TimerEvent: {}
+[11.644704] (-) TimerEvent: {}
+[11.745492] (-) TimerEvent: {}
+[11.846262] (-) TimerEvent: {}
+[11.947028] (-) TimerEvent: {}
+[12.047838] (-) TimerEvent: {}
+[12.148573] (-) TimerEvent: {}
+[12.249821] (-) TimerEvent: {}
+[12.350875] (-) TimerEvent: {}
+[12.451573] (-) TimerEvent: {}
+[12.552495] (-) TimerEvent: {}
+[12.653393] (-) TimerEvent: {}
+[12.754209] (-) TimerEvent: {}
+[12.855018] (-) TimerEvent: {}
+[12.955632] (-) TimerEvent: {}
+[13.056405] (-) TimerEvent: {}
+[13.156964] (-) TimerEvent: {}
+[13.257524] (-) TimerEvent: {}
+[13.358171] (-) TimerEvent: {}
+[13.458812] (-) TimerEvent: {}
+[13.559505] (-) TimerEvent: {}
+[13.660123] (-) TimerEvent: {}
+[13.760707] (-) TimerEvent: {}
+[13.861275] (-) TimerEvent: {}
+[13.961808] (-) TimerEvent: {}
+[14.062336] (-) TimerEvent: {}
+[14.162842] (-) TimerEvent: {}
+[14.263435] (-) TimerEvent: {}
+[14.409218] (-) TimerEvent: {}
+[14.509871] (-) TimerEvent: {}
+[14.610547] (-) TimerEvent: {}
+[14.711150] (-) TimerEvent: {}
+[14.811784] (-) TimerEvent: {}
+[14.912341] (-) TimerEvent: {}
+[15.012862] (-) TimerEvent: {}
+[15.113359] (-) TimerEvent: {}
+[15.213896] (-) TimerEvent: {}
+[15.314513] (-) TimerEvent: {}
+[15.415087] (-) TimerEvent: {}
+[15.515744] (-) TimerEvent: {}
+[15.616455] (-) TimerEvent: {}
+[15.717108] (-) TimerEvent: {}
+[15.817708] (-) TimerEvent: {}
+[15.918270] (-) TimerEvent: {}
+[16.018800] (-) TimerEvent: {}
+[16.119372] (-) TimerEvent: {}
+[16.219940] (-) TimerEvent: {}
+[16.320532] (-) TimerEvent: {}
+[16.421116] (-) TimerEvent: {}
+[16.521705] (-) TimerEvent: {}
+[16.622348] (-) TimerEvent: {}
+[16.722964] (-) TimerEvent: {}
+[16.823668] (-) TimerEvent: {}
+[16.924218] (-) TimerEvent: {}
+[17.024722] (-) TimerEvent: {}
+[17.125227] (-) TimerEvent: {}
+[17.225738] (-) TimerEvent: {}
+[17.326333] (-) TimerEvent: {}
+[17.426992] (-) TimerEvent: {}
+[17.527820] (-) TimerEvent: {}
+[17.628570] (-) TimerEvent: {}
+[17.729239] (-) TimerEvent: {}
+[17.829873] (-) TimerEvent: {}
+[17.930449] (-) TimerEvent: {}
+[18.030997] (-) TimerEvent: {}
+[18.131575] (-) TimerEvent: {}
+[18.232136] (-) TimerEvent: {}
+[18.332726] (-) TimerEvent: {}
+[18.433272] (-) TimerEvent: {}
+[18.533838] (-) TimerEvent: {}
+[18.634485] (-) TimerEvent: {}
+[18.735111] (-) TimerEvent: {}
+[18.835724] (-) TimerEvent: {}
+[18.936248] (-) TimerEvent: {}
+[19.036666] (-) TimerEvent: {}
+[19.137121] (-) TimerEvent: {}
+[19.237733] (-) TimerEvent: {}
+[19.338423] (-) TimerEvent: {}
+[19.439070] (-) TimerEvent: {}
+[19.577423] (-) TimerEvent: {}
+[19.678092] (-) TimerEvent: {}
+[19.778721] (-) TimerEvent: {}
+[19.879267] (-) TimerEvent: {}
+[19.979783] (-) TimerEvent: {}
+[20.080296] (-) TimerEvent: {}
+[20.180778] (-) TimerEvent: {}
+[20.281288] (-) TimerEvent: {}
+[20.381847] (-) TimerEvent: {}
+[20.482437] (-) TimerEvent: {}
+[20.583051] (-) TimerEvent: {}
+[20.683641] (-) TimerEvent: {}
+[20.784187] (-) TimerEvent: {}
+[20.884672] (-) TimerEvent: {}
+[20.985138] (-) TimerEvent: {}
+[21.085609] (-) TimerEvent: {}
+[21.186089] (-) TimerEvent: {}
+[21.286636] (-) TimerEvent: {}
+[21.387307] (-) TimerEvent: {}
+[21.487929] (-) TimerEvent: {}
+[21.588540] (-) TimerEvent: {}
+[21.689114] (-) TimerEvent: {}
+[21.789668] (-) TimerEvent: {}
+[21.890192] (-) TimerEvent: {}
+[21.990699] (-) TimerEvent: {}
+[22.091219] (-) TimerEvent: {}
+[22.191729] (-) TimerEvent: {}
+[22.292250] (-) TimerEvent: {}
+[22.392826] (-) TimerEvent: {}
+[22.493412] (-) TimerEvent: {}
+[22.594065] (-) TimerEvent: {}
+[22.694684] (-) TimerEvent: {}
+[22.795283] (-) TimerEvent: {}
+[22.895864] (-) TimerEvent: {}
+[22.996403] (-) TimerEvent: {}
+[23.096932] (-) TimerEvent: {}
+[23.197451] (-) TimerEvent: {}
+[23.298007] (-) TimerEvent: {}
+[23.398740] (-) TimerEvent: {}
+[23.499573] (-) TimerEvent: {}
+[23.600319] (-) TimerEvent: {}
+[23.700998] (-) TimerEvent: {}
+[23.801627] (-) TimerEvent: {}
+[23.902174] (-) TimerEvent: {}
+[24.002722] (-) TimerEvent: {}
+[24.103285] (-) TimerEvent: {}
+[24.203792] (-) TimerEvent: {}
+[24.304278] (-) TimerEvent: {}
+[24.404787] (-) TimerEvent: {}
+[24.505319] (-) TimerEvent: {}
+[24.605898] (-) TimerEvent: {}
+[24.744606] (-) TimerEvent: {}
+[24.845158] (-) TimerEvent: {}
+[24.945689] (-) TimerEvent: {}
+[25.046212] (-) TimerEvent: {}
+[25.146697] (-) TimerEvent: {}
+[25.247230] (-) TimerEvent: {}
+[25.347742] (-) TimerEvent: {}
+[25.448260] (-) TimerEvent: {}
+[25.548776] (-) TimerEvent: {}
+[25.649333] (-) TimerEvent: {}
+[25.749861] (-) TimerEvent: {}
+[25.850374] (-) TimerEvent: {}
+[25.950867] (-) TimerEvent: {}
+[26.051381] (-) TimerEvent: {}
+[26.151849] (-) TimerEvent: {}
+[26.252329] (-) TimerEvent: {}
+[26.352840] (-) TimerEvent: {}
+[26.453329] (-) TimerEvent: {}
+[26.553874] (-) TimerEvent: {}
+[26.654531] (-) TimerEvent: {}
+[26.755119] (-) TimerEvent: {}
+[26.855719] (-) TimerEvent: {}
+[26.956237] (-) TimerEvent: {}
+[27.056717] (-) TimerEvent: {}
+[27.157179] (-) TimerEvent: {}
+[27.257675] (-) TimerEvent: {}
+[27.358218] (-) TimerEvent: {}
+[27.458753] (-) TimerEvent: {}
+[27.559326] (-) TimerEvent: {}
+[27.659962] (-) TimerEvent: {}
+[27.760549] (-) TimerEvent: {}
+[27.861106] (-) TimerEvent: {}
+[27.961617] (-) TimerEvent: {}
+[28.062140] (-) TimerEvent: {}
+[28.162645] (-) TimerEvent: {}
+[28.263139] (-) TimerEvent: {}
+[28.363710] (-) TimerEvent: {}
+[28.464239] (-) TimerEvent: {}
+[28.564815] (-) TimerEvent: {}
+[28.665447] (-) TimerEvent: {}
+[28.766046] (-) TimerEvent: {}
+[28.866604] (-) TimerEvent: {}
+[28.967137] (-) TimerEvent: {}
+[29.067661] (-) TimerEvent: {}
+[29.168154] (-) TimerEvent: {}
+[29.268587] (-) TimerEvent: {}
+[29.369122] (-) TimerEvent: {}
+[29.469777] (-) TimerEvent: {}
+[29.570432] (-) TimerEvent: {}
+[29.671100] (-) TimerEvent: {}
+[29.771730] (-) TimerEvent: {}
+[29.915677] (-) TimerEvent: {}
+[30.016263] (-) TimerEvent: {}
+[30.116883] (-) TimerEvent: {}
+[30.217574] (-) TimerEvent: {}
+[30.318149] (-) TimerEvent: {}
+[30.418717] (-) TimerEvent: {}
+[30.519314] (-) TimerEvent: {}
+[30.619938] (-) TimerEvent: {}
+[30.720526] (-) TimerEvent: {}
+[30.821083] (-) TimerEvent: {}
+[30.921610] (-) TimerEvent: {}
+[31.022110] (-) TimerEvent: {}
+[31.122605] (-) TimerEvent: {}
+[31.223124] (-) TimerEvent: {}
+[31.323704] (-) TimerEvent: {}
+[31.424268] (-) TimerEvent: {}
+[31.524817] (-) TimerEvent: {}
+[31.625402] (-) TimerEvent: {}
+[31.726007] (-) TimerEvent: {}
+[31.826551] (-) TimerEvent: {}
+[31.927089] (-) TimerEvent: {}
+[32.027636] (-) TimerEvent: {}
+[32.128146] (-) TimerEvent: {}
+[32.228679] (-) TimerEvent: {}
+[32.329203] (-) TimerEvent: {}
+[32.429719] (-) TimerEvent: {}
+[32.530261] (-) TimerEvent: {}
+[32.630856] (-) TimerEvent: {}
+[32.731461] (-) TimerEvent: {}
+[32.831975] (-) TimerEvent: {}
+[32.932427] (-) TimerEvent: {}
+[33.032919] (-) TimerEvent: {}
+[33.133391] (-) TimerEvent: {}
+[33.233868] (-) TimerEvent: {}
+[33.334371] (-) TimerEvent: {}
+[33.434920] (-) TimerEvent: {}
+[33.535704] (-) TimerEvent: {}
+[33.636779] (-) TimerEvent: {}
+[33.737662] (-) TimerEvent: {}
+[33.838438] (-) TimerEvent: {}
+[33.939106] (-) TimerEvent: {}
+[34.039740] (-) TimerEvent: {}
+[34.140308] (-) TimerEvent: {}
+[34.240872] (-) TimerEvent: {}
+[34.341438] (-) TimerEvent: {}
+[34.441960] (-) TimerEvent: {}
+[34.542540] (-) TimerEvent: {}
+[34.643171] (-) TimerEvent: {}
+[34.743734] (-) TimerEvent: {}
+[34.844341] (-) TimerEvent: {}
+[34.944913] (-) TimerEvent: {}
+[35.083843] (-) TimerEvent: {}
+[35.184454] (-) TimerEvent: {}
+[35.285085] (-) TimerEvent: {}
+[35.385853] (-) TimerEvent: {}
+[35.486726] (-) TimerEvent: {}
+[35.587529] (-) TimerEvent: {}
+[35.688277] (-) TimerEvent: {}
+[35.788940] (-) TimerEvent: {}
+[35.889558] (-) TimerEvent: {}
+[35.990130] (-) TimerEvent: {}
+[36.090682] (-) TimerEvent: {}
+[36.191263] (-) TimerEvent: {}
+[36.291801] (-) TimerEvent: {}
+[36.392370] (-) TimerEvent: {}
+[36.492915] (-) TimerEvent: {}
+[36.593481] (-) TimerEvent: {}
+[36.694093] (-) TimerEvent: {}
+[36.794670] (-) TimerEvent: {}
+[36.895262] (-) TimerEvent: {}
+[36.995802] (-) TimerEvent: {}
+[37.096323] (-) TimerEvent: {}
+[37.196844] (-) TimerEvent: {}
+[37.297387] (-) TimerEvent: {}
+[37.397953] (-) TimerEvent: {}
+[37.498505] (-) TimerEvent: {}
+[37.599060] (-) TimerEvent: {}
+[37.699678] (-) TimerEvent: {}
+[37.800237] (-) TimerEvent: {}
+[37.900772] (-) TimerEvent: {}
+[38.001295] (-) TimerEvent: {}
+[38.101785] (-) TimerEvent: {}
+[38.202258] (-) TimerEvent: {}
+[38.302777] (-) TimerEvent: {}
+[38.403275] (-) TimerEvent: {}
+[38.503783] (-) TimerEvent: {}
+[38.604333] (-) TimerEvent: {}
+[38.704947] (-) TimerEvent: {}
+[38.805523] (-) TimerEvent: {}
+[38.906054] (-) TimerEvent: {}
+[39.006563] (-) TimerEvent: {}
+[39.107038] (-) TimerEvent: {}
+[39.207542] (-) TimerEvent: {}
+[39.308037] (-) TimerEvent: {}
+[39.408587] (-) TimerEvent: {}
+[39.509129] (-) TimerEvent: {}
+[39.609766] (-) TimerEvent: {}
+[39.710507] (-) TimerEvent: {}
+[39.811032] (-) TimerEvent: {}
+[39.911723] (-) TimerEvent: {}
+[40.012297] (-) TimerEvent: {}
+[40.112849] (-) TimerEvent: {}
+[40.251568] (-) TimerEvent: {}
+[40.352236] (-) TimerEvent: {}
+[40.452893] (-) TimerEvent: {}
+[40.553715] (-) TimerEvent: {}
+[40.654447] (-) TimerEvent: {}
+[40.755107] (-) TimerEvent: {}
+[40.855684] (-) TimerEvent: {}
+[40.956212] (-) TimerEvent: {}
+[41.057067] (-) TimerEvent: {}
+[41.158054] (-) TimerEvent: {}
+[41.259134] (-) TimerEvent: {}
+[41.360077] (-) TimerEvent: {}
+[41.461428] (-) TimerEvent: {}
+[41.562568] (-) TimerEvent: {}
+[41.664025] (-) TimerEvent: {}
+[41.765149] (-) TimerEvent: {}
+[41.866518] (-) TimerEvent: {}
+[41.967981] (-) TimerEvent: {}
+[42.069143] (-) TimerEvent: {}
+[42.170282] (-) TimerEvent: {}
+[42.271446] (-) TimerEvent: {}
+[42.372840] (-) TimerEvent: {}
+[42.474026] (-) TimerEvent: {}
+[42.575222] (-) TimerEvent: {}
+[42.676358] (-) TimerEvent: {}
+[42.777518] (-) TimerEvent: {}
+[42.878717] (-) TimerEvent: {}
+[42.979966] (-) TimerEvent: {}
+[43.081085] (-) TimerEvent: {}
+[43.182083] (-) TimerEvent: {}
+[43.283098] (-) TimerEvent: {}
+[43.384218] (-) TimerEvent: {}
+[43.485385] (-) TimerEvent: {}
+[43.586640] (-) TimerEvent: {}
+[43.687816] (-) TimerEvent: {}
+[43.788971] (-) TimerEvent: {}
+[43.890401] (-) TimerEvent: {}
+[43.991862] (-) TimerEvent: {}
+[44.093032] (-) TimerEvent: {}
+[44.194419] (-) TimerEvent: {}
+[44.295821] (-) TimerEvent: {}
+[44.397206] (-) TimerEvent: {}
+[44.498596] (-) TimerEvent: {}
+[44.599998] (-) TimerEvent: {}
+[44.701352] (-) TimerEvent: {}
+[44.802720] (-) TimerEvent: {}
+[44.904139] (-) TimerEvent: {}
+[45.005277] (-) TimerEvent: {}
+[45.106369] (-) TimerEvent: {}
+[45.207485] (-) TimerEvent: {}
+[45.451734] (-) TimerEvent: {}
+[45.552881] (-) TimerEvent: {}
+[45.654250] (-) TimerEvent: {}
+[45.755609] (-) TimerEvent: {}
+[45.857002] (-) TimerEvent: {}
+[45.958366] (-) TimerEvent: {}
+[46.059539] (-) TimerEvent: {}
+[46.160585] (-) TimerEvent: {}
+[46.261632] (-) TimerEvent: {}
+[46.362960] (-) TimerEvent: {}
+[46.464072] (-) TimerEvent: {}
+[46.565168] (-) TimerEvent: {}
+[46.666258] (-) TimerEvent: {}
+[46.767399] (-) TimerEvent: {}
+[46.868501] (-) TimerEvent: {}
+[46.969628] (-) TimerEvent: {}
+[47.070781] (-) TimerEvent: {}
+[47.171988] (-) TimerEvent: {}
+[47.273148] (-) TimerEvent: {}
+[47.374312] (-) TimerEvent: {}
+[47.475481] (-) TimerEvent: {}
+[47.576636] (-) TimerEvent: {}
+[47.677796] (-) TimerEvent: {}
+[47.778952] (-) TimerEvent: {}
+[47.880118] (-) TimerEvent: {}
+[47.981497] (-) TimerEvent: {}
+[48.082703] (-) TimerEvent: {}
+[48.184149] (-) TimerEvent: {}
+[48.285576] (-) TimerEvent: {}
+[48.387008] (-) TimerEvent: {}
+[48.488454] (-) TimerEvent: {}
+[48.589657] (-) TimerEvent: {}
+[48.691102] (-) TimerEvent: {}
+[48.792504] (-) TimerEvent: {}
+[48.893854] (-) TimerEvent: {}
+[48.995236] (-) TimerEvent: {}
+[49.096289] (-) TimerEvent: {}
+[49.197589] (-) TimerEvent: {}
+[49.298654] (-) TimerEvent: {}
+[49.399699] (-) TimerEvent: {}
+[49.500969] (-) TimerEvent: {}
+[49.602295] (-) TimerEvent: {}
+[49.703641] (-) TimerEvent: {}
+[49.804997] (-) TimerEvent: {}
+[49.906227] (-) TimerEvent: {}
+[50.007073] (-) TimerEvent: {}
+[50.107606] (-) TimerEvent: {}
+[50.208171] (-) TimerEvent: {}
+[50.445877] (-) TimerEvent: {}
+[50.546573] (-) TimerEvent: {}
+[50.647295] (-) TimerEvent: {}
+[50.748062] (-) TimerEvent: {}
+[50.848874] (-) TimerEvent: {}
+[50.949671] (-) TimerEvent: {}
+[51.050491] (-) TimerEvent: {}
+[51.151361] (-) TimerEvent: {}
+[51.251986] (-) TimerEvent: {}
+[51.352604] (-) TimerEvent: {}
+[51.453231] (-) TimerEvent: {}
+[51.553860] (-) TimerEvent: {}
+[51.654497] (-) TimerEvent: {}
+[51.755128] (-) TimerEvent: {}
+[51.855777] (-) TimerEvent: {}
+[51.956412] (-) TimerEvent: {}
+[52.057034] (-) TimerEvent: {}
+[52.157668] (-) TimerEvent: {}
+[52.258281] (-) TimerEvent: {}
+[52.358898] (-) TimerEvent: {}
+[52.459578] (-) TimerEvent: {}
+[52.560416] (-) TimerEvent: {}
+[52.661266] (-) TimerEvent: {}
+[52.762104] (-) TimerEvent: {}
+[52.862732] (-) TimerEvent: {}
+[52.963560] (-) TimerEvent: {}
+[53.064091] (-) TimerEvent: {}
+[53.164757] (-) TimerEvent: {}
+[53.265471] (-) TimerEvent: {}
+[53.365939] (-) TimerEvent: {}
+[53.466601] (-) TimerEvent: {}
+[53.567297] (-) TimerEvent: {}
+[53.668053] (-) TimerEvent: {}
+[53.768891] (-) TimerEvent: {}
+[53.869530] (-) TimerEvent: {}
+[53.970374] (-) TimerEvent: {}
+[54.070996] (-) TimerEvent: {}
+[54.171588] (-) TimerEvent: {}
+[54.272155] (-) TimerEvent: {}
+[54.372783] (-) TimerEvent: {}
+[54.473351] (-) TimerEvent: {}
+[54.573912] (-) TimerEvent: {}
+[54.674536] (-) TimerEvent: {}
+[54.775158] (-) TimerEvent: {}
+[54.875796] (-) TimerEvent: {}
+[54.976338] (-) TimerEvent: {}
+[55.076864] (-) TimerEvent: {}
+[55.177496] (-) TimerEvent: {}
+[55.278111] (-) TimerEvent: {}
+[55.516556] (-) TimerEvent: {}
+[55.617193] (-) TimerEvent: {}
+[55.717820] (-) TimerEvent: {}
+[55.818443] (-) TimerEvent: {}
+[55.919072] (-) TimerEvent: {}
+[56.019733] (-) TimerEvent: {}
+[56.120365] (-) TimerEvent: {}
+[56.221012] (-) TimerEvent: {}
+[56.321688] (-) TimerEvent: {}
+[56.422337] (-) TimerEvent: {}
+[56.522894] (-) TimerEvent: {}
+[56.623586] (-) TimerEvent: {}
+[56.724426] (-) TimerEvent: {}
+[56.825217] (-) TimerEvent: {}
+[56.925937] (-) TimerEvent: {}
+[57.026659] (-) TimerEvent: {}
+[57.127414] (-) TimerEvent: {}
+[57.228168] (-) TimerEvent: {}
+[57.328971] (-) TimerEvent: {}
+[57.429695] (-) TimerEvent: {}
+[57.530410] (-) TimerEvent: {}
+[57.631100] (-) TimerEvent: {}
+[57.731815] (-) TimerEvent: {}
+[57.832501] (-) TimerEvent: {}
+[57.933261] (-) TimerEvent: {}
+[58.034028] (-) TimerEvent: {}
+[58.134786] (-) TimerEvent: {}
+[58.235626] (-) TimerEvent: {}
+[58.336244] (-) TimerEvent: {}
+[58.436872] (-) TimerEvent: {}
+[58.537420] (-) TimerEvent: {}
+[58.637939] (-) TimerEvent: {}
+[58.738570] (-) TimerEvent: {}
+[58.839232] (-) TimerEvent: {}
+[58.939863] (-) TimerEvent: {}
+[59.040490] (-) TimerEvent: {}
+[59.141066] (-) TimerEvent: {}
+[59.241594] (-) TimerEvent: {}
+[59.342176] (-) TimerEvent: {}
+[59.442808] (-) TimerEvent: {}
+[59.543454] (-) TimerEvent: {}
+[59.644084] (-) TimerEvent: {}
+[59.744874] (-) TimerEvent: {}
+[59.845589] (-) TimerEvent: {}
+[59.946292] (-) TimerEvent: {}
+[60.046783] (-) TimerEvent: {}
+[60.147333] (-) TimerEvent: {}
+[60.248059] (-) TimerEvent: {}
+[60.348772] (-) TimerEvent: {}
+[60.538897] (-) TimerEvent: {}
+[60.639674] (-) TimerEvent: {}
+[60.740418] (-) TimerEvent: {}
+[60.841167] (-) TimerEvent: {}
+[60.941955] (-) TimerEvent: {}
+[61.042547] (-) TimerEvent: {}
+[61.143137] (-) TimerEvent: {}
+[61.243753] (-) TimerEvent: {}
+[61.344337] (-) TimerEvent: {}
+[61.444922] (-) TimerEvent: {}
+[61.545507] (-) TimerEvent: {}
+[61.646029] (-) TimerEvent: {}
+[61.746567] (-) TimerEvent: {}
+[61.847159] (-) TimerEvent: {}
+[61.947765] (-) TimerEvent: {}
+[62.048353] (-) TimerEvent: {}
+[62.148899] (-) TimerEvent: {}
+[62.249438] (-) TimerEvent: {}
+[62.350018] (-) TimerEvent: {}
+[62.450793] (-) TimerEvent: {}
+[62.551517] (-) TimerEvent: {}
+[62.652209] (-) TimerEvent: {}
+[62.752900] (-) TimerEvent: {}
+[62.853584] (-) TimerEvent: {}
+[62.954268] (-) TimerEvent: {}
+[63.054955] (-) TimerEvent: {}
+[63.155443] (-) TimerEvent: {}
+[63.256096] (-) TimerEvent: {}
+[63.356582] (-) TimerEvent: {}
+[63.457274] (-) TimerEvent: {}
+[63.557957] (-) TimerEvent: {}
+[63.658632] (-) TimerEvent: {}
+[63.759332] (-) TimerEvent: {}
+[63.860045] (-) TimerEvent: {}
+[63.960797] (-) TimerEvent: {}
+[64.061382] (-) TimerEvent: {}
+[64.161925] (-) TimerEvent: {}
+[64.262465] (-) TimerEvent: {}
+[64.363055] (-) TimerEvent: {}
+[64.463640] (-) TimerEvent: {}
+[64.564186] (-) TimerEvent: {}
+[64.664779] (-) TimerEvent: {}
+[64.765362] (-) TimerEvent: {}
+[64.865947] (-) TimerEvent: {}
+[64.966536] (-) TimerEvent: {}
+[65.067119] (-) TimerEvent: {}
+[65.167739] (-) TimerEvent: {}
+[65.268339] (-) TimerEvent: {}
+[65.368932] (-) TimerEvent: {}
+[65.558369] (-) TimerEvent: {}
+[65.658842] (-) TimerEvent: {}
+[65.759493] (-) TimerEvent: {}
+[65.860177] (-) TimerEvent: {}
+[65.960855] (-) TimerEvent: {}
+[66.061341] (-) TimerEvent: {}
+[66.161819] (-) TimerEvent: {}
+[66.262502] (-) TimerEvent: {}
+[66.363213] (-) TimerEvent: {}
+[66.464550] (-) TimerEvent: {}
+[66.565369] (-) TimerEvent: {}
+[66.666106] (-) TimerEvent: {}
+[66.766634] (-) TimerEvent: {}
+[66.867362] (-) TimerEvent: {}
+[66.968105] (-) TimerEvent: {}
+[67.068655] (-) TimerEvent: {}
+[67.169403] (-) TimerEvent: {}
+[67.269926] (-) TimerEvent: {}
+[67.370507] (-) TimerEvent: {}
+[67.471148] (-) TimerEvent: {}
+[67.571810] (-) TimerEvent: {}
+[67.672378] (-) TimerEvent: {}
+[67.772953] (-) TimerEvent: {}
+[67.873588] (-) TimerEvent: {}
+[67.974220] (-) TimerEvent: {}
+[68.074841] (-) TimerEvent: {}
+[68.175501] (-) TimerEvent: {}
+[68.276139] (-) TimerEvent: {}
+[68.376918] (-) TimerEvent: {}
+[68.477624] (-) TimerEvent: {}
+[68.578082] (-) TimerEvent: {}
+[68.678731] (-) TimerEvent: {}
+[68.779473] (-) TimerEvent: {}
+[68.880221] (-) TimerEvent: {}
+[68.980923] (-) TimerEvent: {}
+[69.081384] (-) TimerEvent: {}
+[69.182037] (-) TimerEvent: {}
+[69.282505] (-) TimerEvent: {}
+[69.383160] (-) TimerEvent: {}
+[69.483872] (-) TimerEvent: {}
+[69.584553] (-) TimerEvent: {}
+[69.685313] (-) TimerEvent: {}
+[69.786160] (-) TimerEvent: {}
+[69.887010] (-) TimerEvent: {}
+[69.987883] (-) TimerEvent: {}
+[70.088529] (-) TimerEvent: {}
+[70.189172] (-) TimerEvent: {}
+[70.289807] (-) TimerEvent: {}
+[70.390350] (-) TimerEvent: {}
+[70.566007] (-) TimerEvent: {}
+[70.666757] (-) TimerEvent: {}
+[70.767544] (-) TimerEvent: {}
+[70.868312] (-) TimerEvent: {}
+[70.969025] (-) TimerEvent: {}
+[71.069553] (-) TimerEvent: {}
+[71.170034] (-) TimerEvent: {}
+[71.270707] (-) TimerEvent: {}
+[71.371208] (-) TimerEvent: {}
+[71.471814] (-) TimerEvent: {}
+[71.572847] (-) TimerEvent: {}
+[71.673531] (-) TimerEvent: {}
+[71.774244] (-) TimerEvent: {}
+[71.874854] (-) TimerEvent: {}
+[71.975419] (-) TimerEvent: {}
+[72.076095] (-) TimerEvent: {}
+[72.177201] (-) TimerEvent: {}
+[72.189749] (isaac_ros_yolov8) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX shared library libyolov8_decoder_node.so\x1b[0m\n'}
+[72.277337] (-) TimerEvent: {}
+[72.378042] (-) TimerEvent: {}
+[72.478752] (-) TimerEvent: {}
+[72.579712] (-) TimerEvent: {}
+[72.681030] (-) TimerEvent: {}
+[72.783046] (-) TimerEvent: {}
+[72.883633] (-) TimerEvent: {}
+[72.984755] (-) TimerEvent: {}
+[73.085964] (-) TimerEvent: {}
+[73.187347] (-) TimerEvent: {}
+[73.288540] (-) TimerEvent: {}
+[73.389685] (-) TimerEvent: {}
+[73.491350] (-) TimerEvent: {}
+[73.592672] (-) TimerEvent: {}
+[73.693850] (-) TimerEvent: {}
+[73.794712] (-) TimerEvent: {}
+[73.895329] (-) TimerEvent: {}
+[73.996311] (-) TimerEvent: {}
+[74.097173] (-) TimerEvent: {}
+[74.197822] (-) TimerEvent: {}
+[74.298752] (-) TimerEvent: {}
+[74.399698] (-) TimerEvent: {}
+[74.500755] (-) TimerEvent: {}
+[74.561436] (isaac_ros_yolov8) StdoutLine: {'line': b'[100%] Built target yolov8_decoder_node\n'}
+[74.600887] (-) TimerEvent: {}
+[74.701555] (-) TimerEvent: {}
+[74.710169] (isaac_ros_yolov8) CommandEnded: {'returncode': 0}
+[74.778315] (isaac_ros_yolov8) JobProgress: {'identifier': 'isaac_ros_yolov8', 'progress': 'install'}
+[74.797403] (isaac_ros_yolov8) Command: {'cmd': ['/usr/bin/cmake', '--install', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8'], 'cwd': '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('PYTHONWARNINGS', 'ignore:::setuptools.command.install,ignore:::setuptools.command.easy_install,ignore:::pkg_resources'), ('USER', 'e3h2'), ('HOSTNAME', 'e3h2-desktop'), ('SHLVL', '2'), ('LD_LIBRARY_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib:/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install/isaac_ros_yolov8/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/lib/aarch64-linux-gnu/tegra/weston:/usr/lib/aarch64-linux-gnu/tegra-egl:/usr/local/cuda-11.4/targets/aarch64-linux/lib:/usr/lib/aarch64-linux-gnu/tegra:/opt/nvidia/vpi2/lib64::/usr/lib/aarch64-linux-gnu-host:/opt/tritonserver/lib'), ('HOME', '/home/admin'), ('OLDPWD', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection'), ('ROS_PYTHON_VERSION', '3'), ('USER_UID', '1000'), ('COLCON_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install:/workspaces/isaac_ros-dev/install:/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('NVIDIA_DRIVER_CAPABILITIES', 'all'), ('USERNAME', 'admin'), ('TERM', 'xterm'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/nvidia/tao:/usr/local/cuda/bin'), ('FASTRTPS_DEFAULT_PROFILES_FILE', '/usr/local/share/middleware_profiles/rtps_udp_profile.xml'), ('DISPLAY', 'localhost:10.0'), ('LD_PRELOAD', '/usr/lib/aarch64-linux-gnu/libgomp.so.1'), ('LANG', 'en_US.UTF-8'), ('RMW_IMPLEMENTATION', 'rmw_fastrtps_cpp'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('ROS_ROOT', '/opt/ros/humble'), ('AMENT_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8:/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install/isaac_ros_yolov8:/workspaces/isaac_ros-dev/install/hexapod_detect:/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8'), ('PYTHONPATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages:/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install/isaac_ros_yolov8/lib/python3.8/site-packages:/opt/ros/humble/lib/python3.8/site-packages'), ('NVIDIA_VISIBLE_DEVICES', 'all'), ('USER_GID', '1000'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8:/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install/isaac_ros_yolov8:/workspaces/isaac_ros-dev/install/hexapod_detect:/opt/ros/humble')]), 'shell': False}
+[74.807756] (-) TimerEvent: {}
+[74.820105] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[74.820754] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/pythonpath.sh\n'}
+[74.821001] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/pythonpath.dsv\n'}
+[74.821219] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info\n'}
+[74.821413] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/dependency_links.txt\n'}
+[74.821619] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/top_level.txt\n'}
+[74.821823] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/PKG-INFO\n'}
+[74.822040] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/SOURCES.txt\n'}
+[74.822342] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8\n'}
+[74.822565] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8/__init__.py\n'}
+[74.907845] (-) TimerEvent: {}
+[75.008476] (-) TimerEvent: {}
+[75.108913] (-) TimerEvent: {}
+[75.164815] (isaac_ros_yolov8) StdoutLine: {'line': b"Listing '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8'...\n"}
+[75.177077] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/isaac_ros_yolov8/isaac_ros_yolov8_visualizer.py\n'}
+[75.177654] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/isaac_ros_yolov8/image_publisher.py\n'}
+[75.177848] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/include\n'}
+[75.178029] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/include/isaac_ros_yolov8\n'}
+[75.178206] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/include/isaac_ros_yolov8/yolov8_decoder_node.hpp\n'}
+[75.178374] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/library_path.sh\n'}
+[75.178700] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/library_path.dsv\n'}
+[75.208984] (-) TimerEvent: {}
+[75.309437] (-) TimerEvent: {}
+[75.321762] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/libyolov8_decoder_node.so\n'}
+[75.326409] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Set runtime path of "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/libyolov8_decoder_node.so" to ""\n'}
+[75.326912] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/launch\n'}
+[75.327108] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/launch/isaac_ros_yolov8_visualize.launch.py\n'}
+[75.327415] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/launch/yolov8_tensor_rt.launch.py\n'}
+[75.327566] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/scripts\n'}
+[75.327711] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/scripts/image_publisher.py\n'}
+[75.327965] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/scripts/isaac_ros_yolov8_visualizer.py\n'}
+[75.328101] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/package_run_dependencies/isaac_ros_yolov8\n'}
+[75.328316] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/parent_prefix_path/isaac_ros_yolov8\n'}
+[75.328519] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/ament_prefix_path.sh\n'}
+[75.328682] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/ament_prefix_path.dsv\n'}
+[75.328846] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/path.sh\n'}
+[75.329006] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/path.dsv\n'}
+[75.329246] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.bash\n'}
+[75.329541] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.sh\n'}
+[75.329675] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.zsh\n'}
+[75.329863] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.dsv\n'}
+[75.330056] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.dsv\n'}
+[75.330253] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/packages/isaac_ros_yolov8\n'}
+[75.330380] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/rclcpp_components/isaac_ros_yolov8\n'}
+[75.330584] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[75.330746] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[75.330979] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[75.331217] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/isaac_ros_yolov8Config.cmake\n'}
+[75.331382] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/isaac_ros_yolov8Config-version.cmake\n'}
+[75.331518] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.xml\n'}
+[75.335464] (isaac_ros_yolov8) CommandEnded: {'returncode': 0}
+[75.409704] (-) TimerEvent: {}
+[75.514872] (-) TimerEvent: {}
+[75.616659] (-) TimerEvent: {}
+[75.718195] (-) TimerEvent: {}
+[75.819022] (-) TimerEvent: {}
+[75.858735] (isaac_ros_yolov8) JobEnded: {'identifier': 'isaac_ros_yolov8', 'rc': 0}
+[75.861754] (-) EventReactorShutdown: {}

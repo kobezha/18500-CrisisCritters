@@ -1,0 +1,97 @@
+[6.122s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'isaac_ros_yolov8']
+[6.122s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffffa708fcd0>>, merge_install=False, metas=['./colcon.meta'], packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=['isaac_ros_yolov8'], packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=6, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffffa708fcd0>, verb_name='build', verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0xffffa708df70>)
+[6.426s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[6.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[6.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[6.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[6.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[6.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[6.428s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8'
+[6.428s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[6.428s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[6.428s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[6.428s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[6.428s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[6.429s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[6.429s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[6.429s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[6.429s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[6.467s] DEBUG:colcon.colcon_core.package_identification:Package '.' with type 'ros.ament_cmake' and name 'isaac_ros_yolov8'
+[6.467s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[6.467s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[6.467s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[6.467s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[6.467s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[6.655s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[6.656s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[6.852s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 1 installed packages in /workspaces/isaac_ros-dev/install
+[6.880s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 11 installed packages in /workspaces/isaac_ros-dev/src/install
+[6.907s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 1 installed packages in /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/install
+[6.934s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 1 installed packages in /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install
+[6.963s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 289 installed packages in /opt/ros/humble
+[6.965s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[7.348s] Level 5:colcon.colcon_core.verb:set package 'isaac_ros_yolov8' build argument 'cmake_args' from command line to 'None'
+[7.348s] Level 5:colcon.colcon_core.verb:set package 'isaac_ros_yolov8' build argument 'cmake_target' from command line to 'None'
+[7.348s] Level 5:colcon.colcon_core.verb:set package 'isaac_ros_yolov8' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.349s] Level 5:colcon.colcon_core.verb:set package 'isaac_ros_yolov8' build argument 'cmake_clean_cache' from command line to 'False'
+[7.349s] Level 5:colcon.colcon_core.verb:set package 'isaac_ros_yolov8' build argument 'cmake_clean_first' from command line to 'False'
+[7.349s] Level 5:colcon.colcon_core.verb:set package 'isaac_ros_yolov8' build argument 'cmake_force_configure' from command line to 'False'
+[7.349s] Level 5:colcon.colcon_core.verb:set package 'isaac_ros_yolov8' build argument 'ament_cmake_args' from command line to 'None'
+[7.349s] Level 5:colcon.colcon_core.verb:set package 'isaac_ros_yolov8' build argument 'catkin_cmake_args' from command line to 'None'
+[7.349s] Level 5:colcon.colcon_core.verb:set package 'isaac_ros_yolov8' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.349s] DEBUG:colcon.colcon_core.verb:Building package 'isaac_ros_yolov8' with the following arguments: {'ament_cmake_args': None, 'build_base': '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8', 'merge_install': False, 'path': '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8', 'symlink_install': False, 'test_result_base': None}
+[7.376s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[7.405s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[7.406s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8' with build type 'ament_cmake'
+[7.406s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8'
+[7.438s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[7.438s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.438s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.918s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/workspaces/isaac_ros-dev/src/install/isaac_ros_test:/opt/ros/humble /usr/bin/cmake --build /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 -- -j6 -l6
+[19.466s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/workspaces/isaac_ros-dev/src/install/isaac_ros_test:/opt/ros/humble /usr/bin/cmake --build /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 -- -j6 -l6
+[19.616s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(isaac_ros_yolov8)
+[19.651s] Level 1:colcon.colcon_core.environment:checking '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8' for CMake module files
+[19.652s] Level 1:colcon.colcon_core.environment:checking '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8' for CMake config files
+[19.653s] Level 1:colcon.colcon_core.shell:create_environment_hook('isaac_ros_yolov8', 'cmake_prefix_path')
+[19.681s] INFO:colcon.colcon_core.shell:Creating environment hook '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/hook/cmake_prefix_path.ps1'
+[19.684s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/hook/cmake_prefix_path.dsv'
+[19.685s] INFO:colcon.colcon_core.shell:Creating environment hook '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/hook/cmake_prefix_path.sh'
+[19.695s] Level 1:colcon.colcon_core.environment:checking '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib'
+[19.696s] Level 1:colcon.colcon_core.shell:create_environment_hook('isaac_ros_yolov8', 'ld_library_path_lib')
+[19.723s] INFO:colcon.colcon_core.shell:Creating environment hook '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/hook/ld_library_path_lib.ps1'
+[19.725s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/hook/ld_library_path_lib.dsv'
+[19.725s] INFO:colcon.colcon_core.shell:Creating environment hook '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/hook/ld_library_path_lib.sh'
+[19.726s] Level 1:colcon.colcon_core.environment:checking '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/bin'
+[19.726s] Level 1:colcon.colcon_core.environment:checking '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/pkgconfig/isaac_ros_yolov8.pc'
+[19.727s] Level 1:colcon.colcon_core.environment:checking '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages'
+[19.727s] Level 1:colcon.colcon_core.shell:create_environment_hook('isaac_ros_yolov8', 'pythonpath')
+[19.754s] INFO:colcon.colcon_core.shell:Creating environment hook '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/hook/pythonpath.ps1'
+[19.755s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/hook/pythonpath.dsv'
+[19.756s] INFO:colcon.colcon_core.shell:Creating environment hook '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/hook/pythonpath.sh'
+[19.757s] Level 1:colcon.colcon_core.environment:checking '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/bin'
+[19.785s] INFO:colcon.colcon_core.shell:Creating package script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.ps1'
+[19.787s] INFO:colcon.colcon_core.shell:Creating package descriptor '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.dsv'
+[19.788s] INFO:colcon.colcon_core.shell:Creating package script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.sh'
+[19.790s] INFO:colcon.colcon_core.shell:Creating package script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.bash'
+[19.791s] INFO:colcon.colcon_core.shell:Creating package script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.zsh'
+[19.792s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/colcon-core/packages/isaac_ros_yolov8)
+[19.804s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[19.804s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[19.804s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '2'
+[19.805s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[19.921s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.notify_send': Could not find 'notify-send'
+[19.921s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[19.921s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[19.922s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[20.027s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.Notifications was not provided by any .service files
+[20.029s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[20.064s] INFO:colcon.colcon_core.shell:Creating prefix script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/local_setup.ps1'
+[20.067s] INFO:colcon.colcon_core.shell:Creating prefix util module '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/_local_setup_util_ps1.py'
+[20.070s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/setup.ps1'
+[20.118s] INFO:colcon.colcon_core.shell:Creating prefix script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/local_setup.sh'
+[20.119s] INFO:colcon.colcon_core.shell:Creating prefix util module '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/_local_setup_util_sh.py'
+[20.120s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/setup.sh'
+[20.150s] INFO:colcon.colcon_core.shell:Creating prefix script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/local_setup.bash'
+[20.151s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/setup.bash'
+[20.181s] INFO:colcon.colcon_core.shell:Creating prefix script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/local_setup.zsh'
+[20.182s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/setup.zsh'

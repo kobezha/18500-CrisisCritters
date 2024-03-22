@@ -1,0 +1,107 @@
+[0.000000] (-) TimerEvent: {}
+[0.000863] (isaac_ros_yolov8) JobQueued: {'identifier': 'isaac_ros_yolov8', 'dependencies': OrderedDict()}
+[0.002328] (isaac_ros_yolov8) JobStarted: {'identifier': 'isaac_ros_yolov8'}
+[0.099097] (-) TimerEvent: {}
+[0.199714] (-) TimerEvent: {}
+[0.300347] (-) TimerEvent: {}
+[0.404450] (-) TimerEvent: {}
+[0.417634] (isaac_ros_yolov8) JobProgress: {'identifier': 'isaac_ros_yolov8', 'progress': 'cmake'}
+[0.504474] (-) TimerEvent: {}
+[0.555515] (isaac_ros_yolov8) JobProgress: {'identifier': 'isaac_ros_yolov8', 'progress': 'build'}
+[0.557233] (isaac_ros_yolov8) Command: {'cmd': ['/usr/bin/cmake', '--build', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8', '--', '-j6', '-l6'], 'cwd': '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('PYTHONWARNINGS', 'ignore:::setuptools.command.install,ignore:::setuptools.command.easy_install,ignore:::pkg_resources'), ('USER', 'e3h2'), ('HOSTNAME', 'e3h2-desktop'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/lib/aarch64-linux-gnu/tegra/weston:/usr/lib/aarch64-linux-gnu/tegra-egl:/usr/local/cuda-11.4/targets/aarch64-linux/lib:/usr/lib/aarch64-linux-gnu/tegra:/opt/nvidia/vpi2/lib64::/usr/lib/aarch64-linux-gnu-host:/opt/tritonserver/lib'), ('HOME', '/home/admin'), ('OLDPWD', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/scripts'), ('ROS_PYTHON_VERSION', '3'), ('USER_UID', '1000'), ('COLCON_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('NVIDIA_DRIVER_CAPABILITIES', 'all'), ('USERNAME', 'admin'), ('TERM', 'xterm'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/nvidia/tao:/usr/local/cuda/bin'), ('FASTRTPS_DEFAULT_PROFILES_FILE', '/usr/local/share/middleware_profiles/rtps_udp_profile.xml'), ('DISPLAY', 'localhost:10.0'), ('LD_PRELOAD', '/usr/lib/aarch64-linux-gnu/libgomp.so.1'), ('LANG', 'en_US.UTF-8'), ('RMW_IMPLEMENTATION', 'rmw_fastrtps_cpp'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('ROS_ROOT', '/opt/ros/humble'), ('AMENT_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8:/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8'), ('PYTHONPATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages:/opt/ros/humble/lib/python3.8/site-packages'), ('NVIDIA_VISIBLE_DEVICES', 'all'), ('USER_GID', '1000'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8:/opt/ros/humble')]), 'shell': False}
+[0.604684] (-) TimerEvent: {}
+[0.705506] (-) TimerEvent: {}
+[0.806390] (-) TimerEvent: {}
+[0.907209] (-) TimerEvent: {}
+[1.007957] (-) TimerEvent: {}
+[1.108769] (-) TimerEvent: {}
+[1.121139] (isaac_ros_yolov8) StdoutLine: {'line': b'[  0%] Built target ament_cmake_python_copy_isaac_ros_yolov8\n'}
+[1.157241] (isaac_ros_yolov8) StdoutLine: {'line': b'[100%] Built target yolov8_decoder_node\n'}
+[1.208898] (-) TimerEvent: {}
+[1.309604] (-) TimerEvent: {}
+[1.410572] (-) TimerEvent: {}
+[1.511409] (-) TimerEvent: {}
+[1.612169] (-) TimerEvent: {}
+[1.712961] (-) TimerEvent: {}
+[1.813868] (-) TimerEvent: {}
+[1.914740] (-) TimerEvent: {}
+[2.015454] (-) TimerEvent: {}
+[2.116281] (-) TimerEvent: {}
+[2.204269] (isaac_ros_yolov8) StdoutLine: {'line': b'running egg_info\n'}
+[2.216377] (-) TimerEvent: {}
+[2.236670] (isaac_ros_yolov8) StdoutLine: {'line': b'writing isaac_ros_yolov8.egg-info/PKG-INFO\n'}
+[2.237476] (isaac_ros_yolov8) StdoutLine: {'line': b'writing dependency_links to isaac_ros_yolov8.egg-info/dependency_links.txt\n'}
+[2.238323] (isaac_ros_yolov8) StdoutLine: {'line': b'writing top-level names to isaac_ros_yolov8.egg-info/top_level.txt\n'}
+[2.316747] (-) TimerEvent: {}
+[2.417568] (-) TimerEvent: {}
+[2.440379] (isaac_ros_yolov8) StdoutLine: {'line': b"reading manifest file 'isaac_ros_yolov8.egg-info/SOURCES.txt'\n"}
+[2.517649] (-) TimerEvent: {}
+[2.579187] (isaac_ros_yolov8) StdoutLine: {'line': b"writing manifest file 'isaac_ros_yolov8.egg-info/SOURCES.txt'\n"}
+[2.617817] (-) TimerEvent: {}
+[2.718789] (-) TimerEvent: {}
+[2.820012] (-) TimerEvent: {}
+[2.860686] (isaac_ros_yolov8) StdoutLine: {'line': b'[100%] Built target ament_cmake_python_build_isaac_ros_yolov8_egg\n'}
+[2.875607] (isaac_ros_yolov8) CommandEnded: {'returncode': 0}
+[2.920271] (-) TimerEvent: {}
+[2.943471] (isaac_ros_yolov8) JobProgress: {'identifier': 'isaac_ros_yolov8', 'progress': 'install'}
+[2.962968] (isaac_ros_yolov8) Command: {'cmd': ['/usr/bin/cmake', '--install', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8'], 'cwd': '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('PYTHONWARNINGS', 'ignore:::setuptools.command.install,ignore:::setuptools.command.easy_install,ignore:::pkg_resources'), ('USER', 'e3h2'), ('HOSTNAME', 'e3h2-desktop'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/lib/aarch64-linux-gnu/tegra/weston:/usr/lib/aarch64-linux-gnu/tegra-egl:/usr/local/cuda-11.4/targets/aarch64-linux/lib:/usr/lib/aarch64-linux-gnu/tegra:/opt/nvidia/vpi2/lib64::/usr/lib/aarch64-linux-gnu-host:/opt/tritonserver/lib'), ('HOME', '/home/admin'), ('OLDPWD', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/scripts'), ('ROS_PYTHON_VERSION', '3'), ('USER_UID', '1000'), ('COLCON_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('NVIDIA_DRIVER_CAPABILITIES', 'all'), ('USERNAME', 'admin'), ('TERM', 'xterm'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/nvidia/tao:/usr/local/cuda/bin'), ('FASTRTPS_DEFAULT_PROFILES_FILE', '/usr/local/share/middleware_profiles/rtps_udp_profile.xml'), ('DISPLAY', 'localhost:10.0'), ('LD_PRELOAD', '/usr/lib/aarch64-linux-gnu/libgomp.so.1'), ('LANG', 'en_US.UTF-8'), ('RMW_IMPLEMENTATION', 'rmw_fastrtps_cpp'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('ROS_ROOT', '/opt/ros/humble'), ('AMENT_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8:/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8'), ('PYTHONPATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages:/opt/ros/humble/lib/python3.8/site-packages'), ('NVIDIA_VISIBLE_DEVICES', 'all'), ('USER_GID', '1000'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8:/opt/ros/humble')]), 'shell': False}
+[3.020533] (-) TimerEvent: {}
+[3.121335] (-) TimerEvent: {}
+[3.137917] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[3.138619] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/pythonpath.sh\n'}
+[3.147660] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/pythonpath.dsv\n'}
+[3.148163] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info\n'}
+[3.148584] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/dependency_links.txt\n'}
+[3.148967] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/top_level.txt\n'}
+[3.149378] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/PKG-INFO\n'}
+[3.149698] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/SOURCES.txt\n'}
+[3.149986] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8\n'}
+[3.150253] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8/__init__.py\n'}
+[3.221475] (-) TimerEvent: {}
+[3.322123] (-) TimerEvent: {}
+[3.422666] (-) TimerEvent: {}
+[3.498894] (isaac_ros_yolov8) StdoutLine: {'line': b"Listing '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8'...\n"}
+[3.510358] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/isaac_ros_yolov8/isaac_ros_yolov8_visualizer.py\n'}
+[3.511044] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/isaac_ros_yolov8/image_publisher.py\n'}
+[3.511463] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/include\n'}
+[3.511929] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/include/isaac_ros_yolov8\n'}
+[3.512198] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/include/isaac_ros_yolov8/yolov8_decoder_node.hpp\n'}
+[3.512838] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/library_path.sh\n'}
+[3.513104] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/library_path.dsv\n'}
+[3.513521] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/libyolov8_decoder_node.so\n'}
+[3.514057] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/launch\n'}
+[3.514314] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/launch/isaac_ros_yolov8_visualize.launch.py\n'}
+[3.514751] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/launch/yolov8_tensor_rt.launch.py\n'}
+[3.514998] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/scripts\n'}
+[3.515298] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/scripts/image_publisher.py\n'}
+[3.515543] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/scripts/isaac_ros_yolov8_visualizer.py\n'}
+[3.515808] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/package_run_dependencies/isaac_ros_yolov8\n'}
+[3.516054] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/parent_prefix_path/isaac_ros_yolov8\n'}
+[3.516292] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/ament_prefix_path.sh\n'}
+[3.516524] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/ament_prefix_path.dsv\n'}
+[3.516753] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/path.sh\n'}
+[3.516980] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/path.dsv\n'}
+[3.517207] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.bash\n'}
+[3.517431] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.sh\n'}
+[3.517659] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.zsh\n'}
+[3.517917] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.dsv\n'}
+[3.518167] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.dsv\n'}
+[3.522754] (-) TimerEvent: {}
+[3.623231] (-) TimerEvent: {}
+[3.652293] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/packages/isaac_ros_yolov8\n'}
+[3.652906] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/rclcpp_components/isaac_ros_yolov8\n'}
+[3.653216] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[3.653523] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[3.653793] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[3.654098] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/isaac_ros_yolov8Config.cmake\n'}
+[3.654351] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/isaac_ros_yolov8Config-version.cmake\n'}
+[3.654836] (isaac_ros_yolov8) StdoutLine: {'line': b'-- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.xml\n'}
+[3.657937] (isaac_ros_yolov8) CommandEnded: {'returncode': 0}
+[3.723397] (-) TimerEvent: {}
+[3.824036] (-) TimerEvent: {}
+[3.924524] (-) TimerEvent: {}
+[4.025467] (-) TimerEvent: {}
+[4.126318] (-) TimerEvent: {}
+[4.227817] (-) TimerEvent: {}
+[4.279032] (isaac_ros_yolov8) JobEnded: {'identifier': 'isaac_ros_yolov8', 'rc': 0}
+[4.281268] (-) EventReactorShutdown: {}

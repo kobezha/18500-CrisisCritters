@@ -1,0 +1,20 @@
+[0.242s] Invoking command in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/workspaces/isaac_ros-dev/src/install/isaac_ros_test:/opt/ros/humble /usr/bin/cmake --build /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 -- -j6 -l6
+[0.353s] [  0%] Built target ament_cmake_python_copy_isaac_ros_yolov8
+[0.366s] [ 50%] [32mBuilding CXX object CMakeFiles/yolov8_decoder_node.dir/src/yolov8_decoder_node.cpp.o[0m
+[1.242s] running egg_info
+[1.244s] In file included from [01m[K/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/src/yolov8_decoder_node.cpp:18[m[K:
+[1.245s] [01m[K/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/include/isaac_ros_yolov8/yolov8_decoder_node.hpp:26:10:[m[K [01;31m[Kfatal error: [m[Kisaac_ros_managed_nitros/managed_nitros_subscriber.hpp: No such file or directory
+[1.245s]    26 | #include [01;31m[K"isaac_ros_managed_nitros/managed_nitros_subscriber.hpp"[m[K
+[1.245s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.245s] compilation terminated.
+[1.278s] writing isaac_ros_yolov8.egg-info/PKG-INFO
+[1.278s] writing dependency_links to isaac_ros_yolov8.egg-info/dependency_links.txt
+[1.279s] writing top-level names to isaac_ros_yolov8.egg-info/top_level.txt
+[1.375s] reading manifest file 'isaac_ros_yolov8.egg-info/SOURCES.txt'
+[1.377s] writing manifest file 'isaac_ros_yolov8.egg-info/SOURCES.txt'
+[1.388s] make[2]: *** [CMakeFiles/yolov8_decoder_node.dir/build.make:76: CMakeFiles/yolov8_decoder_node.dir/src/yolov8_decoder_node.cpp.o] Error 1
+[1.389s] make[1]: *** [CMakeFiles/Makefile2:140: CMakeFiles/yolov8_decoder_node.dir/all] Error 2
+[1.389s] make[1]: *** Waiting for unfinished jobs....
+[1.543s] [ 50%] Built target ament_cmake_python_build_isaac_ros_yolov8_egg
+[1.544s] make: *** [Makefile:146: all] Error 2
+[1.550s] Invoked command in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/workspaces/isaac_ros-dev/src/install/isaac_ros_test:/opt/ros/humble /usr/bin/cmake --build /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 -- -j6 -l6

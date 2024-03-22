@@ -1,0 +1,57 @@
+[0.569s] Invoking command in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 -- -j6 -l6
+[1.119s] [  0%] Built target ament_cmake_python_copy_isaac_ros_yolov8
+[1.155s] [100%] Built target yolov8_decoder_node
+[2.202s] running egg_info
+[2.234s] writing isaac_ros_yolov8.egg-info/PKG-INFO
+[2.235s] writing dependency_links to isaac_ros_yolov8.egg-info/dependency_links.txt
+[2.236s] writing top-level names to isaac_ros_yolov8.egg-info/top_level.txt
+[2.438s] reading manifest file 'isaac_ros_yolov8.egg-info/SOURCES.txt'
+[2.577s] writing manifest file 'isaac_ros_yolov8.egg-info/SOURCES.txt'
+[2.858s] [100%] Built target ament_cmake_python_build_isaac_ros_yolov8_egg
+[2.873s] Invoked command in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 -- -j6 -l6
+[2.965s] Invoking command in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8
+[3.135s] -- Install configuration: "Release"
+[3.136s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/pythonpath.sh
+[3.145s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/pythonpath.dsv
+[3.146s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info
+[3.146s] -- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/dependency_links.txt
+[3.146s] -- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/top_level.txt
+[3.147s] -- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/PKG-INFO
+[3.147s] -- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info/SOURCES.txt
+[3.147s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8
+[3.148s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8/__init__.py
+[3.496s] Listing '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8'...
+[3.508s] -- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/isaac_ros_yolov8/isaac_ros_yolov8_visualizer.py
+[3.508s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/isaac_ros_yolov8/image_publisher.py
+[3.509s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/include
+[3.509s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/include/isaac_ros_yolov8
+[3.510s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/include/isaac_ros_yolov8/yolov8_decoder_node.hpp
+[3.510s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/library_path.sh
+[3.510s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/library_path.dsv
+[3.511s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/libyolov8_decoder_node.so
+[3.511s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/launch
+[3.512s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/launch/isaac_ros_yolov8_visualize.launch.py
+[3.512s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/launch/yolov8_tensor_rt.launch.py
+[3.512s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/scripts
+[3.513s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/scripts/image_publisher.py
+[3.513s] -- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/scripts/isaac_ros_yolov8_visualizer.py
+[3.513s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/package_run_dependencies/isaac_ros_yolov8
+[3.513s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/parent_prefix_path/isaac_ros_yolov8
+[3.514s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/ament_prefix_path.sh
+[3.514s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/ament_prefix_path.dsv
+[3.514s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/path.sh
+[3.514s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/environment/path.dsv
+[3.514s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.bash
+[3.515s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.sh
+[3.515s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.zsh
+[3.515s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/local_setup.dsv
+[3.515s] -- Installing: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.dsv
+[3.650s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/packages/isaac_ros_yolov8
+[3.650s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/ament_index/resource_index/rclcpp_components/isaac_ros_yolov8
+[3.650s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/ament_cmake_export_dependencies-extras.cmake
+[3.651s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/ament_cmake_export_include_directories-extras.cmake
+[3.651s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/ament_cmake_export_libraries-extras.cmake
+[3.651s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/isaac_ros_yolov8Config.cmake
+[3.652s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/cmake/isaac_ros_yolov8Config-version.cmake
+[3.653s] -- Up-to-date: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/share/isaac_ros_yolov8/package.xml
+[3.656s] Invoked command in '/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8
