@@ -61,6 +61,7 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
   scripts/isaac_ros_yolov8_visualizer.py
   scripts/image_publisher.py
+  scripts/controller.py
   DESTINATION lib/${PROJECT_NAME}
   
 
