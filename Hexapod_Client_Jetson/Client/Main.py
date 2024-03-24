@@ -2,7 +2,9 @@
 import sys
 import math
 import threading
+import time
 from Client import *
+import signal
 class HexapodNode():
     def __init__(self):
         self.client= Client()
@@ -10,46 +12,55 @@ class HexapodNode():
         self.IP = str(file.readline())
         file.close()
         self.cmd = "stop_moving"
+        self.shutdown = threading.Event()
+        time.sleep(1)
 
     def turn_right(self):
         command = "CMD_MOVE#1#28#0#9#10\n"
-        self.client.send_data(command)        
+        self.client.send_data(command) 
+        time.sleep(1)       
     
     def turn_left(self):
         command = "CMD_MOVE#1#-33#0#9#10\n"
-        self.client.send_data(command)     
+        self.client.send_data(command)   
+        time.sleep(1)  
     
     def stop_moving(self):
         command = "CMD_MOVE#1#0#0#9#0\n"
         self.client.send_data(command)  
+        time.sleep(1)
         
     def move_forward(self):
         command = "CMD_MOVE#1#0#29#9#0\n"
         self.client.send_data(command)  
+        time.sleep(1)
         
     def move_backward(self):
         command = "CMD_MOVE#1#0#-33#9#0\n"
         self.client.send_data(command) 
+        time.sleep(1)
         
     def move_left(self):
         command = "CMD_MOVE#1#-33#0#9#0\n"
         self.client.send_data(command)  
+        time.sleep(1)
         
     def move_right(self):
         command = "CMD_MOVE#1#32#0#9#0\n"
         self.client.send_data(command)  
+        time.sleep(1)
 
     def relax(self):
         command = cmd.CMD_SERVOPOWER + "#" + "0" + '\n'
         self.client.send_data(command)
+        time.sleep(1)
             
     def get_ready(self):
         command = cmd.CMD_SERVOPOWER + "#" + "1" + '\n'
         self.client.send_data(command)
+        time.sleep(1)
             
     def close_client(self):
-        stop_thread(self.instruction_thread)
-        stop_thread(self.get_command_thread)
         self.client.turn_off_client()
         sys.exit(0)
 
@@ -73,7 +84,7 @@ class HexapodNode():
         except Exception as e:
             print ("Connect to server Faild!: Server IP is right? Server is opend?")
             self.client.tcp_flag=False
-        while True:
+        while not self.shutdown.is_set():
             try:
                 alldata=self.client.receive_data()
             except:
@@ -108,7 +119,7 @@ class HexapodNode():
                         print(e)
                         
     def get_commands(self):
-        while True:
+        while not self.shutdown.is_set():
             print("Commands are:\nturn_right\nturn_left\nmove_forward\nmove_backward\nmove_right\nmove_left\nstop_moving")
             user_input = input("Enter Command:")
             if user_input == "turn_right":
@@ -126,14 +137,13 @@ class HexapodNode():
             elif user_input == "stop_moving":
                 self.cmd = "stop_moving"
             elif user_input == "relax":
-                self.cmd = "stop_moving"
-                self.relax()
+                self.cmd = "relax"
             elif user_input == "get_ready":
-                self.get_ready()
+                self.cmd = "get_ready"
             elif user_input == "start_buzzing":
-                self.start_buzzing()
+                self.cmd = "start_buzzing"
             elif user_input == "stop_buzzing":
-                self.stop_buzzing()
+                self.cmd = "stop_buzzing"
             elif user_input == "close_client":
                 self.close_client()
             else:
@@ -143,22 +153,43 @@ class HexapodNode():
     def connect(self):
         self.client.turn_on_client(self.IP)
         self.instruction_thread=threading.Thread(target=self.receive_instruction,args=(self.IP,))
+        self.instruction_thread.daemon = True
         self.instruction_thread.start()  
         self.get_command_thread=threading.Thread(target=self.get_commands) 
+        self.get_command_thread.daemon = True
         self.get_command_thread.start()
 
     #BUZZER
     def start_buzzing(self):
         command=cmd.CMD_BUZZER+'#1'+'\n'
         self.client.send_data(command) 
+        time.sleep(1)
     
     def stop_buzzing(self):
         command=cmd.CMD_BUZZER+'#0'+'\n'
         self.client.send_data(command) 
+        time.sleep(1)
+        
+    # Handler for Ctrl+C
+    def signal_handler(self, sig, frame):
+        print("Ctrl+C pressed. Exiting...")
+        self.stop_moving()
+        self.stop_buzzing() 
+        self.client.turn_off_client()
+        self.shutdown.set()
+        sys.exit(0)
+        
 
 if __name__ == '__main__':
+    #sys.exit(0)
     hexapod = HexapodNode()
+    
     hexapod.connect()
+    
+    
+    
+    # Set up signal handler for Ctrl+C
+    signal.signal(signal.SIGINT, hexapod.signal_handler)
     
     while True:
         if hexapod.cmd == "turn_right":
@@ -168,13 +199,21 @@ if __name__ == '__main__':
         elif hexapod.cmd == "move_forward":
             hexapod.move_forward()
         elif hexapod.cmd == "move_backward":
-            hexapod.move_forward()
+            hexapod.move_backward()
         elif hexapod.cmd == "move_left":
             hexapod.move_left()
         elif hexapod.cmd == "move_right":
             hexapod.move_right()
         elif hexapod.cmd == "stop_moving":
             hexapod.stop_moving()
+        elif hexapod.cmd == "start_buzzing":
+            hexapod.start_buzzing()
+        elif hexapod.cmd == "stop_buzzing":
+            hexapod.stop_buzzing() 
+        elif hexapod.cmd == "get_ready":
+            hexapod.get_ready()
+        elif hexapod.cmd == "relax":
+            hexapod.relax()        
         else:
             hexapod.stop_moving()
         
