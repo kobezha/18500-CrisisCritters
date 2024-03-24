@@ -25,9 +25,11 @@ import cv2
 import cv_bridge
 from enum import Enum
 import message_filters
+import random
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
+from std_msgs.msg import String
 from vision_msgs.msg import Detection2DArray
 
 class States(Enum):
@@ -171,15 +173,29 @@ class Controller(Node):
     def run(self):
         while True:
             if (self.currentState == States.SEARCH):
-                
                 """ 
                 Check subscriptions are active?
-                Do movement algorithm
+
+                Do random movement algorithm
                   - Use depth camera / ultrasonic to check which directions are blocked
                     - Can scan 4 directions (N, E, S, W) or 8 (NE, SE, SW, NW)
                   - Randomly choose one of the unblocked directions
                     - If no unblocked directions, signal error? Or scan more directions
+                TODO: Unable to implement above algorithm until we can command how much to turn
+                (ie. 90°)
+                
                 """
+                # Check if path forward is blocked
+                # TODO: Need to query ultrasonic or camera to get distance_ahead 
+                if (self.distance_ahead > 10):  # Freenove returns length in cm
+                    # Keep walking forwards!
+                    self._hexapod_commands_pub.publish("move_forward")
+                else:
+                    # TODO: Query ultrasonic / camera again
+                    while (self.distance_ahead < 10):
+                        # Keep turning right until we have distance again
+                        self._hexapod_commands_pub.publish("turn_right")
+
                 
             elif (self.currentState == States.FOUND):
 
@@ -189,10 +205,9 @@ class Controller(Node):
                 self._hexapod_commands_pub.publish("enable_buzzer")
 
                 #TODO: communication with other hexapods 
+                # ie. Confidence of object. Location?
                 pass
-            
         
-                
 
 
 def main():
