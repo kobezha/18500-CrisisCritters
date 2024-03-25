@@ -187,6 +187,8 @@ class Controller(Node):
                 """
                 # Check if path forward is blocked
                 # TODO: Need to query ultrasonic or camera to get distance_ahead 
+                self.distance_ahead = 5
+                
                 if (self.distance_ahead > 10):  # Freenove returns length in cm
                     # Keep walking forwards!
                     self._hexapod_commands_pub.publish("move_forward")
@@ -198,11 +200,25 @@ class Controller(Node):
 
                 
             elif (self.currentState == States.FOUND):
+            
+
+                '''possible commands
+                turn_right
+                turn_left
+                move_forward
+                '''
+                self.get_logger().info("Entering Found State... Publishing commands to hexapod") 
+
 
                 #target found, stop moving first
-                self._hexapod_commands_pub.publish("stop_moving")
+                msg = String()
+                msg.data = "stop_moving"
+                self._hexapod_commands_pub.publish(msg)
+
                 #enable buzzer command?
-                self._hexapod_commands_pub.publish("enable_buzzer")
+                msg = String()
+                msg.data = "start_buzzing"
+                self._hexapod_commands_pub.publish(msg)
 
                 #TODO: communication with other hexapods 
                 # ie. Confidence of object. Location?

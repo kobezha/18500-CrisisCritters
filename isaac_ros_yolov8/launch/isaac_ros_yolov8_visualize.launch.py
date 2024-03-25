@@ -48,4 +48,9 @@ def generate_launch_description():
             name='image_view',
             arguments=['/yolov8_processed_image']
         ),
+        Node(
+            package='isaac_ros_yolov8',
+            executable='hexapod_communication_main.py',
+            name='hexapod_communication'
+        ),
     ])
