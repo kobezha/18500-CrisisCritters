@@ -62,8 +62,13 @@ install(PROGRAMS
   scripts/isaac_ros_yolov8_visualizer.py
   scripts/image_publisher.py
   scripts/controller.py
-  DESTINATION lib/${PROJECT_NAME}
   
+  scripts/hexapod_communication_main.py
+  scripts/Client.py
+  scripts/Command.py
+  scripts/PID.py
+  scripts/Thread.py
+  DESTINATION lib/${PROJECT_NAME}
 
 )
 
