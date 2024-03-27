@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/python3
+
 import sys
 import math
 import threading
@@ -123,7 +125,9 @@ class HexapodNode(Node):
         try:
             self.client.client_socket1.connect((ip,5002))
             self.client.tcp_flag=True
-            print ("Connecttion Successful !")
+            
+            self.get_logger().info("Connection Successful!") 
+
         except Exception as e:
             print ("Connect to server Faild!: Server IP is right? Server is opend?")
             self.client.tcp_flag=False
