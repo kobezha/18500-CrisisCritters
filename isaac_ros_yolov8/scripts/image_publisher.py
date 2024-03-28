@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import pyrealsense as rs
+import pyrealsense2 as rs
 import numpy as np
 import cv2
 import rclpy
@@ -20,8 +20,8 @@ class ImagePublisher(Node):
 
     def camera_run(self):
         # Get device product line for setting a supporting resolution
-        pipeline_wrapper = rs.pipeline_wrapper(rs.pipeline)
-        pipeline_profile = rs.config.resolve(pipeline_wrapper)
+        pipeline_wrapper = rs.pipeline_wrapper(self.pipeline)
+        pipeline_profile = self.config.resolve(pipeline_wrapper)
         device = pipeline_profile.get_device()
         device_product_line = str(device.get_info(rs.camera_info.product_line))
 
@@ -59,6 +59,8 @@ class ImagePublisher(Node):
                 color_image = np.asanyarray(color_frame.get_data())
 
                 #Publish image onto images topic
+
+                self.get_logger().info('IMAGEPUBLISHER PUBLISHING....') 
                 self.pub.publish(self.bridge.cv2_to_imgmsg(color_image, "bgr8"))
 
                 # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
@@ -75,9 +77,9 @@ class ImagePublisher(Node):
                     images = np.hstack((color_image, depth_colormap))
 
                 # Show images
-                cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-                cv2.imshow('RealSense', images)
-                cv2.waitKey(1)
+                #cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
+                #cv2.imshow('RealSense', images)
+                #cv2.waitKey(1)
         finally:
 
             # Stop streaming
