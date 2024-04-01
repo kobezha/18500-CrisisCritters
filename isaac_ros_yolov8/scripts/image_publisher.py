@@ -16,7 +16,8 @@ class ImagePublisher(Node):
         self.pipeline = rs.pipeline()
         self.config = rs.config()
         self.bridge = CvBridge()
-        self.pub = self.create_publisher(Image, "/image", 10)
+        self.color_pub = self.create_publisher(Image, "/image", 10)
+        self.depth_pub = self.create_publisher(Image, "/depth_image", 10)
 
     def camera_run(self):
         # Get device product line for setting a supporting resolution
@@ -60,8 +61,8 @@ class ImagePublisher(Node):
 
                 #Publish image onto images topic
 
-                self.get_logger().info('IMAGEPUBLISHER PUBLISHING....') 
-                self.pub.publish(self.bridge.cv2_to_imgmsg(color_image, "bgr8"))
+                self.color_pub.publish(self.bridge.cv2_to_imgmsg(color_image, "bgr8"))
+                self.depth_pub.publish(self.bridge.cv2_to_imgmsg(depth_image, "16UC1"))
 
                 # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)

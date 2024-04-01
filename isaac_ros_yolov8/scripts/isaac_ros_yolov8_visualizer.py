@@ -28,6 +28,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2DArray
+import pyrealsense2
 
 names = {
         0: 'person',
@@ -133,15 +134,23 @@ class Yolov8Visualizer(Node):
             Image,
             'image')
 
+        self._depth_subscription = message_filters.Subscriber(
+            self,
+            Image,
+            'depth_image')
+        
+
         self.time_synchronizer = message_filters.TimeSynchronizer(
-            [self._detections_subscription, self._image_subscription],
+            [self._detections_subscription, self._image_subscription,self._depth_subscription],
             self.QUEUE_SIZE)
 
         self.time_synchronizer.registerCallback(self.detections_callback)
 
-    def detections_callback(self, detections_msg, img_msg):
+    def detections_callback(self, detections_msg, img_msg,depth_msg):
         txt_color = (255, 0, 255)
         cv2_img = self._bridge.imgmsg_to_cv2(img_msg)
+        depth_img = self._bridge.imgmsg_to_cv2(depth_msg)
+        
         for detection in detections_msg.detections:
             center_x = detection.bbox.center.position.x
             center_y = detection.bbox.center.position.y
@@ -152,8 +161,11 @@ class Yolov8Visualizer(Node):
             conf_score = detection.results[0].hypothesis.score
             
             #only print if person is detected 
-            if (label == "person" and conf_score > 0.80):
-                self.get_logger().info(f'label: {label} cx: {center_x} cy: {center_y}')
+            if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
+                #depth_val = depth_img.get_depth(center_x,center_y)
+                #depth_val = depth_img
+                depth_val = depth_img[int(center_y)][int(center_x)]
+                self.get_logger().info(f'label: {label} cx: {center_x} cy: {center_y}depth = {depth_val}')
             
             label = f'{label} {conf_score:.2f}'
             

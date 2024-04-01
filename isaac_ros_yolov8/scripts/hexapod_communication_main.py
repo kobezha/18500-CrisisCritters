@@ -19,15 +19,17 @@ class ControlMsgSubscriber(Node):
             String,
             'hexapod_commands',
             self.listener_callback,
-            10)
-        self.subscription  # prevent unused variable warning
+            10)  
         self.hexapod = HexapodNode()
         self.hexapod.connect()
         signal.signal(signal.SIGINT, self.hexapod.signal_handler)
 
     def listener_callback(self, msg):
+        self.get_logger().info(f'Entered ListenerCallback')
         if msg.data == "turn_right":
             self.hexapod.turn_right()
+        elif msg.data == "turn_right_90":
+            self.hexapod.turn_right_90()
         elif msg.data == "turn_left":
             self.hexapod.turn_left()
         elif msg.data == "move_forward":
@@ -53,59 +55,65 @@ class ControlMsgSubscriber(Node):
 
 class HexapodNode(Node):
     def __init__(self):
+        super().__init__('hexapod_node')
         self.client= Client()
         # file = open('IP.txt', 'r')
         # self.IP = str(file.readline())
         # file.close()
-        self.IP = "192.168.8.54"
+        self.IP = "172.26.178.42"
         self.cmd = "stop_moving"
         self.shutdown = threading.Event()
-        time.sleep(1)
+        
 
-    def turn_right(self):
-        command = "CMD_MOVE#1#28#0#9#10\n"
-        self.client.send_data(command) 
-        time.sleep(1)       
-    
     def turn_left(self):
-        command = "CMD_MOVE#1#-33#0#9#10\n"
+        command = "CMD_MOVE#2#-33#0#9#-10\n"
+        self.client.send_data(command) 
+    
+    def turn_right(self):
+        command = "CMD_MOVE#2#33#0#9#10\n"
         self.client.send_data(command)   
-        time.sleep(1)  
+    
+    def turn_right_90(self):
+        command = "CMD_MOVE#1#33#0#9#11\n"
+        self.client.send_data(command)
+        time.sleep(3)
+        command = "CMD_MOVE#1#0#0#9#0\n"
+        self.client.send_data(command)
     
     def stop_moving(self):
         command = "CMD_MOVE#1#0#0#9#0\n"
         self.client.send_data(command)  
-        time.sleep(1)
+        
         
     def move_forward(self):
         command = "CMD_MOVE#1#0#29#9#0\n"
         self.client.send_data(command)  
-        time.sleep(1)
+        
         
     def move_backward(self):
         command = "CMD_MOVE#1#0#-33#9#0\n"
         self.client.send_data(command) 
-        time.sleep(1)
+        
         
     def move_left(self):
         command = "CMD_MOVE#1#-33#0#9#0\n"
         self.client.send_data(command)  
-        time.sleep(1)
+        
         
     def move_right(self):
         command = "CMD_MOVE#1#32#0#9#0\n"
         self.client.send_data(command)  
-        time.sleep(1)
+        
 
     def relax(self):
         command = cmd.CMD_SERVOPOWER + "#" + "0" + '\n'
         self.client.send_data(command)
-        time.sleep(1)
+        
             
     def get_ready(self):
         command = cmd.CMD_SERVOPOWER + "#" + "1" + '\n'
         self.client.send_data(command)
-        time.sleep(1)
+        
             
 
     def power(self):
@@ -175,12 +183,12 @@ class HexapodNode(Node):
     def start_buzzing(self):
         command=cmd.CMD_BUZZER+'#1'+'\n'
         self.client.send_data(command) 
-        time.sleep(1)
+        
     
     def stop_buzzing(self):
         command=cmd.CMD_BUZZER+'#0'+'\n'
         self.client.send_data(command) 
-        time.sleep(1)
+        
         
     # Handler for Ctrl+C
     def signal_handler(self, sig, frame):
