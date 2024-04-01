@@ -108,8 +108,7 @@ fi
 PLATFORM="$(uname -m)"
 
 BASE_NAME="isaac_ros_dev-$PLATFORM"
-# CONTAINER_NAME=${CONTAINER_NAME:-"$BASE_NAME-container"}
-CONTAINER_NAME="TestContainer"
+CONTAINER_NAME=${CONTAINER_NAME:-"$BASE_NAME-container"}
 
 # Remove any exited containers.
 if [ "$(docker ps -a --quiet --filter status=exited --filter name=$CONTAINER_NAME)" ]; then
@@ -212,10 +211,10 @@ docker run -itd \
     /bin/bash
 
 # Add relevant files
-docker cp $ISAAC_ROS_WS/yolov8s.pt $CONTAINER_NAME:/tmp/yolov8s.pt
+docker cp $ISAAC_ROS_WS/yolov8s.onnx $CONTAINER_NAME:/tmp/yolov8s.onnx
 docker cp ~/Desktop/18500-CrisisCritters/shell_scripts/hexapod_container_setup.bash $CONTAINER_NAME:/workspaces/isaac_ros-dev/hexapod_container_setup.bash
 
 # Execute setup scripts
-docker exec -it $CONTAINER_NAME bash -c "source hexapod_container_setup.bash" -w /workspaces/isaac_ros-dev
+# docker exec -it $CONTAINER_NAME sh -c "source hexapod_container_setup.bash" -w /workspaces/isaac_ros-dev
 
 
