@@ -1,8 +1,8 @@
-# Install script for directory: /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8
+# Install script for directory: /workspaces/isaac_ros-dev/isaac_ros_yolov8
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8")
+  set(CMAKE_INSTALL_PREFIX "/workspaces/isaac_ros-dev/isaac_ros_yolov8/install/isaac_ros_yolov8")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -43,38 +43,44 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/environment" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/pythonpath.sh")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/environment" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/pythonpath.sh")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/environment" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/pythonpath.dsv")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/environment" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/pythonpath.dsv")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info" TYPE DIRECTORY FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_python/isaac_ros_yolov8/isaac_ros_yolov8.egg-info/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3.8/site-packages/isaac_ros_yolov8-2.1.0-py3.8.egg-info" TYPE DIRECTORY FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_python/isaac_ros_yolov8/isaac_ros_yolov8.egg-info/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3.8/site-packages/isaac_ros_yolov8" TYPE DIRECTORY FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/isaac_ros_yolov8/" REGEX "/[^/]*\\.pyc$" EXCLUDE REGEX "/\\_\\_pycache\\_\\_$" EXCLUDE)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3.8/site-packages/isaac_ros_yolov8" TYPE DIRECTORY FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/isaac_ros_yolov8/" REGEX "/[^/]*\\.pyc$" EXCLUDE REGEX "/\\_\\_pycache\\_\\_$" EXCLUDE)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   execute_process(
         COMMAND
         "/usr/bin/python3.8" "-m" "compileall"
-        "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8"
+        "/workspaces/isaac_ros-dev/isaac_ros_yolov8/install/isaac_ros_yolov8/lib/python3.8/site-packages/isaac_ros_yolov8"
       )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/isaac_ros_yolov8" TYPE PROGRAM FILES
-    "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/scripts/isaac_ros_yolov8_visualizer.py"
-    "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/scripts/image_publisher.py"
+    "/workspaces/isaac_ros-dev/isaac_ros_yolov8/scripts/isaac_ros_yolov8_visualizer.py"
+    "/workspaces/isaac_ros-dev/isaac_ros_yolov8/scripts/image_publisher.py"
+    "/workspaces/isaac_ros-dev/isaac_ros_yolov8/scripts/controller.py"
+    "/workspaces/isaac_ros-dev/isaac_ros_yolov8/scripts/hexapod_communication_main.py"
+    "/workspaces/isaac_ros-dev/isaac_ros_yolov8/scripts/Client.py"
+    "/workspaces/isaac_ros-dev/isaac_ros_yolov8/scripts/Command.py"
+    "/workspaces/isaac_ros-dev/isaac_ros_yolov8/scripts/PID.py"
+    "/workspaces/isaac_ros-dev/isaac_ros_yolov8/scripts/Thread.py"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/include/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/include/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -82,7 +88,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/environment" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/library_path.dsv")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/environment" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/library_path.dsv")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -92,12 +98,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libyolov8_decoder_node.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/libyolov8_decoder_node.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/libyolov8_decoder_node.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libyolov8_decoder_node.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libyolov8_decoder_node.so")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libyolov8_decoder_node.so"
-         OLD_RPATH "/workspaces/isaac_ros-dev/src/install/isaac_ros_tensor_list_interfaces/lib:/workspaces/isaac_ros-dev/src/install/isaac_ros_common/lib:/opt/ros/humble/lib:/opt/ros/humble/lib/aarch64-linux-gnu:"
+         OLD_RPATH "/opt/ros/humble/lib:/opt/ros/humble/lib/aarch64-linux-gnu:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libyolov8_decoder_node.so")
@@ -109,19 +115,19 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE DIRECTORY FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/launch")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE DIRECTORY FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/launch")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE DIRECTORY FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/scripts")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE DIRECTORY FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/scripts")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/package_run_dependencies" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/isaac_ros_yolov8")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/package_run_dependencies" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/isaac_ros_yolov8")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/parent_prefix_path" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/isaac_ros_yolov8")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/parent_prefix_path" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/isaac_ros_yolov8")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -129,7 +135,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/environment" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/ament_prefix_path.dsv")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/environment" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/ament_prefix_path.dsv")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -137,58 +143,58 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/environment" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/path.dsv")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/environment" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/path.dsv")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/local_setup.bash")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/local_setup.bash")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/local_setup.sh")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/local_setup.sh")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/local_setup.zsh")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/local_setup.zsh")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/local_setup.dsv")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/local_setup.dsv")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/package.dsv")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_environment_hooks/package.dsv")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/packages" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_index/share/ament_index/resource_index/packages/isaac_ros_yolov8")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/packages" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_index/share/ament_index/resource_index/packages/isaac_ros_yolov8")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/rclcpp_components" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_index/share/ament_index/resource_index/rclcpp_components/isaac_ros_yolov8")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/rclcpp_components" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_index/share/ament_index/resource_index/rclcpp_components/isaac_ros_yolov8")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/cmake" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_export_dependencies/ament_cmake_export_dependencies-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/cmake" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_export_dependencies/ament_cmake_export_dependencies-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/cmake" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_export_include_directories/ament_cmake_export_include_directories-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/cmake" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_export_include_directories/ament_cmake_export_include_directories-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/cmake" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_export_libraries/ament_cmake_export_libraries-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/cmake" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_export_libraries/ament_cmake_export_libraries-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8/cmake" TYPE FILE FILES
-    "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_core/isaac_ros_yolov8Config.cmake"
-    "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_core/isaac_ros_yolov8Config-version.cmake"
+    "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_core/isaac_ros_yolov8Config.cmake"
+    "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_core/isaac_ros_yolov8Config-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/isaac_ros_yolov8" TYPE FILE FILES "/workspaces/isaac_ros-dev/isaac_ros_yolov8/package.xml")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -199,5 +205,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

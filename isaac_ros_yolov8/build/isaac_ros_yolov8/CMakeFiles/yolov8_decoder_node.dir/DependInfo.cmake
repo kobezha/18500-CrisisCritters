@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/src/yolov8_decoder_node.cpp" "CMakeFiles/yolov8_decoder_node.dir/src/yolov8_decoder_node.cpp.o" "gcc" "CMakeFiles/yolov8_decoder_node.dir/src/yolov8_decoder_node.cpp.o.d"
+  "/workspaces/isaac_ros-dev/isaac_ros_yolov8/src/yolov8_decoder_node.cpp" "CMakeFiles/yolov8_decoder_node.dir/src/yolov8_decoder_node.cpp.o" "gcc" "CMakeFiles/yolov8_decoder_node.dir/src/yolov8_decoder_node.cpp.o.d"
   )
 
 # Targets to which this target links.

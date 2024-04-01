@@ -66,11 +66,11 @@ class HexapodNode(Node):
         
 
     def turn_left(self):
-        command = "CMD_MOVE#2#-33#0#9#-10\n"
+        command = "CMD_MOVE#1#-33#0#9#-10\n"
         self.client.send_data(command) 
     
     def turn_right(self):
-        command = "CMD_MOVE#2#33#0#9#10\n"
+        command = "CMD_MOVE#1#33#0#9#10\n"
         self.client.send_data(command)   
     
     def turn_right_90(self):

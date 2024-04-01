@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8
+CMAKE_SOURCE_DIR = /workspaces/isaac_ros-dev/isaac_ros_yolov8
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8
+CMAKE_BINARY_DIR = /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,9 +142,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/CMakeFiles /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/CMakeFiles /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

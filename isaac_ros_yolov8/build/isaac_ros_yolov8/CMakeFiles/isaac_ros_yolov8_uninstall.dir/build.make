@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8
+CMAKE_SOURCE_DIR = /workspaces/isaac_ros-dev/isaac_ros_yolov8
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8
+CMAKE_BINARY_DIR = /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8
 
 # Utility rule file for isaac_ros_yolov8_uninstall.
 
@@ -67,7 +67,7 @@ include CMakeFiles/isaac_ros_yolov8_uninstall.dir/compiler_depend.make
 include CMakeFiles/isaac_ros_yolov8_uninstall.dir/progress.make
 
 CMakeFiles/isaac_ros_yolov8_uninstall:
-	/usr/bin/cmake -P /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
+	/usr/bin/cmake -P /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
 
 isaac_ros_yolov8_uninstall: CMakeFiles/isaac_ros_yolov8_uninstall
 isaac_ros_yolov8_uninstall: CMakeFiles/isaac_ros_yolov8_uninstall.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/isaac_ros_yolov8_uninstall.dir/clean:
 .PHONY : CMakeFiles/isaac_ros_yolov8_uninstall.dir/clean
 
 CMakeFiles/isaac_ros_yolov8_uninstall.dir/depend:
-	cd /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8 /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8 /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/CMakeFiles/isaac_ros_yolov8_uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /workspaces/isaac_ros-dev/isaac_ros_yolov8 /workspaces/isaac_ros-dev/isaac_ros_yolov8 /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8 /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8 /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/CMakeFiles/isaac_ros_yolov8_uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/isaac_ros_yolov8_uninstall.dir/depend
 

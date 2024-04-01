@@ -1,9 +1,0 @@
-[  0%] Built target ament_cmake_python_copy_isaac_ros_yolov8
-[ 50%] [32mBuilding CXX object CMakeFiles/yolov8_decoder_node.dir/src/yolov8_decoder_node.cpp.o[0m
-running egg_info
-writing isaac_ros_yolov8.egg-info/PKG-INFO
-writing dependency_links to isaac_ros_yolov8.egg-info/dependency_links.txt
-writing top-level names to isaac_ros_yolov8.egg-info/top_level.txt
-reading manifest file 'isaac_ros_yolov8.egg-info/SOURCES.txt'
-writing manifest file 'isaac_ros_yolov8.egg-info/SOURCES.txt'
-[ 50%] Built target ament_cmake_python_build_isaac_ros_yolov8_egg

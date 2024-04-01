@@ -30,6 +30,7 @@ find_package(vision_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(std_msgs REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 ament_auto_find_build_dependencies()

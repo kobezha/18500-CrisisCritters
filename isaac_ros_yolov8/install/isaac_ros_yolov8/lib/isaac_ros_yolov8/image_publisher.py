@@ -1,83 +1,99 @@
 #!/usr/bin/python3
+
+import pyrealsense2 as rs
+import numpy as np
+import cv2
 import rclpy
 from rclpy.node import Node
-import cv2
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
-
-window_title = "USB Camera"
 
 class ImagePublisher(Node):
     def __init__(self):
         super().__init__("image_publisher", namespace ="")
         self.get_logger().info('ImagePublisher INITIALIZED...') 
+
+        self.pipeline = rs.pipeline()
+        self.config = rs.config()
         self.bridge = CvBridge()
-        self.camera_id = "/dev/video0"
-        #try:
-        #   self.cap = cv2.VideoCapture(0)
-        #except:
-        #    self.cap = cv2.VideoCapture(1)
-        self.pub = self.create_publisher(Image, "/image", 10)
-        #self.rgb8pub = self.create_publisher(Image, "/image/rgb", 10)
-        #self.bgr8pub = self.create_publisher(Image, "/image/bgr", 10)
-        #self.mono8pub = self.create_publisher(Image, "/image/mono", 10)
+        self.color_pub = self.create_publisher(Image, "/image", 10)
+        self.depth_pub = self.create_publisher(Image, "/depth_image", 10)
 
+    def camera_run(self):
+        # Get device product line for setting a supporting resolution
+        pipeline_wrapper = rs.pipeline_wrapper(self.pipeline)
+        pipeline_profile = self.config.resolve(pipeline_wrapper)
+        device = pipeline_profile.get_device()
+        device_product_line = str(device.get_info(rs.camera_info.product_line))
 
-        #self.run()
+        found_rgb = False
+        for s in device.sensors:
+            if s.get_info(rs.camera_info.name) == 'RGB Camera':
+                found_rgb = True
+                break
+        if not found_rgb:
+            print("The demo requires Depth camera with Color sensor")
+            exit(0)
 
-    def run(self):
-        
-        self.video_capture = cv2.VideoCapture(self.camera_id,cv2.CAP_V4L2)
-        
-        if self.video_capture.isOpened():
-            self.get_logger().info("Video Capture Opened!") 
-            try:
-                window_handle = cv2.namedWindow(
-                        window_title, cv2.WINDOW_AUTOSIZE)
+        self.config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
 
-                while True:
-                    r, frame = self.video_capture.read()
-                    if not r:
-                        return
-
-                    if cv2.getWindowProperty(window_title,cv2.WND_PROP_AUTOSIZE) >= 0:
-                        cv2.imshow(window_title,frame)
-                    else: 
-                        self.get_logger().info("window property error") 
-                        break
-
-                    keyCode = cv2.waitKey(10) & 0xFF
-
-                    if keyCode == 27 or keyCode == ord('q'):
-                        break
-
-                    #self.get_logger().info("ImagePublisher running") 
-                    #print("Converting frame...")
-                    self.pub.publish(self.bridge.cv2_to_imgmsg(frame, "bgr8"))
-            finally:
-
-               self.get_logger().info("CAMERA SHUTTING DOWN") 
-               video_capture.release()
-               cv2.destroyAllWindows()
+        if device_product_line == 'L500':
+            self.config.enable_stream(rs.stream.color, 960, 540, rs.format.bgr8, 30)
         else:
-            self.get_logger().info("Unable to open camera")
+            self.config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
 
+        # Start streaming
+        self.pipeline.start(self.config)
 
-        #except CvBridgeError as e:
-         #   print(e)
-            #self.cap.release()
+        try:
+            while True:
+
+                # Wait for a coherent pair of frames: depth and color
+                frames = self.pipeline.wait_for_frames()
+                depth_frame = frames.get_depth_frame()
+                color_frame = frames.get_color_frame()
+                if not depth_frame or not color_frame:
+                    continue
+
+                # Convert images to numpy arrays
+                depth_image = np.asanyarray(depth_frame.get_data())
+                color_image = np.asanyarray(color_frame.get_data())
+
+                #Publish image onto images topic
+
+                self.color_pub.publish(self.bridge.cv2_to_imgmsg(color_image, "bgr8"))
+                self.depth_pub.publish(self.bridge.cv2_to_imgmsg(depth_image, "16UC1"))
+
+                # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
+                depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
+
+                depth_colormap_dim = depth_colormap.shape
+                color_colormap_dim = color_image.shape
+
+                # If depth and color resolutions are different, resize color image to match depth image for display
+                if depth_colormap_dim != color_colormap_dim:
+                    resized_color_image = cv2.resize(color_image, dsize=(depth_colormap_dim[1], depth_colormap_dim[0]), interpolation=cv2.INTER_AREA)
+                    images = np.hstack((resized_color_image, depth_colormap))
+                else:
+                    images = np.hstack((color_image, depth_colormap))
+
+                # Show images
+                #cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
+                #cv2.imshow('RealSense', images)
+                #cv2.waitKey(1)
+        finally:
+
+            # Stop streaming
+            self.pipeline.stop()
 
 def main(args=None):
     rclpy.init(args=args)
 
     ip = ImagePublisher()
-    #rclpy.spin(ip)
-    #print("Publishing...")
     ip.get_logger().info("STARTING IP RUN") 
-    ip.run()
+    ip.camera_run()
     ip.get_logger().info("OUT OF IP RUN") 
 
-    #ip.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

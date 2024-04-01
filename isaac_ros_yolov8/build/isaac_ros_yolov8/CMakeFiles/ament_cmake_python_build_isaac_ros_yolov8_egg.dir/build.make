@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8
+CMAKE_SOURCE_DIR = /workspaces/isaac_ros-dev/isaac_ros_yolov8
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8
+CMAKE_BINARY_DIR = /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8
 
 # Utility rule file for ament_cmake_python_build_isaac_ros_yolov8_egg.
 
@@ -67,7 +67,7 @@ include CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg.dir/compiler_de
 include CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg.dir/progress.make
 
 CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg:
-	cd /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_python/isaac_ros_yolov8 && /usr/bin/python3.8 setup.py egg_info
+	cd /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/ament_cmake_python/isaac_ros_yolov8 && /usr/bin/python3.8 setup.py egg_info
 
 ament_cmake_python_build_isaac_ros_yolov8_egg: CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg
 ament_cmake_python_build_isaac_ros_yolov8_egg: CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg.dir/clean:
 .PHONY : CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg.dir/clean
 
 CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg.dir/depend:
-	cd /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8 /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8 /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8 /workspaces/isaac_ros-dev/src/isaac_ros_object_detection/isaac_ros_yolov8/build/isaac_ros_yolov8/CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg.dir/DependInfo.cmake --color=$(COLOR)
+	cd /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /workspaces/isaac_ros-dev/isaac_ros_yolov8 /workspaces/isaac_ros-dev/isaac_ros_yolov8 /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8 /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8 /workspaces/isaac_ros-dev/isaac_ros_yolov8/build/isaac_ros_yolov8/CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/ament_cmake_python_build_isaac_ros_yolov8_egg.dir/depend
 

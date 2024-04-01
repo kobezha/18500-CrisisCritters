@@ -29,6 +29,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2DArray
 import pyrealsense2
+from std_msgs.msg import String
 
 names = {
         0: 'person',
@@ -139,6 +140,8 @@ class Yolov8Visualizer(Node):
             Image,
             'depth_image')
         
+        self._hexapod_commands_pub = self.create_publisher(
+            String, 'hexapod_commands', self.QUEUE_SIZE)
 
         self.time_synchronizer = message_filters.TimeSynchronizer(
             [self._detections_subscription, self._image_subscription,self._depth_subscription],
@@ -160,16 +163,24 @@ class Yolov8Visualizer(Node):
             label = names[int(detection.results[0].hypothesis.class_id)]
             conf_score = detection.results[0].hypothesis.score
             
-            #only print if person is detected 
+            # If person is detected, log this and move towards ze
             if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
-                #depth_val = depth_img.get_depth(center_x,center_y)
-                #depth_val = depth_img
                 depth_val = depth_img[int(center_y)][int(center_x)]
                 self.get_logger().info(f'label: {label} cx: {center_x} cy: {center_y}depth = {depth_val}')
+                command = String()
+                # Rotate such that person is in center of screen
+                if center_x < (640 * 1 / 4):  # Person is in left quarter of screen
+                    command.data = "turn_left"
+                elif center_x > (640 * 3 / 4):  # Person is in right quarter of screen
+                    command.data = "turn_right"
+                else:
+                    # Keep walking towards person until it is within 300
+                    if depth_val > 400:
+                        command.data = "move_forward"
+                    else:
+                        command.data = "stop_moving"
+                self._hexapod_commands_pub.publish(command)
             
-            label = f'{label} {conf_score:.2f}'
-            
-
             min_pt = (round(center_x - (width / 2.0)),
                       round(center_y - (height / 2.0)))
             max_pt = (round(center_x + (width / 2.0)),
@@ -177,6 +188,7 @@ class Yolov8Visualizer(Node):
 
             lw = max(round((img_msg.height + img_msg.width) / 2 * 0.003), 2)  # line width
             tf = max(lw - 1, 1)  # font thickness
+            label = f'{label} {conf_score:.2f}'
             # text width, height
             w, h = cv2.getTextSize(label, 0, fontScale=lw / 3, thickness=tf)[0]
             outside = min_pt[1] - h >= 3
