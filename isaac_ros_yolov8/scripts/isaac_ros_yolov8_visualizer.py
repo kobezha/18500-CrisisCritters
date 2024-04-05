@@ -37,6 +37,7 @@ from std_msgs.msg import String
 class States(Enum):
     SEARCH = "Search"
     FOUND = "Found"
+    INVESTIGATE = "Investigate"
 
 visual_flag = True 
 current_state = States.SEARCH
@@ -169,62 +170,122 @@ class Yolov8Visualizer(Node):
             [self._detections_subscription, self._image_subscription,self._depth_subscription],
             self.QUEUE_SIZE)
 
-        self.time_synchronizer.registerCallback(self.detections_callback)
+        self.time_synchronizer.registerCallback(self.main_callback)
+    
+    def send_heartbeat(self):
+        self.get_logger().info(f'Sending heartbeats to hexapods')
+
+    def adjust_heading(self,center_x,center_y,depth_val):
+        command = String()
+        # Rotate such that person is in center of screen
+        if center_x < (640 * 1 / 4):  # Person is in left quarter of screen
+            command.data = "turn_left"
+        elif center_x > (640 * 3 / 4):  # Person is in right quarter of screen
+            command.data = "turn_right"
+        else:
+            # Keep walking towards person until it is within 300
+            if depth_val > 500:
+                command.data = "move_forward"
+            else:
+                command.data = "stop_moving"
+        return command 
+
+    def found_person(self):
+        self.get_logger().info(f'PERSON LOCATED!')
+        #send found message to other hexapods 
+        #sound buzzer
+        #play message through speaker?
 
 
 
-    def detections_callback(self, detections_msg, img_msg,depth_msg):
+    
+    def main_callback(self, detections_msg, img_msg, depth_msg):
         txt_color = (255, 0, 255)
         cv2_img = self._bridge.imgmsg_to_cv2(img_msg)
         depth_img = self._bridge.imgmsg_to_cv2(depth_msg)
-        
-        for detection in detections_msg.detections:
-            center_x = detection.bbox.center.position.x
-            center_y = detection.bbox.center.position.y
-            width = detection.bbox.size_x
-            height = detection.bbox.size_y
 
-            label = names[int(detection.results[0].hypothesis.class_id)]
-            conf_score = detection.results[0].hypothesis.score
-            
-            # If person is detected, log this and move towards ze
-            if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
-                depth_val = depth_img[int(center_y)][int(center_x)]
-                self.get_logger().info(f'label: {label} cx: {center_x} cy: {center_y}depth = {depth_val}')
-                command = String()
-                # Rotate such that person is in center of screen
-                if center_x < (640 * 1 / 4):  # Person is in left quarter of screen
-                    command.data = "turn_left"
-                elif center_x > (640 * 3 / 4):  # Person is in right quarter of screen
-                    command.data = "turn_right"
-                else:
-                    # Keep walking towards person until it is within 300
-                    if depth_val > 400:
-                        command.data = "move_forward"
-                    else:
-                        command.data = "stop_moving"
-                self._hexapod_commands_pub.publish(command)
-            
-            min_pt = (round(center_x - (width / 2.0)),
-                      round(center_y - (height / 2.0)))
-            max_pt = (round(center_x + (width / 2.0)),
-                      round(center_y + (height / 2.0)))
+        if current_state == States.SEARCH:
+            person_detected = False
+    
+            for detection in detections_msg.detections:
+                center_x = detection.bbox.center.position.x
+                center_y = detection.bbox.center.position.y
+                width = detection.bbox.size_x
+                height = detection.bbox.size_y
 
-            lw = max(round((img_msg.height + img_msg.width) / 2 * 0.003), 2)  # line width
-            tf = max(lw - 1, 1)  # font thickness
-            label = f'{label} {conf_score:.2f}'
-            # text width, height
-            w, h = cv2.getTextSize(label, 0, fontScale=lw / 3, thickness=tf)[0]
-            outside = min_pt[1] - h >= 3
+                label = names[int(detection.results[0].hypothesis.class_id)]
+                conf_score = detection.results[0].hypothesis.score
+                
+                # If person is detected with center within camera view
+                if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
+                    self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
+                    person_detected = True 
+                    current_state = States.INVESTIGATE
+            if not person_detected:
+                #send search algorithm movement commands 
+                pass
 
-            cv2.rectangle(cv2_img, min_pt, max_pt,
-                          self.color, self.bbox_thickness)
-            cv2.putText(cv2_img, label, (min_pt[0], min_pt[1]-2 if outside else min_pt[1]+h+2),
-                        0, lw / 3, txt_color, thickness=tf, lineType=cv2.LINE_AA)
+            processed_img = self._bridge.cv2_to_imgmsg(
+                cv2_img, encoding=img_msg.encoding)
+            self._processed_image_pub.publish(processed_img)
 
-        processed_img = self._bridge.cv2_to_imgmsg(
-            cv2_img, encoding=img_msg.encoding)
-        self._processed_image_pub.publish(processed_img)
+        elif current_state == States.INVESTIGATE:
+            person_detected = False 
+
+            for detection in detections_msg.detections:
+                center_x = detection.bbox.center.position.x
+                center_y = detection.bbox.center.position.y
+                width = detection.bbox.size_x
+                height = detection.bbox.size_y
+
+                label = names[int(detection.results[0].hypothesis.class_id)]
+                conf_score = detection.results[0].hypothesis.score
+                
+                #in INVESTIGATE state we move closer to the detected person
+                if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
+
+                    person_detected = True 
+                    depth_val = depth_img[int(center_y)][int(center_x)]
+                    self.get_logger().info(f'PERSON DETECTED AT cx: {center_x} cy: {center_y} depth = {depth_val}')
+
+                    command = self.adjust_heading(center_x,center_y,depth_val)
+                    self._hexapod_commands_pub.publish(command)
+                    
+                    #CHECK IF STATE TRANSITION NEEDED
+                    if (command.data == "stop_moving"):
+                        current_state = States.FOUND 
+                        self.get_logger().info(f'(STATE) INVESTIGATE -> FOUND')
+                
+                    #ONLY DISPLAY BOUNDING BOXES FOR HUMANS THAT HIT THRESHOLD
+                    min_pt = (round(center_x - (width / 2.0)),
+                            round(center_y - (height / 2.0)))
+                    max_pt = (round(center_x + (width / 2.0)),
+                            round(center_y + (height / 2.0)))
+
+                    lw = max(round((img_msg.height + img_msg.width) / 2 * 0.003), 2)  # line width
+                    tf = max(lw - 1, 1)  # font thickness
+                    label = f'{label} {conf_score:.2f}'
+                    # text width, height
+                    w, h = cv2.getTextSize(label, 0, fontScale=lw / 3, thickness=tf)[0]
+                    outside = min_pt[1] - h >= 3
+
+                    cv2.rectangle(cv2_img, min_pt, max_pt,
+                                self.color, self.bbox_thickness)
+                    cv2.putText(cv2_img, label, (min_pt[0], min_pt[1]-2 if outside else min_pt[1]+h+2),
+                                0, lw / 3, txt_color, thickness=tf, lineType=cv2.LINE_AA)
+                    
+            #if no person detected, go back to search state 
+            if not person_detected and current_state == States.INVESTIGATE:
+                current_state = States.SEARCH
+                self.get_logger().info(f'(STATE) INVESTIGATE -> SEARCH')
+
+            processed_img = self._bridge.cv2_to_imgmsg(
+                cv2_img, encoding=img_msg.encoding)
+            self._processed_image_pub.publish(processed_img)
+
+        elif (current_state == States.FOUND):
+            self.found_person
+
 
 
 def main():
