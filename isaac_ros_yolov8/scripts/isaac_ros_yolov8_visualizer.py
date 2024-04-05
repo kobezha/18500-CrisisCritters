@@ -25,11 +25,21 @@ import cv2
 import cv_bridge
 import message_filters
 import rclpy
+from rclpy.executors import ExternalShutdownException
+import random
+from enum import Enum
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2DArray
 import pyrealsense2
 from std_msgs.msg import String
+
+class States(Enum):
+    SEARCH = "Search"
+    FOUND = "Found"
+
+visual_flag = True 
+current_state = States.SEARCH
 
 names = {
         0: 'person',
@@ -114,7 +124,6 @@ names = {
         79: 'toothbrush',
 }
 
-
 class Yolov8Visualizer(Node):
     QUEUE_SIZE = 10
     color = (0, 255, 0)
@@ -143,11 +152,31 @@ class Yolov8Visualizer(Node):
         self._hexapod_commands_pub = self.create_publisher(
             String, 'hexapod_commands', self.QUEUE_SIZE)
 
+
+        self.main_task_period = 1.0
+        
+        self.callback_group1 = MutuallyExclusiveCallbackGroup()
+        self.callback_group2 = MutuallyExclusiveCallbackGroup()
+        
+        self.create_timer(self.main_task_period,self.main_task_func,self.callback_group1)
+
+        #TODO: How do we get the callback into a group?
+        '''
+            Mutually Exclusive Callback groups prevent callbacks from being executed in parallel, 
+            this might help us avoid race conditions if we are doing statemachine via timer callback
+            however this might cause some blocking if one callback is longer than the other.
+            
+            if we want multithreading we have to have callbacks in two separate groups
+
+            maybe we want to make something into a service? Demo in here: https://docs.ros.org/en/foxy/How-To-Guides/Using-callback-groups.html
+        '''
         self.time_synchronizer = message_filters.TimeSynchronizer(
             [self._detections_subscription, self._image_subscription,self._depth_subscription],
             self.QUEUE_SIZE)
 
         self.time_synchronizer.registerCallback(self.detections_callback)
+
+
 
     def detections_callback(self, detections_msg, img_msg,depth_msg):
         txt_color = (255, 0, 255)
@@ -205,8 +234,15 @@ class Yolov8Visualizer(Node):
 
 def main():
     rclpy.init()
-    rclpy.spin(Yolov8Visualizer())
-    rclpy.shutdown()
+    visualizer = Yolov8Visualizer()
+
+    try:
+        rclpy.spin(visualizer)
+    except (KeyboardInterrupt, ExternalShutdownException):
+        pass
+    finally:
+        visualizer.destroy_node()
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':
