@@ -152,15 +152,10 @@ class Yolov8Visualizer(Node):
         self._hexapod_commands_pub = self.create_publisher(
             String, 'hexapod_commands', self.QUEUE_SIZE)
 
-
-        self.main_task_period = 1.0
-        
-        self.callback_group1 = MutuallyExclusiveCallbackGroup()
-        self.callback_group2 = MutuallyExclusiveCallbackGroup()
-        
-        self.create_timer(self.main_task_period,self.main_task_func,self.callback_group1)
-
-        #TODO: How do we get the callback into a group?
+        # self.main_task_period = 1.0
+        # self.callback_group1 = MutuallyExclusiveCallbackGroup()
+        # self.callback_group2 = MutuallyExclusiveCallbackGroup()
+        # self.create_timer(self.main_task_period,self.main_task_func,self.callback_group1)
         '''
             Mutually Exclusive Callback groups prevent callbacks from being executed in parallel, 
             this might help us avoid race conditions if we are doing statemachine via timer callback
