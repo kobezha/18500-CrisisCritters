@@ -40,7 +40,9 @@ class States(Enum):
     INVESTIGATE = "Investigate"
 
 visual_flag = True 
+verbose = True 
 current_state = States.SEARCH
+
 
 names = {
         0: 'person',
@@ -129,10 +131,19 @@ class Yolov8Visualizer(Node):
     QUEUE_SIZE = 10
     color = (0, 255, 0)
     bbox_thickness = 2
+    
 
     def __init__(self):
         super().__init__('yolov8_visualizer',namespace = "")
+
+        #img size for color and depth images 
+        self.img_width = 640
+        self.img_height = 640
+
+        #cvbridge for converting from cv images to ros images 
         self._bridge = cv_bridge.CvBridge()
+
+        #various pubs and subs 
         self._processed_image_pub = self.create_publisher(
             Image, 'yolov8_processed_image',  self.QUEUE_SIZE)
 
@@ -166,6 +177,8 @@ class Yolov8Visualizer(Node):
 
             maybe we want to make something into a service? Demo in here: https://docs.ros.org/en/foxy/How-To-Guides/Using-callback-groups.html
         '''
+
+        #synchronizer syncs the detections and color/depth images based on timestamp 
         self.time_synchronizer = message_filters.TimeSynchronizer(
             [self._detections_subscription, self._image_subscription,self._depth_subscription],
             self.QUEUE_SIZE)
@@ -173,7 +186,7 @@ class Yolov8Visualizer(Node):
         self.time_synchronizer.registerCallback(self.main_callback)
     
     def send_heartbeat(self):
-        self.get_logger().info(f'Sending heartbeats to hexapods')
+        if verbose: self.get_logger().info(f'Sending heartbeats to hexapods')
 
     def adjust_heading(self,center_x,center_y,depth_val):
         command = String()
@@ -191,13 +204,28 @@ class Yolov8Visualizer(Node):
         return command 
 
     def found_person(self):
-        self.get_logger().info(f'PERSON LOCATED!')
+        if verbose: self.get_logger().info(f'PERSON LOCATED!')
         #send found message to other hexapods 
         #sound buzzer
         #play message through speaker?
 
+    def search_behavior(self, depth_img, cv2_img):
+        #basic behavior, keep walking forward, if obstacle, turn right
 
+        centerx = self.img_width/2
+        centery = self.img_height/2 
+        
+        depth_val = depth_img[int(centery)][int(centerx)]
 
+        command = String()
+        #obstacle close by, turn right
+        if depth_val < 400:
+            command.data = "turn_right"
+            if verbose: self.get_logger().info(f'OBSTACLE DETECTED, TURNING RIGHT')
+        else:
+            command.data = "move_forward"
+            
+        self._hexapod_commands_pub.publish(command)
     
     def main_callback(self, detections_msg, img_msg, depth_msg):
         txt_color = (255, 0, 255)
@@ -218,12 +246,13 @@ class Yolov8Visualizer(Node):
                 
                 # If person is detected with center within camera view
                 if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
-                    self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
+                    if verbose: self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
                     person_detected = True 
                     current_state = States.INVESTIGATE
             if not person_detected:
                 #send search algorithm movement commands 
-                pass
+                self.search_behavior(depth_img,cv2_img)
+                
 
             processed_img = self._bridge.cv2_to_imgmsg(
                 cv2_img, encoding=img_msg.encoding)
@@ -246,7 +275,7 @@ class Yolov8Visualizer(Node):
 
                     person_detected = True 
                     depth_val = depth_img[int(center_y)][int(center_x)]
-                    self.get_logger().info(f'PERSON DETECTED AT cx: {center_x} cy: {center_y} depth = {depth_val}')
+                    if verbose: self.get_logger().info(f'PERSON DETECTED AT cx: {center_x} cy: {center_y} depth = {depth_val}')
 
                     command = self.adjust_heading(center_x,center_y,depth_val)
                     self._hexapod_commands_pub.publish(command)
@@ -254,7 +283,7 @@ class Yolov8Visualizer(Node):
                     #CHECK IF STATE TRANSITION NEEDED
                     if (command.data == "stop_moving"):
                         current_state = States.FOUND 
-                        self.get_logger().info(f'(STATE) INVESTIGATE -> FOUND')
+                        if verbose: self.get_logger().info(f'(STATE) INVESTIGATE -> FOUND')
                 
                     #ONLY DISPLAY BOUNDING BOXES FOR HUMANS THAT HIT THRESHOLD
                     min_pt = (round(center_x - (width / 2.0)),
@@ -277,14 +306,14 @@ class Yolov8Visualizer(Node):
             #if no person detected, go back to search state 
             if not person_detected and current_state == States.INVESTIGATE:
                 current_state = States.SEARCH
-                self.get_logger().info(f'(STATE) INVESTIGATE -> SEARCH')
+                if verbose: self.get_logger().info(f'(STATE) INVESTIGATE -> SEARCH')
 
             processed_img = self._bridge.cv2_to_imgmsg(
                 cv2_img, encoding=img_msg.encoding)
             self._processed_image_pub.publish(processed_img)
 
         elif (current_state == States.FOUND):
-            self.found_person
+            self.found_person()
 
 
 
