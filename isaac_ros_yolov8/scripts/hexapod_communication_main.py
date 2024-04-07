@@ -12,6 +12,9 @@ from rclpy.node import Node
 from std_msgs.msg import String
 
 
+verbose = False 
+
+
 class ControlMsgSubscriber(Node):
     def __init__(self):
         super().__init__('hexapod_control_node')
@@ -25,7 +28,7 @@ class ControlMsgSubscriber(Node):
         signal.signal(signal.SIGINT, self.hexapod.signal_handler)
 
     def listener_callback(self, msg):
-        self.get_logger().info(f'Entered ListenerCallback')
+        if verbose: self.get_logger().info(f'Entered ListenerCallback')
         if msg.data == "turn_right":
             self.hexapod.turn_right()
         elif msg.data == "turn_right_90":

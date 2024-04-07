@@ -136,6 +136,10 @@ class Yolov8Visualizer(Node):
         super().__init__('yolov8_visualizer',namespace = "")
 
         self.current_state = States.SEARCH
+        
+        #current target location for locking in
+        self.current_target_x = -1
+        self.current_target_y = -1
 
         #img size for color and depth images 
         self.img_width = 640
@@ -212,11 +216,11 @@ class Yolov8Visualizer(Node):
 
     def search_behavior(self, depth_img, cv2_img):
         #basic behavior, keep walking forward, if obstacle, turn right
-
         centerx = self.img_width/2
         centery = self.img_height/2 
         
-        depth_val = depth_img[int(centery)][int(centerx)]
+        #depth_val = depth_img[int(centery)][int(centerx)]
+        depth_val = self.calculate_depth_avg(depth_img,centerx,centery)
 
         command = String()
         #obstacle close by, turn right
@@ -228,6 +232,17 @@ class Yolov8Visualizer(Node):
             
         self._hexapod_commands_pub.publish(command)
     
+    def calculate_depth_avg(self, depth_img, center_x, center_y):
+        dirs = [(0,0),(0,1),(1,0),(0,-1),(-1,0)]
+        numDirs = len(dirs)
+        total = 0
+
+        for dir in dirs:
+            newx, newy = (center_x + dirs[0]),(center_y + dir[1])
+            total += depth_img[newx,newy]
+        
+        return total/numDirs
+
     def main_callback(self, detections_msg, img_msg, depth_msg):
         txt_color = (255, 0, 255)
         cv2_img = self._bridge.imgmsg_to_cv2(img_msg)
@@ -271,11 +286,13 @@ class Yolov8Visualizer(Node):
                 label = names[int(detection.results[0].hypothesis.class_id)]
                 conf_score = detection.results[0].hypothesis.score
                 
+                #depth_val = depth_img[int(center_y)][int(center_x)]
+                depth_val = self.calculate_depth_avg(depth_img,center_x,center_y)
+                
                 #in INVESTIGATE state we move closer to the detected person
                 if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
 
                     person_detected = True 
-                    depth_val = depth_img[int(center_y)][int(center_x)]
                     if verbose: self.get_logger().info(f'PERSON DETECTED AT cx: {center_x} cy: {center_y} depth = {depth_val}')
 
                     command = self.adjust_heading(center_x,center_y,depth_val)
@@ -315,6 +332,11 @@ class Yolov8Visualizer(Node):
 
         elif (self.current_state == States.FOUND):
             self.found_person()
+            
+            #still visualize image
+            processed_img = self._bridge.cv2_to_imgmsg(
+                cv2_img, encoding=img_msg.encoding)
+            self._processed_image_pub.publish(processed_img)
 
 
 
