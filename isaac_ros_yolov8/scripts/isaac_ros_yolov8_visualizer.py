@@ -41,7 +41,6 @@ class States(Enum):
 
 visual_flag = True 
 verbose = True 
-current_state = States.SEARCH
 
 
 names = {
@@ -135,6 +134,8 @@ class Yolov8Visualizer(Node):
 
     def __init__(self):
         super().__init__('yolov8_visualizer',namespace = "")
+
+        self.current_state = States.SEARCH
 
         #img size for color and depth images 
         self.img_width = 640
@@ -232,7 +233,7 @@ class Yolov8Visualizer(Node):
         cv2_img = self._bridge.imgmsg_to_cv2(img_msg)
         depth_img = self._bridge.imgmsg_to_cv2(depth_msg)
 
-        if current_state == States.SEARCH:
+        if self.current_state == States.SEARCH:
             person_detected = False
     
             for detection in detections_msg.detections:
@@ -248,7 +249,7 @@ class Yolov8Visualizer(Node):
                 if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
                     if verbose: self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
                     person_detected = True 
-                    current_state = States.INVESTIGATE
+                    self.current_state = States.INVESTIGATE
             if not person_detected:
                 #send search algorithm movement commands 
                 self.search_behavior(depth_img,cv2_img)
@@ -258,7 +259,7 @@ class Yolov8Visualizer(Node):
                 cv2_img, encoding=img_msg.encoding)
             self._processed_image_pub.publish(processed_img)
 
-        elif current_state == States.INVESTIGATE:
+        elif self.current_state == States.INVESTIGATE:
             person_detected = False 
 
             for detection in detections_msg.detections:
@@ -282,7 +283,7 @@ class Yolov8Visualizer(Node):
                     
                     #CHECK IF STATE TRANSITION NEEDED
                     if (command.data == "stop_moving"):
-                        current_state = States.FOUND 
+                        self.current_state = States.FOUND 
                         if verbose: self.get_logger().info(f'(STATE) INVESTIGATE -> FOUND')
                 
                     #ONLY DISPLAY BOUNDING BOXES FOR HUMANS THAT HIT THRESHOLD
@@ -304,15 +305,15 @@ class Yolov8Visualizer(Node):
                                 0, lw / 3, txt_color, thickness=tf, lineType=cv2.LINE_AA)
                     
             #if no person detected, go back to search state 
-            if not person_detected and current_state == States.INVESTIGATE:
-                current_state = States.SEARCH
+            if not person_detected and self.current_state == States.INVESTIGATE:
+                self.current_state = States.SEARCH
                 if verbose: self.get_logger().info(f'(STATE) INVESTIGATE -> SEARCH')
 
             processed_img = self._bridge.cv2_to_imgmsg(
                 cv2_img, encoding=img_msg.encoding)
             self._processed_image_pub.publish(processed_img)
 
-        elif (current_state == States.FOUND):
+        elif (self.current_state == States.FOUND):
             self.found_person()
 
 

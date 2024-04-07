@@ -6,4 +6,3 @@ docker start $CONTAINER_NAME
 docker exec -i $CONTAINER_NAME bash -c 'cat > ~/.Xauthority' < ~/.Xauthority
 docker exec -it --env="DISPLAY" $CONTAINER_NAME bash
 
-unset CONTAINER_NAME
