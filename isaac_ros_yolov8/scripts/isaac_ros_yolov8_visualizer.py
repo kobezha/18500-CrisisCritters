@@ -238,8 +238,8 @@ class Yolov8Visualizer(Node):
         total = 0
 
         for dir in dirs:
-            newx, newy = (center_x + dirs[0]),(center_y + dir[1])
-            total += depth_img[newx,newy]
+            newx, newy = (int(center_x) + dir[0]),(int(center_y) + dir[1])
+            total += depth_img[newy][newx]
         
         return total/numDirs
 
@@ -287,11 +287,11 @@ class Yolov8Visualizer(Node):
                 conf_score = detection.results[0].hypothesis.score
                 
                 #depth_val = depth_img[int(center_y)][int(center_x)]
-                depth_val = self.calculate_depth_avg(depth_img,center_x,center_y)
                 
                 #in INVESTIGATE state we move closer to the detected person
                 if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
 
+                    depth_val = self.calculate_depth_avg(depth_img,center_x,center_y)
                     person_detected = True 
                     if verbose: self.get_logger().info(f'PERSON DETECTED AT cx: {center_x} cy: {center_y} depth = {depth_val}')
 
