@@ -140,6 +140,7 @@ class Yolov8Visualizer(Node):
         #current target location for locking in
         self.current_target_x = -1
         self.current_target_y = -1
+        self.target_delta_threshold = 50
 
         #img size for color and depth images 
         self.img_width = 640
@@ -218,15 +219,27 @@ class Yolov8Visualizer(Node):
         #basic behavior, keep walking forward, if obstacle, turn right
         centerx = self.img_width/2
         centery = self.img_height/2 
+        rightx = self.img_width * (3/4)
+        righty = self.img_height/2 
+        leftx = self.img_width * (1/4)
+        lefty = self.img_height/2
         
         #depth_val = depth_img[int(centery)][int(centerx)]
-        depth_val = self.calculate_depth_avg(depth_img,centerx,centery)
+        depth_val_central = self.calculate_depth_avg(depth_img,centerx,centery)
+        depth_val_right = self.calculate_depth_avg(depth_img,rightx,righty)
+        depth_val_left = self.calculate_depth_avg(depth_img,leftx,lefty)
 
         command = String()
         #obstacle close by, turn right
-        if depth_val < 400:
+        if depth_val_central < 400:
             command.data = "turn_right"
-            if verbose: self.get_logger().info(f'OBSTACLE DETECTED, TURNING RIGHT')
+            if verbose: self.get_logger().info(f'OBSTACLE DETECTED CENTRAL, TURNING RIGHT')
+        elif depth_val_right < 400:
+            command.data = "turn_left"
+            if verbose: self.get_logger().info(f'OBSTACLE DETECTED RIGHT, TURNING LEFT')
+        elif depth_val_left < 400:
+            command.data = "turn_right" 
+            if verbose: self.get_logger().info(f'OBSTACLE DETECTED LEFT, TURNING RIGHT')
         else:
             command.data = "move_forward"
             
@@ -234,14 +247,17 @@ class Yolov8Visualizer(Node):
     
     def calculate_depth_avg(self, depth_img, center_x, center_y):
         dirs = [(0,0),(0,1),(1,0),(0,-1),(-1,0)]
-        numDirs = len(dirs)
         total = 0
+        numValid = 0 
 
         for dir in dirs:
-            newx, newy = (int(center_x) + dir[0]),(int(center_y) + dir[1])
-            total += depth_img[newy][newx]
+            newx, newy = (center_x + dirs[0]),(center_y + dir[1])
+            pixel_depth = depth_img[newx][newy]
+            if pixel_depth != 0:
+                total += pixel_depth
+                numValid += 1
         
-        return total/numDirs
+        return total/numValid
 
     def main_callback(self, detections_msg, img_msg, depth_msg):
         txt_color = (255, 0, 255)
@@ -287,22 +303,30 @@ class Yolov8Visualizer(Node):
                 conf_score = detection.results[0].hypothesis.score
                 
                 #depth_val = depth_img[int(center_y)][int(center_x)]
+                depth_val = self.calculate_depth_avg(depth_img,center_x,center_y)
                 
                 #in INVESTIGATE state we move closer to the detected person
-                if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
+                if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 and depth_val != 0):
 
-                    depth_val = self.calculate_depth_avg(depth_img,center_x,center_y)
-                    person_detected = True 
-                    if verbose: self.get_logger().info(f'PERSON DETECTED AT cx: {center_x} cy: {center_y} depth = {depth_val}')
 
-                    command = self.adjust_heading(center_x,center_y,depth_val)
-                    self._hexapod_commands_pub.publish(command)
-                    
-                    #CHECK IF STATE TRANSITION NEEDED
-                    if (command.data == "stop_moving"):
-                        self.current_state = States.FOUND 
-                        if verbose: self.get_logger().info(f'(STATE) INVESTIGATE -> FOUND')
-                
+                    if self.current_target_x == -1 and self.current_target_y == -1:
+                        if verbose: self.get_logger().info(f'Locking onto person at cx: {center_x} cy: {center_y} depth = {depth_val}')
+                        self.current_target_x, self.current_target_y = center_x, center_y
+                        person_detected = True 
+                    elif (abs(self.current_target_x - center_x) < self.target_delta_threshold) and (abs(self.current_target_y - center_y) < self.target_delta_threshold):
+                        if verbose: self.get_logger().info(f'PERSON DETECTED AT cx: {center_x} cy: {center_y} depth = {depth_val}')
+                        command = self.adjust_heading(center_x,center_y,depth_val)
+                        self._hexapod_commands_pub.publish(command)
+                        person_detected = True 
+                        
+                        #CHECK IF STATE TRANSITION NEEDED
+                        if (command.data == "stop_moving"):
+                            self.current_state = States.FOUND 
+                            if verbose: self.get_logger().info(f'(STATE) INVESTIGATE -> FOUND')
+                    else:
+                        pass
+
+
                     #ONLY DISPLAY BOUNDING BOXES FOR HUMANS THAT HIT THRESHOLD
                     min_pt = (round(center_x - (width / 2.0)),
                             round(center_y - (height / 2.0)))
@@ -324,6 +348,8 @@ class Yolov8Visualizer(Node):
             #if no person detected, go back to search state 
             if not person_detected and self.current_state == States.INVESTIGATE:
                 self.current_state = States.SEARCH
+                self.current_target_x = -1
+                self.current_target_y = -1
                 if verbose: self.get_logger().info(f'(STATE) INVESTIGATE -> SEARCH')
 
             processed_img = self._bridge.cv2_to_imgmsg(
@@ -332,6 +358,10 @@ class Yolov8Visualizer(Node):
 
         elif (self.current_state == States.FOUND):
             self.found_person()
+            self.current_target_x = -1
+            self.current_target_y = -1
+
+            #we could also save the image to send back 
             
             #still visualize image
             processed_img = self._bridge.cv2_to_imgmsg(
