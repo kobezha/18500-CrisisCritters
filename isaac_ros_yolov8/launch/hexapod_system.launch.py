@@ -25,21 +25,29 @@ from launch_ros.actions import Node
 
 #launch description for hexapod system, removes any visualization to improve performance
 def generate_launch_description():
-    my_package_dir = get_package_share_directory('isaac_ros_yolov8')
-    return LaunchDescription([
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([os.path.join(
-                my_package_dir, 'launch'),
-                '/yolov8_tensor_rt.launch.py'])
-        ),
-        Node(
-            package='isaac_ros_yolov8',
-            executable='controller.py',
-            name='controller'
-        ),
-        Node(
-            package='isaac_ros_yolov8',
-            executable='image_publisher.py',
-            name = 'image_publisher'
-        ),
-    ])
+    yolov8_dir = get_package_share_directory('isaac_ros_yolov8')
+    vslam_dir = get_package_share_directory('isaac_ros_visual_slam')
+
+    ld = LaunchDescription()
+
+    hexapod_detection_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(yolov8_dir,
+                         'launch/isaac_ros_yolov8_visualize.launch.py')
+        )
+    )
+    
+    #launches realsense camera as well
+    hexapod_vslam_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(vslam_dir,
+                         'launch/isaac_ros_visual_slam_realsense.launch.py')
+        )
+    )
+
+    ld.add_action(hexapod_detection_launch)
+    ld.add_action(hexapod_vslam_launch)
+
+
+
+    return ld
