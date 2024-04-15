@@ -251,8 +251,13 @@ class Yolov8Visualizer(Node):
         numValid = 0 
 
         for dir in dirs:
-            newx, newy = (center_x + dirs[0]),(center_y + dir[1])
-            pixel_depth = depth_img[newx][newy]
+            newx, newy = (int(center_x) + dir[0]),(int(center_y) + dir[1])
+
+            if (0<=newx<480) and (0<=newy<640):
+                pixel_depth = depth_img[newx][newy]
+            else:
+                pixel_depth = 0
+
             if pixel_depth != 0:
                 total += pixel_depth
                 numValid += 1
