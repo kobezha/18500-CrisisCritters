@@ -261,13 +261,17 @@ class Yolov8Visualizer(Node):
             if pixel_depth != 0:
                 total += pixel_depth
                 numValid += 1
-        
-        return total/numValid
+       
+        if numValid != 0:
+            return total/numValid
+        else:
+            return 0
 
     def main_callback(self, detections_msg, img_msg, depth_msg):
         txt_color = (255, 0, 255)
         cv2_img = self._bridge.imgmsg_to_cv2(img_msg)
         depth_img = self._bridge.imgmsg_to_cv2(depth_msg)
+        self.get_logger().info("Entered Callback")
 
         if self.current_state == States.SEARCH:
             person_detected = False

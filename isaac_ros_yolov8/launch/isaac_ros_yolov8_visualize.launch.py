@@ -33,14 +33,35 @@ def generate_launch_description():
                 '/yolov8_tensor_rt.launch.py'])
         ),
         Node(
+            name='camera',
+            namespace='camera',
+            package='realsense2_camera',
+            executable='realsense2_camera_node',
+            parameters=[{
+                'enable_infra1': True,
+                'enable_infra2': True,
+                'enable_color': True,
+                'enable_depth': True,
+                'depth_module.emitter_enabled':0,
+                'depth_module.profile':'640x360x90',
+                'enable_gyro': True,
+                'enable_accel': True,
+                'gyro_fps': 200,
+                'accel_fps': 200,
+                'unite_imu_method': 2,
+                'color_width': 640,
+                'color_height': 480,
+                'color_fps':30.0,
+            }],
+            remappings=[('/camera/color/image_raw','/image'),
+                ('/camera/color/camera_info','/camera_info'),
+                ('/camera/depth/image_rect_raw','/depth_image'),]
+            ),
+
+        Node(
             package='isaac_ros_yolov8',
             executable='isaac_ros_yolov8_visualizer.py',
             name='yolov8_visualizer'
-        ),
-        Node(
-            package='isaac_ros_yolov8',
-            executable='image_publisher.py',
-            name = 'image_publisher'
         ),
         Node(
             package='rqt_image_view',
