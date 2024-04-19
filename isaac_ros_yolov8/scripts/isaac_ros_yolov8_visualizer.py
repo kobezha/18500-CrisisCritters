@@ -33,11 +33,32 @@ from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2DArray
 import pyrealsense2
 from std_msgs.msg import String
+import time
 
 class States(Enum):
     SEARCH = "Search"
     FOUND = "Found"
     INVESTIGATE = "Investigate"
+
+class SearchState(Enum):  # Nested FSM for Searching
+    READY = "Ready"  # Ready to search a new grid
+    TURNING = "Turning"  # Currently turning to search a new grid
+    MOVING = "Moving"  # Moving towards new grid
+
+class SquareType(Enum):
+    VISITED = '.'
+    EMPTY = ' '
+    BLOCKED = '*'
+    TARGET = ''
+    HEXAPOD = 'ඬ'
+
+
+class Direction(Enum):
+    NORTH = (1, 0)
+    EAST = (0, 1)
+    SOUTH = (-1, 0)
+    WEST = (0, 1)
+
 
 visual_flag = True 
 verbose = True 
@@ -146,6 +167,13 @@ class Yolov8Visualizer(Node):
         self.img_width = 640
         self.img_height = 640
 
+        # Search state variables
+        self.search_state = SearchState.READY
+        self.grid = [[SquareType.HEXAPOD]]
+        self.next_dir = None
+        self.moving_start = None
+        self.moving_time = 3  # TODO: Make sure the distance moved in 3 seconds is covered by ultrasonic
+
         #cvbridge for converting from cv images to ros images 
         self._bridge = cv_bridge.CvBridge()
 
@@ -215,35 +243,85 @@ class Yolov8Visualizer(Node):
         #sound buzzer
         #play message through speaker?
 
+    def _find_obj(grid, obj):
+        """
+        Find index of object
+        grid: List[List[SquareType]]
+        obj: SquareType
+
+        Return: List[Tuple[int, int]]
+        """
+        res = []
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                if grid[row][col] == obj:
+                    res.append((row, col))
+        return res
+    
     def search_behavior(self, depth_img, cv2_img):
-        #basic behavior, keep walking forward, if obstacle, turn right
-        centerx = self.img_width/2
-        centery = self.img_height/2 
-        rightx = self.img_width * (3/4)
-        righty = self.img_height/2 
-        leftx = self.img_width * (1/4)
-        lefty = self.img_height/2
+        """ Pseudocode:
+        Randomly choose a Direction (NESW) and check not BLOCKED in grid
+         - Keep looping until we find unblocked grid
+        Turn to this direction and wait for depth image in new callback
+        If at boundary of grid: Expand the 2D array to have a new row/column
+        Check if any obstacles within square length ahead
+         - If yes, then mark new Square as BLOCKED
+        Move_forward a Square length (command_publish)
+         - Use time.time() to determine when to stop moving
+         - Once time_elapsed is reached, then stop and mark new grid as HEXAPOD
+        If no issue: Append HEXAPOD to current Square, replace previous Square with HEXAPOD->VISITED
         
-        #depth_val = depth_img[int(centery)][int(centerx)]
-        depth_val_central = self.calculate_depth_avg(depth_img,centerx,centery)
-        depth_val_right = self.calculate_depth_avg(depth_img,rightx,righty)
-        depth_val_left = self.calculate_depth_avg(depth_img,leftx,lefty)
+        TODO:
+         - Create helper function to expand unexplored line to left/right and top/bottom of 2D array
+        """
 
         command = String()
-        #obstacle close by, turn right
-        if depth_val_central < 400:
-            command.data = "turn_right"
-            if verbose: self.get_logger().info(f'OBSTACLE DETECTED CENTRAL, TURNING RIGHT')
-        elif depth_val_right < 400:
-            command.data = "turn_left"
-            if verbose: self.get_logger().info(f'OBSTACLE DETECTED RIGHT, TURNING LEFT')
-        elif depth_val_left < 400:
-            command.data = "turn_right" 
-            if verbose: self.get_logger().info(f'OBSTACLE DETECTED LEFT, TURNING RIGHT')
-        else:
+
+        if self.search_state == SearchState.READY:  # Robot ready to search new square
+            directions = [direction for direction in Direction]  # N, E, S, W
+            while True:
+                # Choose a compass direction to turn to
+                assert(len(directions) > 0)
+                next_dir = random.choose(directions)
+                directions.remove(next_dir)
+                d_row, d_col = next_dir.value
+
+                # Check that this direction is not blocked already
+                curr_coords = self._find_obj(self.grid, SquareType.HEXAPOD)
+                assert(len(curr_coords) == 1)  # TODO: Make sure this is me! Not another Hexapod
+                curr_row, curr_col = curr_coords[0]
+                new_row, new_col = curr_row + d_row, curr_col + d_col
+                if not (0 <= new_row < len(self.grid) and 0 <= new_col < len(self.grid[0])):
+                    # This is an unexplored portion of the grid. We should expand and explore it
+                    # TODO (ESSENTIAL): Create expand_grid helper function
+                    pass
+                elif self.grid[new_row][new_col] != SquareType.BLOCKED:
+                    # This is a vacant square in the grid. We should explore it
+                    # TODO (OPTIMIZATION): Skip previously visited squares
+                    self.next_dir = next_dir
+                    self.search_state = SearchState.TURNING
+        
+        if self.search_state == SearchState.TURNING:
+            """
+            From discussing with Kobe, we may need a VPOS callback to get compass bearings
+            So, the turning part of the FSM might occur in a separate callback
+            Make sure to change state to MOVING once done turning!
+            """
+            pass
+        
+        if self.search_state == SearchState.MOVING:
             command.data = "move_forward"
-            
-        self._hexapod_commands_pub.publish(command)
+            if self.moving_start is None:  # Haven't started moving yet
+                # TODO: Make sure no objects is blocking robots path
+                self.moving_start = time.time()
+            else:  # Already moving. Check if we should stop
+                elapsed_time = time.time() - self.moving_start
+                if elapsed_time > self.moving_time:  
+                    # We've reached new square! Update the grid and stop moving
+                    command.data = "stop_moving"
+                    # TODO: Update the existing grid. Replace old hexapod with visited, and add new hexapod square
+                    self.search_state = SearchState.READY
+            self._hexapod_commands_pub.publish(command)
     
     def calculate_depth_avg(self, depth_img, center_x, center_y):
         dirs = [(0,0),(0,1),(1,0),(0,-1),(-1,0)]
