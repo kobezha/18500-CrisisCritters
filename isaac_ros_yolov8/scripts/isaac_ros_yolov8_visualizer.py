@@ -28,6 +28,7 @@ import rclpy
 from rclpy.executors import ExternalShutdownException
 import random
 from enum import Enum
+from geometry_msgs.msg import PoseStamped
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2DArray
@@ -53,10 +54,10 @@ class SquareType(Enum):
     HEXAPOD = 'ඬ'
 
 class Direction(Enum):
-    NORTH = (1, 0)
-    EAST = (0, 1)
-    SOUTH = (-1, 0)
-    WEST = (0, 1)
+    NORTH = (1, 0, 0)  # d_row, d_col, compass heading in degrees
+    EAST = (0, 1, 90)
+    SOUTH = (-1, 0, 180)
+    WEST = (0, 1, 270)
 
 
 visual_flag = True 
@@ -169,11 +170,15 @@ class Yolov8Visualizer(Node):
         # Search state variables
         self.search_state = SearchState.READY
         self.grid = [[SquareType.HEXAPOD]]
-        self.next_dir = Direction.NORTH
-        self.moving_start = None
+        self.moving_start = None  # Timestamp for when Hexapod starts moving
+
         # TODO: Make sure the distance moved here is covered by depth threshold
         self.obstacle_threshold = 500
-        self.moving_time = 2
+        self.moving_time = 2  # Length of one square in walking time
+
+        self.next_dir = Direction.NORTH
+        self.compass_heading = 0  # Degrees
+        self.heading_tolerance = 3  # Degrees
 
         #cvbridge for converting from cv images to ros images 
         self._bridge = cv_bridge.CvBridge()
@@ -186,6 +191,7 @@ class Yolov8Visualizer(Node):
             self,
             Detection2DArray,
             'detections_output')
+        
         self._image_subscription = message_filters.Subscriber(
             self,
             Image,
@@ -195,6 +201,13 @@ class Yolov8Visualizer(Node):
             self,
             Image,
             'depth_image')
+        
+        self._directions_subscription = message_filters.Subscriber(
+            self,
+            PoseStamped,
+            'visual_slam/tracking/vo_pose',
+            self.directions_callback, 
+            1)  # Keep a queue of 1 message. Only want the latest anyway
         
         self._hexapod_commands_pub = self.create_publisher(
             String, 'hexapod_commands', self.QUEUE_SIZE)
@@ -259,6 +272,14 @@ class Yolov8Visualizer(Node):
                     res.append((row, col))
         return res
     
+    def directions_callback(self, msg):
+        """
+        Simply allocate the compass reading to a global variable
+        TODO: Convert this reading into standard format (ie. Degrees)
+        """
+        self.compass_heading = msg
+        return
+    
     def search_behavior(self, depth_img, cv2_img):
         """ Pseudocode:
         Randomly choose a Direction (NESW) and check not BLOCKED in grid
@@ -287,7 +308,7 @@ class Yolov8Visualizer(Node):
                 assert(len(directions) > 0)
                 next_dir = random.choose(directions)
                 directions.remove(next_dir)
-                d_row, d_col = next_dir.value
+                d_row, d_col = next_dir.value[:2]
 
                 # Check that this direction is valid to explore
                 new_row, new_col = curr_row + d_row, curr_col + d_col
@@ -307,23 +328,26 @@ class Yolov8Visualizer(Node):
 
                 elif self.grid[new_row][new_col] != SquareType.BLOCKED:
                     # This is a vacant square in the grid. We should explore it
-                    # TODO (OPTIMIZATION): Skip previously visited squares
+                    # TODO (OPTIMIZE): Skip previously visited squares
                     self.next_dir = next_dir
                     self.search_state = SearchState.TURNING
                     return
                 # This loops until we find a valid direction to explore
         
-        if self.search_state == SearchState.TURNING:
+        elif self.search_state == SearchState.TURNING:
             """
-            From discussing with Kobe, we may need a VPOS callback to get compass bearings
-            So, the turning part of the FSM might occur in a separate callback
-            Make sure to change state to MOVING once done turning!
+            Compass heading is assigned from directions_callback
             """
-            pass
+            command.data = "turn_right"  # TODO (OPTIMIZE): Find shortest turn direction
+            target_heading = self.next_dir.value[2]
+            if abs(self.compass_heading - target_heading) < self.heading_tolerance:
+                # TODO: Need to account for lag? Or maybe this is consistent offset
+                command.data = "stop_moving"
+            self._hexapod_commands_pub.publish(command)
         
-        if self.search_state == SearchState.MOVING:
+        elif self.search_state == SearchState.MOVING:
             command.data = "move_forward"
-            d_row, d_col = self.next_dir.value
+            d_row, d_col = self.next_dir.value[:2]
             new_row, new_col = curr_row + d_row, curr_col + d_col
 
             if self.moving_start is None:  # Haven't started moving yet
