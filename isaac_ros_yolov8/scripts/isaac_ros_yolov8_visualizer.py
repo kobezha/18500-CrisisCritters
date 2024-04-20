@@ -52,7 +52,6 @@ class SquareType(Enum):
     TARGET = ''
     HEXAPOD = 'ඬ'
 
-
 class Direction(Enum):
     NORTH = (1, 0)
     EAST = (0, 1)
@@ -170,9 +169,11 @@ class Yolov8Visualizer(Node):
         # Search state variables
         self.search_state = SearchState.READY
         self.grid = [[SquareType.HEXAPOD]]
-        self.next_dir = None
+        self.next_dir = Direction.NORTH
         self.moving_start = None
-        self.moving_time = 3  # TODO: Make sure the distance moved in 3 seconds is covered by ultrasonic
+        # TODO: Make sure the distance moved here is covered by depth threshold
+        self.obstacle_threshold = 500
+        self.moving_time = 2
 
         #cvbridge for converting from cv images to ros images 
         self._bridge = cv_bridge.CvBridge()
@@ -230,7 +231,7 @@ class Yolov8Visualizer(Node):
         elif center_x > (640 * 3 / 4):  # Person is in right quarter of screen
             command.data = "turn_right"
         else:
-            # Keep walking towards person until it is within 300
+            # Keep walking towards person until it is within 500
             if depth_val > 500:
                 command.data = "move_forward"
             else:
@@ -270,12 +271,14 @@ class Yolov8Visualizer(Node):
          - Use time.time() to determine when to stop moving
          - Once time_elapsed is reached, then stop and mark new grid as HEXAPOD
         If no issue: Append HEXAPOD to current Square, replace previous Square with HEXAPOD->VISITED
-        
-        TODO:
-         - Create helper function to expand unexplored line to left/right and top/bottom of 2D array
         """
 
         command = String()
+
+        # Get current coordinates of hexapod robot
+        curr_coords = self._find_obj(self.grid, SquareType.HEXAPOD)
+        assert(len(curr_coords) == 1)  # TODO: Make sure this is me! Not another Hexapod
+        curr_row, curr_col = curr_coords[0]
 
         if self.search_state == SearchState.READY:  # Robot ready to search new square
             directions = [direction for direction in Direction]  # N, E, S, W
@@ -286,20 +289,29 @@ class Yolov8Visualizer(Node):
                 directions.remove(next_dir)
                 d_row, d_col = next_dir.value
 
-                # Check that this direction is not blocked already
-                curr_coords = self._find_obj(self.grid, SquareType.HEXAPOD)
-                assert(len(curr_coords) == 1)  # TODO: Make sure this is me! Not another Hexapod
-                curr_row, curr_col = curr_coords[0]
+                # Check that this direction is valid to explore
                 new_row, new_col = curr_row + d_row, curr_col + d_col
-                if not (0 <= new_row < len(self.grid) and 0 <= new_col < len(self.grid[0])):
-                    # This is an unexplored portion of the grid. We should expand and explore it
-                    # TODO (ESSENTIAL): Create expand_grid helper function
-                    pass
+
+                if new_row < 0:  # Expand grid NORTH
+                    self.grid.insert(0, [SquareType.EMPTY for i in range(len(self.grid[0]))])
+                    return
+                elif len(self.grid) <= new_row:  # Expand SOUTH
+                    self.grid.append(0, [SquareType.EMPTY for i in range(len(self.grid[0]))])
+                    return
+                elif new_col < 0: # Expand WEST
+                    self.grid = [[SquareType.EMPTY] + row for row in self.grid]
+                    return
+                elif len(self.grid[0]) <= new_col:  # Expand EAST
+                    self.grid = [row + [SquareType.EMPTY] for row in self.grid]
+                    return
+
                 elif self.grid[new_row][new_col] != SquareType.BLOCKED:
                     # This is a vacant square in the grid. We should explore it
                     # TODO (OPTIMIZATION): Skip previously visited squares
                     self.next_dir = next_dir
                     self.search_state = SearchState.TURNING
+                    return
+                # This loops until we find a valid direction to explore
         
         if self.search_state == SearchState.TURNING:
             """
@@ -311,15 +323,35 @@ class Yolov8Visualizer(Node):
         
         if self.search_state == SearchState.MOVING:
             command.data = "move_forward"
+            d_row, d_col = self.next_dir.value
+            new_row, new_col = curr_row + d_row, curr_col + d_col
+
             if self.moving_start is None:  # Haven't started moving yet
-                # TODO: Make sure no objects is blocking robots path
-                self.moving_start = time.time()
+                # Check if path is clear
+                centerx, centery = self.img_width/2, self.img_height/2 
+                leftx, rightx = self.img_width * (1/4), self.img_width * (3/4)
+                
+                depth_val_left = self.calculate_depth_avg(depth_img, leftx, centery)
+                depth_val_central = self.calculate_depth_avg(depth_img, centerx, centery)
+                depth_val_right = self.calculate_depth_avg(depth_img, rightx, centery)
+
+                if (max(depth_val_left, depth_val_central, depth_val_right) > self.obstacle_threshold):
+                    # Square is blocked. Update the internal grid and search again
+                    self.grid[new_row][new_col] = SquareType.BLOCKED
+
+                    self.search_state = SearchState.READY
+                else:
+                    # Square is clear! Move into new square
+                    self.moving_start = time.time()
             else:  # Already moving. Check if we should stop
                 elapsed_time = time.time() - self.moving_start
                 if elapsed_time > self.moving_time:  
-                    # We've reached new square! Update the grid and stop moving
+                    # We've reached new square! Update the grid
+                    self.grid[curr_row][curr_col] = SquareType.VISITED
+                    self.grid[new_row][new_col] = SquareType.HEXAPOD
+
+                    # Stop moving and restart the search from new square
                     command.data = "stop_moving"
-                    # TODO: Update the existing grid. Replace old hexapod with visited, and add new hexapod square
                     self.search_state = SearchState.READY
             self._hexapod_commands_pub.publish(command)
     
