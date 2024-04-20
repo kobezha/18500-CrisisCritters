@@ -23,29 +23,31 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
-
+#launch description for hexapod system, removes any visualization to improve performance
 def generate_launch_description():
-    my_package_dir = get_package_share_directory('isaac_ros_yolov8')
-    return LaunchDescription([
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                
-         '/workspaces/isaac_ros-dev/src/isaac_ros_yolov8/launch/yolov8_realsense.launch.py') 
-        ),
-        Node(
-            package='isaac_ros_yolov8',
-            executable='realsense_visualizer.py',
-            name='realsense_visualizer'
-        ),
-        Node(
-            package='rqt_image_view',
-            executable='rqt_image_view',
-            name='image_view',
-            arguments=['/yolov8_processed_image']
-        ),
-        Node(
-            package='isaac_ros_yolov8',
-            executable='hexapod_communication_main.py',
-            name='hexapod_communication'
-        ),
-    ])
+    yolov8_dir = get_package_share_directory('isaac_ros_yolov8')
+    vslam_dir = get_package_share_directory('isaac_ros_visual_slam')
+
+    ld = LaunchDescription()
+
+    hexapod_detection_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(yolov8_dir,
+                         'launch/isaac_ros_yolov8_visualize.launch.py')
+        )
+    )
+    
+    #launches realsense camera as well
+    hexapod_vslam_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(vslam_dir,
+                         'launch/isaac_ros_visual_slam_realsense.launch.py')
+        )
+    )
+
+    ld.add_action(hexapod_detection_launch)
+    ld.add_action(hexapod_vslam_launch)
+
+
+
+    return ld

@@ -23,29 +23,23 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
-
+#launch description for hexapod system, removes any visualization to improve performance
 def generate_launch_description():
     my_package_dir = get_package_share_directory('isaac_ros_yolov8')
     return LaunchDescription([
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                
-         '/workspaces/isaac_ros-dev/src/isaac_ros_yolov8/launch/yolov8_realsense.launch.py') 
+            PythonLaunchDescriptionSource([os.path.join(
+                my_package_dir, 'launch'),
+                '/yolov8_tensor_rt.launch.py'])
         ),
         Node(
             package='isaac_ros_yolov8',
-            executable='realsense_visualizer.py',
-            name='realsense_visualizer'
-        ),
-        Node(
-            package='rqt_image_view',
-            executable='rqt_image_view',
-            name='image_view',
-            arguments=['/yolov8_processed_image']
+            executable='controller.py',
+            name='controller'
         ),
         Node(
             package='isaac_ros_yolov8',
-            executable='hexapod_communication_main.py',
-            name='hexapod_communication'
+            executable='image_publisher.py',
+            name = 'image_publisher'
         ),
     ])
