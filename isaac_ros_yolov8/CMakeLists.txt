@@ -22,6 +22,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+
 find_package(ament_cmake_auto REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -64,7 +65,7 @@ install(PROGRAMS
   scripts/realsense_visualizer.py
   scripts/image_publisher.py
   scripts/controller.py
-  
+  scripts/communication_node.py
   scripts/hexapod_communication_main.py
   scripts/Client.py
   scripts/Command.py

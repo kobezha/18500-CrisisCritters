@@ -66,28 +66,31 @@ def generate_launch_description():
     confidence_threshold = LaunchConfiguration('confidence_threshold')
     nms_threshold = LaunchConfiguration('nms_threshold')
 
-
-#    image_format_converter_node = ComposableNode(
-#        name='image_format_converter_node',
-#        package='isaac_ros_image_proc',
-#        plugin='nvidia::isaac_ros::image_proc::ImageFormatConverterNode',
-#        parameters=[{'encoding_desired': 'bgr8'}],
-#        remappings=[('/image_raw', '/color/image_raw'),
-#                    ('/camera_info', '/color/camera_info')]
-#    )
-#
-#    resize_node = ComposableNode(
-#        name='resize_node',
-#        package='isaac_ros_image_proc',
-#        plugin='nvidia::isaac_ros::image_proc::ResizeNode',
-#        parameters=[{
-#            'output_height': 640,
-#            'output_width': 640,
-#            'num_blocks':40
-#         }],
-#        remappings=[('/camera_info', '/color/camera_info')]
-#     )
-
+    realsense_camera_node = ComposableNode(
+        name='camera',
+        namespace='camera',
+        package='realsense2_camera',
+        plugin='realsense2_camera::RealSenseNodeFactory',
+        #executable='realsense2_camera_node',
+        parameters=[{
+                'enable_infra1': True,
+                'enable_infra2': True,
+                'enable_depth': True,
+                'depth_module.emitter_enabled': 0,
+                'depth_module.profile': '640x480x30',
+                'rgb_camera.profile': '640x480x30',
+                'enable_rgbd': True,
+                'enable_color': True,
+                'enable_sync': True,
+                'align_depth.enable': True,
+                'enable_gyro': True,
+                'enable_accel': True,
+                'gyro_fps': 200,
+                'accel_fps': 200,
+                'unite_imu_method': 2
+        }],
+        remappings=[('color/image_raw', '/image')]
+    )
 
     encoder_node = ComposableNode(
         name='dnn_image_encoder',
@@ -155,26 +158,6 @@ def generate_launch_description():
 #            ('/color/camera_info', '/camera_info')]
 #    )
 #
-    realsense_camera_node = ComposableNode(
-        name='camera',
-        namespace='camera',
-        package='realsense2_camera',
-        plugin='realsense2_camera::RealSenseNodeFactory',
-        #executable='realsense2_camera_node',
-        parameters=[{
-                'enable_infra1': True,
-                'enable_infra2': True,
-                'enable_depth': True,
-                'depth_module.emitter_enabled': 0,
-                'depth_module.profile': '640x360x90',
-                'enable_gyro': True,
-                'enable_accel': True,
-                'gyro_fps': 200,
-                'accel_fps': 200,
-                'unite_imu_method': 2
-        }],
-        remappings=[('color/image_raw', '/image')]
-    )
     visual_slam_node = ComposableNode(
         name='visual_slam_node',
         package='isaac_ros_visual_slam',
@@ -197,7 +180,7 @@ def generate_launch_description():
                     'accel_noise_density': 0.001862,
                     'accel_random_walk': 0.003,
                     'calibration_frequency': 200.0,
-                    'img_jitter_threshold_ms': 22.00
+                    'img_jitter_threshold_ms': 200.00
                     }],
         remappings=[('stereo_camera/left/image', 'camera/infra1/image_rect_raw'),
                     ('stereo_camera/left/camera_info', 'camera/infra1/camera_info'),
@@ -212,7 +195,7 @@ def generate_launch_description():
         name='tensor_rt_container',
         package='rclcpp_components',
         executable='component_container_mt',
-        composable_node_descriptions=[realsense_camera_node, encoder_node, tensor_rt_node, yolov8_decoder_node,visual_slam_node],
+        composable_node_descriptions=[realsense_camera_node,encoder_node, tensor_rt_node, yolov8_decoder_node,visual_slam_node],
         output='screen',
         arguments=['--ros-args', '--log-level', 'INFO'],
         namespace=''

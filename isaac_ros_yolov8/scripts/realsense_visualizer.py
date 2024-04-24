@@ -160,7 +160,7 @@ class Yolov8Visualizer(Node):
         self._image_subscription = message_filters.Subscriber(
             self,
             Image,
-            'image')
+            'resize/image')
 
         #synchronizer syncs the detections and color/depth images based on timestamp 
         self.time_synchronizer = message_filters.TimeSynchronizer(
