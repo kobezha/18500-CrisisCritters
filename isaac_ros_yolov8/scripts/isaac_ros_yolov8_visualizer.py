@@ -254,7 +254,7 @@ class Yolov8Visualizer(Node):
             newx, newy = (int(center_x) + dir[0]),(int(center_y) + dir[1])
 
             if (0<=newx<self.img_width) and (0<=newy<self.img_height):
-                pixel_depth = depth_img[newx][newy]
+                pixel_depth = depth_img[newy][newx]  # (row, col)
             else:
                 pixel_depth = 0
 
@@ -318,7 +318,7 @@ class Yolov8Visualizer(Node):
 
 
                     if self.current_target_x == -1 and self.current_target_y == -1:
-                        if verbose: self.get_logger().info(f'Locking onto person at cx: {center_x} cy: {center_y} depth = {depth_val}')
+                        if verbose: self.get_logger().info(f'Locking onto person at cx: {center_x:.0f} cy: {center_y:.0f} depth = {depth_val:.0f}')  # TODO: Make depth readings ints?
                         self.current_target_x, self.current_target_y = center_x, center_y
                         person_detected = True 
                     elif (abs(self.current_target_x - center_x) < self.target_delta_threshold) and (abs(self.current_target_y - center_y) < self.target_delta_threshold):
