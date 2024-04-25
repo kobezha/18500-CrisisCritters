@@ -16,22 +16,19 @@
 # SPDX-License-Identifier: Apache-2.0
 
 cmake_minimum_required(VERSION 3.22.1)
-project(isaac_ros_yolov8 LANGUAGES C CXX)
+project(yolov8_realsense LANGUAGES C CXX)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-
 find_package(ament_cmake_auto REQUIRED)
-find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(vision_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV REQUIRED)
-find_package(std_msgs REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 ament_auto_find_build_dependencies()
@@ -57,23 +54,12 @@ if(BUILD_TESTING)
   find_package(launch_testing_ament_cmake REQUIRED)
 endif()
 
-# publisher and visualizer python scripts
+# Visualizer python scripts
 ament_python_install_package(${PROJECT_NAME})
 
 install(PROGRAMS
   scripts/isaac_ros_yolov8_visualizer.py
-  scripts/realsense_visualizer.py
-  scripts/image_publisher.py
-  scripts/controller.py
-  scripts/communication_node.py
-  scripts/hexapod_communication_main.py
-  scripts/Client.py
-  scripts/Command.py
-  scripts/PID.py
-  scripts/Thread.py
   DESTINATION lib/${PROJECT_NAME}
-
 )
 
-ament_auto_package(INSTALL_TO_SHARE launch 
-	scripts)
+ament_auto_package(INSTALL_TO_SHARE launch)

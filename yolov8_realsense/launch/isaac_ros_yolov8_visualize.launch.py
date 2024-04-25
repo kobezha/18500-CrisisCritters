@@ -28,9 +28,14 @@ def generate_launch_description():
     my_package_dir = get_package_share_directory('isaac_ros_yolov8')
     return LaunchDescription([
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                
-         '/workspaces/isaac_ros-dev/src/isaac_ros_yolov8/launch/yolov8_realsense.launch.py') 
+            PythonLaunchDescriptionSource('/workspaces/isaac_ros-dev/src/isaac_ros_common/yolov8_realsense/launch/yolov8_realsense.launch.py')
+
+                #os.getcwd(), 'yolov8_realsense/launch/yolov8_realsense.launch.py')])
+                #'/workspaces/isaac_ros-dev/src/isaac_ros_common/yolov8_realsense/launch/yolov8_realsense.launch.py')
+                #[os.path.join(
+                #my_package_dir, 'launch'),
+                #'/workspaces/isaac_ros-dev/src/isaac_ros_common/yolov8_realsense/launch/yolov8_realsense.launch.py')
+                #'/yolov8_tensor_rt.launch.py'])
         ),
         Node(
             package='isaac_ros_yolov8',
@@ -42,18 +47,5 @@ def generate_launch_description():
             executable='rqt_image_view',
             name='image_view',
             arguments=['/yolov8_processed_image']
-        ),
-        Node(
-            package='isaac_ros_yolov8',
-            executable='hexapod_communication_main.py',
-            name='hexapod_communication'
-        ),
-        Node(
-            package='isaac_ros_yolov8',
-            executable='communication_node.py',
-            name='communication_server'
-        ),
-
-
-
+        )
     ])

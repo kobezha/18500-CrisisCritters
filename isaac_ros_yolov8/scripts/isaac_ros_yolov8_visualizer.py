@@ -32,6 +32,7 @@ from geometry_msgs.msg import PoseStamped
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2DArray
+from geometry_msgs.msg import PoseStamped
 import pyrealsense2
 from std_msgs.msg import String
 import time
@@ -61,8 +62,7 @@ class Direction(Enum):
 
 
 visual_flag = True 
-verbose = True 
-
+verbose = False 
 
 names = {
         0: 'person',
@@ -163,9 +163,9 @@ class Yolov8Visualizer(Node):
         self.current_target_y = -1
         self.target_delta_threshold = 50
 
-        #img size for color and depth images 
+        #img size for depth images 
         self.img_width = 640
-        self.img_height = 640
+        self.img_height = 480
 
         # Search state variables
         self.search_state = SearchState.READY
@@ -200,7 +200,7 @@ class Yolov8Visualizer(Node):
         self._depth_subscription = message_filters.Subscriber(
             self,
             Image,
-            'depth_image')
+            'camera/depth/image_rect_raw')
         
         self._directions_subscription = message_filters.Subscriber(
             self,
@@ -211,27 +211,24 @@ class Yolov8Visualizer(Node):
         
         self._hexapod_commands_pub = self.create_publisher(
             String, 'hexapod_commands', self.QUEUE_SIZE)
+        
+        self._pose_subscription = message_filters.Subscriber(
+            self,
+            PoseStamped,
+            'visual_slam/tracking/vo_pose')
+        
 
-        # self.main_task_period = 1.0
-        # self.callback_group1 = MutuallyExclusiveCallbackGroup()
-        # self.callback_group2 = MutuallyExclusiveCallbackGroup()
-        # self.create_timer(self.main_task_period,self.main_task_func,self.callback_group1)
-        '''
-            Mutually Exclusive Callback groups prevent callbacks from being executed in parallel, 
-            this might help us avoid race conditions if we are doing statemachine via timer callback
-            however this might cause some blocking if one callback is longer than the other.
-            
-            if we want multithreading we have to have callbacks in two separate groups
-
-            maybe we want to make something into a service? Demo in here: https://docs.ros.org/en/foxy/How-To-Guides/Using-callback-groups.html
-        '''
-
+    
         #synchronizer syncs the detections and color/depth images based on timestamp 
-        self.time_synchronizer = message_filters.TimeSynchronizer(
-            [self._detections_subscription, self._image_subscription,self._depth_subscription],
-            self.QUEUE_SIZE)
+        self.time_synchronizer = message_filters.ApproximateTimeSynchronizer([self._detections_subscription, self._image_subscription,self._depth_subscription],self.QUEUE_SIZE,0.5,allow_headerless=True)
 
         self.time_synchronizer.registerCallback(self.main_callback)
+        
+        #self.time_synchronizer = message_filters.TimeSynchronizer([self._depth_subscription,self._detections_subscription],self.QUEUE_SIZE)
+        #self.time_synchronizer.registerCallback(self.dummy_callback)
+
+    def dummy_callback(self,depth_msg,detect_msg):
+        self.get_logger().info(f'Dummmy Callback')
     
     def send_heartbeat(self):
         if verbose: self.get_logger().info(f'Sending heartbeats to hexapods')
@@ -380,15 +377,15 @@ class Yolov8Visualizer(Node):
             self._hexapod_commands_pub.publish(command)
     
     def calculate_depth_avg(self, depth_img, center_x, center_y):
-        dirs = [(0,0),(0,1),(1,0),(0,-1),(-1,0)]
+        dirs = [(x, y) for x in range(-5, 6) for y in range(-5, 6)]
         total = 0
         numValid = 0 
 
         for dir in dirs:
             newx, newy = (int(center_x) + dir[0]),(int(center_y) + dir[1])
 
-            if (0<=newx<480) and (0<=newy<640):
-                pixel_depth = depth_img[newx][newy]
+            if (0<=newx<self.img_width) and (0<=newy<self.img_height):
+                pixel_depth = depth_img[newy][newx]  # (row, col)
             else:
                 pixel_depth = 0
 
@@ -403,10 +400,9 @@ class Yolov8Visualizer(Node):
 
     def main_callback(self, detections_msg, img_msg, depth_msg):
         txt_color = (255, 0, 255)
+
         cv2_img = self._bridge.imgmsg_to_cv2(img_msg)
         depth_img = self._bridge.imgmsg_to_cv2(depth_msg)
-        self.get_logger().info("Entered Callback")
-
         if self.current_state == States.SEARCH:
             person_detected = False
     
@@ -420,7 +416,7 @@ class Yolov8Visualizer(Node):
                 conf_score = detection.results[0].hypothesis.score
                 
                 # If person is detected with center within camera view
-                if (label == "person" and conf_score > 0.80 and 0 < center_y < 480 and 0 < center_x < 640 ):
+                if (label == "person" and conf_score > 0.80 and 0 < center_y < self.img_height and 0 < center_x < self.img_width ):
                     if verbose: self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
                     person_detected = True 
                     self.current_state = States.INVESTIGATE
@@ -453,7 +449,7 @@ class Yolov8Visualizer(Node):
 
 
                     if self.current_target_x == -1 and self.current_target_y == -1:
-                        if verbose: self.get_logger().info(f'Locking onto person at cx: {center_x} cy: {center_y} depth = {depth_val}')
+                        if verbose: self.get_logger().info(f'Locking onto person at cx: {center_x:.0f} cy: {center_y:.0f} depth = {depth_val:.0f}')  # TODO: Make depth readings ints?
                         self.current_target_x, self.current_target_y = center_x, center_y
                         person_detected = True 
                     elif (abs(self.current_target_x - center_x) < self.target_delta_threshold) and (abs(self.current_target_y - center_y) < self.target_delta_threshold):
