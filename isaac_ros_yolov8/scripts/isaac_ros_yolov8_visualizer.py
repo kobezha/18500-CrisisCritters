@@ -177,11 +177,11 @@ class Yolov8Visualizer(Node):
         self.moving_start = None  # Timestamp for when Hexapod starts moving
         self.turning_start = None
         self.turning_time = None
-        self.turn_90 = 6  # TODO: Need to tune
-
-        # TODO: Make sure the distance moved here is covered by depth threshold
+        
+        # TODO (Bot dependent): Need to tune the following
+        self.turn_90 = 6  
         self.obstacle_threshold = 600
-        self.moving_time = 12  # Length of one square in walking time
+        self.moving_time = 12  # Length of ~2ft travel by e3h1.
 
         self.curr_dir = Direction.NORTH
         self.next_dir = Direction.NORTH
@@ -300,21 +300,11 @@ class Yolov8Visualizer(Node):
         If no issue: Append HEXAPOD to current Square, replace previous Square with HEXAPOD->VISITED
         """
 
-        centerx, centery = self.img_width/2, self.img_height/2 
-        leftx, rightx = self.img_width * (1/4), self.img_width * (3/4)
-        
-        depth_val_left = self.calculate_depth_avg(depth_img, leftx, centery)
-        depth_val_central = self.calculate_depth_avg(depth_img, centerx, centery)
-        depth_val_right = self.calculate_depth_avg(depth_img, rightx, centery)
-
-        self.get_logger().info(f"{depth_val_left, depth_val_central, depth_val_right}")
-        return
-
         command = String()
 
         # Get current coordinates of hexapod robot
         curr_coords = self._find_obj(self.grid, SquareType.HEXAPOD)
-        assert(len(curr_coords) == 1)  # TODO: Make sure this is me! Not another Hexapod
+        assert(len(curr_coords) == 1)  # TODO (Comms): Make sure this is me! Not another Hexapod
         curr_row, curr_col = curr_coords[0]
 
         if self.search_state == SearchState.READY:  # Robot ready to search new square
@@ -515,7 +505,7 @@ class Yolov8Visualizer(Node):
 
 
                     if self.current_target_x == -1 and self.current_target_y == -1:
-                        if verbose: self.get_logger().info(f'Locking onto person at cx: {center_x:.0f} cy: {center_y:.0f} depth = {depth_val:.0f}')  # TODO: Make depth readings ints?
+                        if verbose: self.get_logger().info(f'Locking onto person at cx: {center_x:.0f} cy: {center_y:.0f} depth = {depth_val:.0f}')  
                         self.current_target_x, self.current_target_y = center_x, center_y
                         person_detected = True 
                     elif (abs(self.current_target_x - center_x) < self.target_delta_threshold) and (abs(self.current_target_y - center_y) < self.target_delta_threshold):
