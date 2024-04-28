@@ -29,6 +29,7 @@ from rclpy.executors import ExternalShutdownException
 import random
 from enum import Enum
 from geometry_msgs.msg import PoseStamped
+import math
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2DArray
@@ -36,6 +37,8 @@ from geometry_msgs.msg import PoseStamped
 import pyrealsense2
 from std_msgs.msg import String
 import time
+from rclpy.executors import MultiThreadedExecutor
+from rclpy.executors import SingleThreadedExecutor
 
 class States(Enum):
     SEARCH = "Search"
@@ -55,14 +58,15 @@ class SquareType(Enum):
     HEXAPOD = 'ඬ'
 
 class Direction(Enum):
-    NORTH = (1, 0, 0)  # d_row, d_col, compass heading in degrees
+    NORTH = (-1, 0, 0)  # d_row, d_col, compass heading in degrees
     EAST = (0, 1, 90)
-    SOUTH = (-1, 0, 180)
-    WEST = (0, 1, 270)
+    SOUTH = (1, 0, 180)
+    WEST = (0, -1, 270)
 
 
 visual_flag = True 
-verbose = False 
+verbose = True
+hardcode = True  # Hardcode turn directions instead of using vo_pose from VSLAM
 
 names = {
         0: 'person',
@@ -171,14 +175,18 @@ class Yolov8Visualizer(Node):
         self.search_state = SearchState.READY
         self.grid = [[SquareType.HEXAPOD]]
         self.moving_start = None  # Timestamp for when Hexapod starts moving
+        self.turning_start = None
+        self.turning_time = None
+        self.turn_90 = 6  # TODO: Need to tune
 
         # TODO: Make sure the distance moved here is covered by depth threshold
-        self.obstacle_threshold = 500
-        self.moving_time = 2  # Length of one square in walking time
+        self.obstacle_threshold = 600
+        self.moving_time = 12  # Length of one square in walking time
 
+        self.curr_dir = Direction.NORTH
         self.next_dir = Direction.NORTH
         self.compass_heading = 0  # Degrees
-        self.heading_tolerance = 3  # Degrees
+        self.heading_tolerance = 10  # Degrees
 
         #cvbridge for converting from cv images to ros images 
         self._bridge = cv_bridge.CvBridge()
@@ -205,18 +213,13 @@ class Yolov8Visualizer(Node):
         self._directions_subscription = message_filters.Subscriber(
             self,
             PoseStamped,
-            'visual_slam/tracking/vo_pose',
-            self.directions_callback, 
-            1)  # Keep a queue of 1 message. Only want the latest anyway
-        
+            'visual_slam/tracking/vo_pose')
+
         self._hexapod_commands_pub = self.create_publisher(
             String, 'hexapod_commands', self.QUEUE_SIZE)
         
-        self._pose_subscription = message_filters.Subscriber(
-            self,
-            PoseStamped,
-            'visual_slam/tracking/vo_pose')
-        
+        if not hardcode:
+            self._directions_subscription.registerCallback(self.directions_callback)
 
     
         #synchronizer syncs the detections and color/depth images based on timestamp 
@@ -254,7 +257,7 @@ class Yolov8Visualizer(Node):
         #sound buzzer
         #play message through speaker?
 
-    def _find_obj(grid, obj):
+    def _find_obj(self, grid, obj):
         """
         Find index of object
         grid: List[List[SquareType]]
@@ -271,10 +274,16 @@ class Yolov8Visualizer(Node):
     
     def directions_callback(self, msg):
         """
-        Simply allocate the compass reading to a global variable
-        TODO: Convert this reading into standard format (ie. Degrees)
+        Convert Quaternion to yaw angle. Gyro frequency is 200Hz, so this is called 200 times a second
+        Cite: https://stackoverflow.com/questions/5782658/extracting-yaw-from-a-quaternion
         """
-        self.compass_heading = msg
+        q = msg.pose.orientation  # Quaternion for orientation
+        yaw_angle = math.atan2(2.0 * (q.w * q.z + q.x * q.y), 
+                q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z)
+        # Convert from radians to compass bearing degrees
+        yaw_angle = -(yaw_angle * 180.0 / math.pi) % 360
+        self.compass_heading = yaw_angle
+        # self.get_logger().info(f"New angle: {yaw_angle}")
         return
     
     def search_behavior(self, depth_img, cv2_img):
@@ -291,6 +300,16 @@ class Yolov8Visualizer(Node):
         If no issue: Append HEXAPOD to current Square, replace previous Square with HEXAPOD->VISITED
         """
 
+        centerx, centery = self.img_width/2, self.img_height/2 
+        leftx, rightx = self.img_width * (1/4), self.img_width * (3/4)
+        
+        depth_val_left = self.calculate_depth_avg(depth_img, leftx, centery)
+        depth_val_central = self.calculate_depth_avg(depth_img, centerx, centery)
+        depth_val_right = self.calculate_depth_avg(depth_img, rightx, centery)
+
+        self.get_logger().info(f"{depth_val_left, depth_val_central, depth_val_right}")
+        return
+
         command = String()
 
         # Get current coordinates of hexapod robot
@@ -303,7 +322,7 @@ class Yolov8Visualizer(Node):
             while True:
                 # Choose a compass direction to turn to
                 assert(len(directions) > 0)
-                next_dir = random.choose(directions)
+                next_dir = random.choice(directions)
                 directions.remove(next_dir)
                 d_row, d_col = next_dir.value[:2]
 
@@ -312,35 +331,76 @@ class Yolov8Visualizer(Node):
 
                 if new_row < 0:  # Expand grid NORTH
                     self.grid.insert(0, [SquareType.EMPTY for i in range(len(self.grid[0]))])
-                    return
                 elif len(self.grid) <= new_row:  # Expand SOUTH
-                    self.grid.append(0, [SquareType.EMPTY for i in range(len(self.grid[0]))])
-                    return
+                    self.grid.append([SquareType.EMPTY for i in range(len(self.grid[0]))])
                 elif new_col < 0: # Expand WEST
                     self.grid = [[SquareType.EMPTY] + row for row in self.grid]
-                    return
                 elif len(self.grid[0]) <= new_col:  # Expand EAST
                     self.grid = [row + [SquareType.EMPTY] for row in self.grid]
-                    return
-
                 elif self.grid[new_row][new_col] != SquareType.BLOCKED:
                     # This is a vacant square in the grid. We should explore it
                     # TODO (OPTIMIZE): Skip previously visited squares
-                    self.next_dir = next_dir
-                    self.search_state = SearchState.TURNING
-                    return
-                # This loops until we find a valid direction to explore
-        
+                    pass
+                else:
+                    # This loops until we find a valid direction to explore
+                    continue
+                #  Made it here! This is a valid direction
+                self.next_dir = next_dir
+                self.search_state = SearchState.TURNING
+                if verbose: 
+                    self.get_logger().info(f"Current map: {self.grid}")
+                    self.get_logger().info(f"Turning to {self.next_dir}")
+                return
+
         elif self.search_state == SearchState.TURNING:
             """
             Compass heading is assigned from directions_callback
             """
-            command.data = "turn_right"  # TODO (OPTIMIZE): Find shortest turn direction
             target_heading = self.next_dir.value[2]
-            if abs(self.compass_heading - target_heading) < self.heading_tolerance:
-                # TODO: Need to account for lag? Or maybe this is consistent offset
-                command.data = "stop_moving"
+            if hardcode:
+                if self.turning_start is not None:  # Already turning. Check elapsed time
+                    elapsed_time = time.time() - self.turning_start
+                    if elapsed_time > self.turn_time:  # Finished turn. 
+                        command.data = "stop_moving"
+                        self.search_state = SearchState.MOVING
+                        self.turning_start = None
+                        self.curr_dir = self.next_dir
+                        if verbose: self.get_logger().info(f"TURNING -> MOVING")
+                    else:
+                        command = self.last_command
+                else:  # Initiate turning
+                    current_heading = self.curr_dir.value[2]
+                    error = (target_heading - current_heading) % 360
+                    if target_heading == current_heading:  # Already in direction we want
+                        command.data = "stop_moving"
+                        self.search_state = SearchState.MOVING
+                        if verbose: self.get_logger().info(f"TURNING -> MOVING")
+                    elif error == 90:  # Turn right 90
+                        command.data = "turn_right"
+                        self.turn_time = self.turn_90
+                        self.turning_start = time.time()
+                    elif error == 180:  # Turn right 180
+                        command.data = "turn_right"
+                        self.turn_time = 2 * self.turn_90
+                        self.turning_start = time.time()
+                    else:  # Turn left 90
+                        assert error == 270
+                        command.data = "turn_left"
+                        self.turn_time = self.turn_90
+                        self.turning_start = time.time()
+            else:  # Using compass_heading, which is assigned from directions_callback by vo_pose
+                error = target_heading - self.compass_heading
+                if abs(error) < self.heading_tolerance:
+                    command.data = "stop_moving"
+                    self.search_state = SearchState.MOVING
+                    if verbose: self.get_logger().info(f"TURNING -> MOVING")
+                elif (error % 360) <= 180:
+                    command.data = "turn_right"
+                else:  # (error % 360) > 180
+                    command.data = "turn_left"
             self._hexapod_commands_pub.publish(command)
+            self.last_command = command
+            return
         
         elif self.search_state == SearchState.MOVING:
             command.data = "move_forward"
@@ -356,16 +416,17 @@ class Yolov8Visualizer(Node):
                 depth_val_central = self.calculate_depth_avg(depth_img, centerx, centery)
                 depth_val_right = self.calculate_depth_avg(depth_img, rightx, centery)
 
-                if (max(depth_val_left, depth_val_central, depth_val_right) > self.obstacle_threshold):
+                if (max(depth_val_left, depth_val_central, depth_val_right) < self.obstacle_threshold):
                     # Square is blocked. Update the internal grid and search again
                     self.grid[new_row][new_col] = SquareType.BLOCKED
-
+                    self.get_logger().info("Blocked square")
                     self.search_state = SearchState.READY
                 else:
                     # Square is clear! Move into new square
                     self.moving_start = time.time()
             else:  # Already moving. Check if we should stop
                 elapsed_time = time.time() - self.moving_start
+                # if verbose: self.get_logger().info(f"Elapsed since {self.moving_start}: {elapsed_time}")
                 if elapsed_time > self.moving_time:  
                     # We've reached new square! Update the grid
                     self.grid[curr_row][curr_col] = SquareType.VISITED
@@ -373,8 +434,10 @@ class Yolov8Visualizer(Node):
 
                     # Stop moving and restart the search from new square
                     command.data = "stop_moving"
+                    self.moving_start = None
                     self.search_state = SearchState.READY
             self._hexapod_commands_pub.publish(command)
+            return
     
     def calculate_depth_avg(self, depth_img, center_x, center_y):
         dirs = [(x, y) for x in range(-5, 6) for y in range(-5, 6)]
@@ -399,6 +462,7 @@ class Yolov8Visualizer(Node):
             return 0
 
     def main_callback(self, detections_msg, img_msg, depth_msg):
+        # self.get_logger().info(f"main_callback called")
         txt_color = (255, 0, 255)
 
         cv2_img = self._bridge.imgmsg_to_cv2(img_msg)
@@ -417,12 +481,14 @@ class Yolov8Visualizer(Node):
                 
                 # If person is detected with center within camera view
                 if (label == "person" and conf_score > 0.80 and 0 < center_y < self.img_height and 0 < center_x < self.img_width ):
-                    if verbose: self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
-                    person_detected = True 
-                    self.current_state = States.INVESTIGATE
-            if not person_detected:
+                    pass
+                    # TODO: Uncomment when we want tracking again
+                    # if verbose: self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
+                    # person_detected = True 
+                    # self.current_state = States.INVESTIGATE
+            #if not person_detected:
                 #send search algorithm movement commands 
-                self.search_behavior(depth_img,cv2_img)
+            self.search_behavior(depth_img,cv2_img)
                 
 
             processed_img = self._bridge.cv2_to_imgmsg(
@@ -513,14 +579,31 @@ def main():
     rclpy.init()
     visualizer = Yolov8Visualizer()
 
+    #executor = MultiThreadedExecutor(num_threads=2)
+    executor = SingleThreadedExecutor()
+
+    executor.add_node(visualizer)
+
     try:
-        rclpy.spin(visualizer)
+        #rclpy.spin(visualizer)
+        executor.spin()
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
+        #graceful shutdown
+        executor.shutdown()
         visualizer.destroy_node()
         rclpy.shutdown()
-
+ 
+#    try:
+#        rclpy.spin(visualizer)
+#    except (KeyboardInterrupt, ExternalShutdownException):
+#        pass
+#    finally:
+#        visualizer.destroy_node()
+#        rclpy.shutdown()
+#
+    
 
 if __name__ == '__main__':
     main()
