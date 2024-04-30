@@ -39,6 +39,9 @@ from std_msgs.msg import String
 import time
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.executors import SingleThreadedExecutor
+import numpy
+from std_msgs.msg import Int32MultiArray, MultiArrayLayout, MultiArrayDimension
+
 
 class States(Enum):
     SEARCH = "Search"
@@ -48,6 +51,7 @@ class States(Enum):
 class SearchState(Enum):  # Nested FSM for Searching
     READY = "Ready"  # Ready to search a new grid
     TURNING = "Turning"  # Currently turning to search a new grid
+    SETTLE = "Settle"  # Let robot settle before running depth sensing
     MOVING = "Moving"  # Moving towards new grid
 
 class SquareType(Enum):
@@ -56,6 +60,7 @@ class SquareType(Enum):
     BLOCKED = '*'
     TARGET = ''
     HEXAPOD = 'ඬ'
+    OTHER_HEXAPOD = '0'
 
 class Direction(Enum):
     NORTH = (-1, 0, 0)  # d_row, d_col, compass heading in degrees
@@ -66,6 +71,7 @@ class Direction(Enum):
 
 visual_flag = True 
 verbose = True
+optimize = True  # Avoid revisiting previous squares
 hardcode = True  # Hardcode turn directions instead of using vo_pose from VSLAM
 
 names = {
@@ -173,15 +179,22 @@ class Yolov8Visualizer(Node):
 
         # Search state variables
         self.search_state = SearchState.READY
+
         self.grid = [[SquareType.HEXAPOD]]
+        self.grid_rows = 4
+        self.grid_cols = 5
+        self.updating_grid = False
+
         self.moving_start = None  # Timestamp for when Hexapod starts moving
         self.turning_start = None
         self.turning_time = None
+        self.settle_start = None
+        self.settle_time = 0.5
         
         # TODO (Bot dependent): Need to tune the following
-        self.turn_90 = 6  
+        self.turn_90 = 8.5
         self.obstacle_threshold = 600
-        self.moving_time = 12  # Length of ~2ft travel by e3h1.
+        self.moving_time = 15  # Length of ~2ft travel by e3h1.
 
         self.curr_dir = Direction.NORTH
         self.next_dir = Direction.NORTH
@@ -218,6 +231,14 @@ class Yolov8Visualizer(Node):
         self._hexapod_commands_pub = self.create_publisher(
             String, 'hexapod_commands', self.QUEUE_SIZE)
         
+        self._message_pub = self.create_publisher(Int32MultiArray, "message_send", 10)
+
+        self._message_subscription = self.create_subscription(
+            Int32MultiArray,
+            'message_received',
+            self.message_callback,
+            10)  
+
         if not hardcode:
             self._directions_subscription.registerCallback(self.directions_callback)
 
@@ -227,11 +248,6 @@ class Yolov8Visualizer(Node):
 
         self.time_synchronizer.registerCallback(self.main_callback)
         
-        #self.time_synchronizer = message_filters.TimeSynchronizer([self._depth_subscription,self._detections_subscription],self.QUEUE_SIZE)
-        #self.time_synchronizer.registerCallback(self.dummy_callback)
-
-    def dummy_callback(self,depth_msg,detect_msg):
-        self.get_logger().info(f'Dummmy Callback')
     
     def send_heartbeat(self):
         if verbose: self.get_logger().info(f'Sending heartbeats to hexapods')
@@ -285,7 +301,59 @@ class Yolov8Visualizer(Node):
         self.compass_heading = yaw_angle
         # self.get_logger().info(f"New angle: {yaw_angle}")
         return
-    
+
+    def message_callback(self, msg):
+        if verbose: self.get_logger().info(f'Entered Message Received Callback')
+        
+        self.updating_grid = True
+
+        grid_1d = np.array(msg.data)
+        grid_2d = grid_1d.reshape(self.grid_rows, self.grid_cols)
+        
+        received_grid = grid_2d.tolist()
+
+        for row in self.grid_rows:
+            for col in self.grid_cols:
+                if (not (self.grid[row][col] == received_grid[row][col])):
+                    if (self.grid[row][col] == SquareType[OTHER_HEXAPOD] and received_grid[row][col] != SquareType[HEXAPOD]):
+                        self.grid[row][col] = SquareType[VISITED]
+                    elif (self.grid[row][col] == SquareType[EMPTY]):
+                        if (received_grid[row][col] == SquareType[VISITED]):
+                            self.grid[row][col] = SquareType[VISITED]
+                        elif (received_grid[row][col] == SquareType[HEXAPOD]):
+                            self.grid[row][col] = SquareType[OTHER_HEXAPOD]
+                        elif (received_grid[row][col] == SquareType[BLOCKED]):
+                            self.grid[row][col] = SquareType[BLOCKED]
+
+        self.updating_grid = False
+                    
+    def grid_to_intArray(self):
+        """
+        Convert grid into a 1D array of integers
+        """
+        msg = []
+        for row in self.grid:
+            msg.extend([ord(square.value) for square in row])
+        return msg
+
+    def intArray_to_grid(self):
+        """
+        Convert 1D array of integers back to 2D grid
+        """
+        pass
+
+    def print_grid(self):
+        # Print the current grid formatted in a readable way
+        blocked_row = [SquareType.BLOCKED.value for col in range(len(self.grid[0]) + 2)]
+        self.get_logger().info(f"{blocked_row}") 
+        
+        for row in range(len(self.grid)):
+            row = [SquareType.BLOCKED.value] + [square.value for square in self.grid[row]] + [SquareType.BLOCKED.value]
+            self.get_logger().info(f"{row}")
+        
+        self.get_logger().info(f"{blocked_row}")
+
+
     def search_behavior(self, depth_img, cv2_img):
         """ Pseudocode:
         Randomly choose a Direction (NESW) and check not BLOCKED in grid
@@ -309,9 +377,10 @@ class Yolov8Visualizer(Node):
 
         if self.search_state == SearchState.READY:  # Robot ready to search new square
             directions = [direction for direction in Direction]  # N, E, S, W
-            while True:
+            visited_dirs = []
+            found = False
+            while len(directions) > 0:
                 # Choose a compass direction to turn to
-                assert(len(directions) > 0)
                 next_dir = random.choice(directions)
                 directions.remove(next_dir)
                 d_row, d_col = next_dir.value[:2]
@@ -321,26 +390,44 @@ class Yolov8Visualizer(Node):
 
                 if new_row < 0:  # Expand grid NORTH
                     self.grid.insert(0, [SquareType.EMPTY for i in range(len(self.grid[0]))])
+                    found = True
                 elif len(self.grid) <= new_row:  # Expand SOUTH
                     self.grid.append([SquareType.EMPTY for i in range(len(self.grid[0]))])
+                    found = True
                 elif new_col < 0: # Expand WEST
                     self.grid = [[SquareType.EMPTY] + row for row in self.grid]
+                    found = True
                 elif len(self.grid[0]) <= new_col:  # Expand EAST
                     self.grid = [row + [SquareType.EMPTY] for row in self.grid]
-                elif self.grid[new_row][new_col] != SquareType.BLOCKED:
+                    found = True
+                elif self.grid[new_row][new_col] == SquareType.EMPTY:
                     # This is a vacant square in the grid. We should explore it
-                    # TODO (OPTIMIZE): Skip previously visited squares
-                    pass
-                else:
+                    found = True
+                elif self.grid[new_row][new_col] in [SquareType.VISITED, SquareType.TARGET]:
+                    # Already visited. If optimizing, then we go here if there's no other options
+                    if optimize:
+                        visited_dirs.append(next_dir)
+                        continue
+                    else:
+                        found = True
+                else:  # self.grid[new_row][new_col] in [SquareType.BLOCKED, SquareType.HEXAPOD]:
                     # This loops until we find a valid direction to explore
                     continue
-                #  Made it here! This is a valid direction
-                self.next_dir = next_dir
-                self.search_state = SearchState.TURNING
-                if verbose: 
-                    self.get_logger().info(f"Current map: {self.grid}")
-                    self.get_logger().info(f"Turning to {self.next_dir}")
-                return
+                break
+            if not found:  # Did not find any free squares. Go to a visited square
+                if optimize:
+                    assert len(visited_dirs) > 0
+                    next_dir = random.choice(visited_dirs)
+                else:  # No visited squares either.
+                    self.get_logger().info("No valid directions to go to")
+                    assert False
+            self.next_dir = next_dir
+            self.search_state = SearchState.TURNING
+            if verbose: 
+                self.get_logger().info(f"Current map: ")
+                self.print_grid()
+                self.get_logger().info(f"Turning to {self.next_dir}")
+            return
 
         elif self.search_state == SearchState.TURNING:
             """
@@ -352,7 +439,7 @@ class Yolov8Visualizer(Node):
                     elapsed_time = time.time() - self.turning_start
                     if elapsed_time > self.turn_time:  # Finished turn. 
                         command.data = "stop_moving"
-                        self.search_state = SearchState.MOVING
+                        self.search_state = SearchState.SETTLE
                         self.turning_start = None
                         self.curr_dir = self.next_dir
                         if verbose: self.get_logger().info(f"TURNING -> MOVING")
@@ -363,7 +450,7 @@ class Yolov8Visualizer(Node):
                     error = (target_heading - current_heading) % 360
                     if target_heading == current_heading:  # Already in direction we want
                         command.data = "stop_moving"
-                        self.search_state = SearchState.MOVING
+                        self.search_state = SearchState.SETTLE
                         if verbose: self.get_logger().info(f"TURNING -> MOVING")
                     elif error == 90:  # Turn right 90
                         command.data = "turn_right"
@@ -382,7 +469,7 @@ class Yolov8Visualizer(Node):
                 error = target_heading - self.compass_heading
                 if abs(error) < self.heading_tolerance:
                     command.data = "stop_moving"
-                    self.search_state = SearchState.MOVING
+                    self.search_state = SearchState.SETTLE
                     if verbose: self.get_logger().info(f"TURNING -> MOVING")
                 elif (error % 360) <= 180:
                     command.data = "turn_right"
@@ -391,6 +478,16 @@ class Yolov8Visualizer(Node):
             self._hexapod_commands_pub.publish(command)
             self.last_command = command
             return
+
+        elif self.search_state == SearchState.SETTLE:
+            command.data = "stop_moving"
+            if self.settle_start is None:
+                self.settle_start = time.time()
+            else:  # Already moving. Check if we should stop
+                elapsed_time = time.time() - self.settle_start
+                if elapsed_time > self.settle_time:  
+                    self.settle_start = None
+                    self.search_state = SearchState.MOVING
         
         elif self.search_state == SearchState.MOVING:
             command.data = "move_forward"
@@ -411,6 +508,18 @@ class Yolov8Visualizer(Node):
                     self.grid[new_row][new_col] = SquareType.BLOCKED
                     self.get_logger().info("Blocked square")
                     self.search_state = SearchState.READY
+
+                    msg = Int32MultiArray()
+                    msg.data = self.grid_to_intArray()
+                    
+                    # Create layout for a 2D array
+                    layout = MultiArrayLayout()
+                    layout.dim.append(MultiArrayDimension(label="rows", size=len(self.grid), stride=0))
+                    layout.dim.append(MultiArrayDimension(label="cols", size=len(self.grid[0]), stride=0))
+                    msg.layout = layout
+                    
+                    self._message_pub.publish(msg)
+
                 else:
                     # Square is clear! Move into new square
                     self.moving_start = time.time()
@@ -426,6 +535,19 @@ class Yolov8Visualizer(Node):
                     command.data = "stop_moving"
                     self.moving_start = None
                     self.search_state = SearchState.READY
+
+                    msg = Int32MultiArray()
+                    msg.data = self.grid_to_intArray()
+                                
+                    # Create layout for a 2D array
+                    layout = MultiArrayLayout()
+                    layout.dim.append(MultiArrayDimension(label="rows", size=self.grid_rows, stride=0))
+                    layout.dim.append(MultiArrayDimension(label="cols", size=self.grid_cols, stride=0))
+                    msg.layout = layout
+                    
+                    self._message_pub.publish(msg)
+
+
             self._hexapod_commands_pub.publish(command)
             return
     
@@ -470,15 +592,14 @@ class Yolov8Visualizer(Node):
                 conf_score = detection.results[0].hypothesis.score
                 
                 # If person is detected with center within camera view
-                if (label == "person" and conf_score > 0.80 and 0 < center_y < self.img_height and 0 < center_x < self.img_width ):
-                    pass
+                if (label == "person" and conf_score > 0.80 and self.img_height / 2 < center_y < self.img_height and 0 < center_x < self.img_width ):
                     # TODO: Uncomment when we want tracking again
-                    # if verbose: self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
-                    # person_detected = True 
-                    # self.current_state = States.INVESTIGATE
-            #if not person_detected:
+                    if verbose: self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
+                    person_detected = True 
+                    self.current_state = States.INVESTIGATE
+            if not person_detected and not self.updating_grid:
                 #send search algorithm movement commands 
-            self.search_behavior(depth_img,cv2_img)
+                self.search_behavior(depth_img,cv2_img)
                 
 
             processed_img = self._bridge.cv2_to_imgmsg(
@@ -562,7 +683,6 @@ class Yolov8Visualizer(Node):
             processed_img = self._bridge.cv2_to_imgmsg(
                 cv2_img, encoding=img_msg.encoding)
             self._processed_image_pub.publish(processed_img)
-
 
 
 def main():
