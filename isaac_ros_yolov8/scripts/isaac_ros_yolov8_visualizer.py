@@ -78,6 +78,7 @@ verbose = True
 optimize = True  # Avoid revisiting previous squares
 hardcode = True  # Hardcode turn directions instead of using vo_pose from VSLAM
 custom_grid = True  # Custom grid size for building dimensions we know
+tuning = False  # Set this to True to calibrate the robot (ie. turning, moving, depth)
 
 names = {
         0: 'person',
@@ -194,6 +195,7 @@ class Yolov8Visualizer(Node):
             self.grid = [[SquareType.EMPTY if col in range(1, self.grid_cols + 1) else SquareType.BLOCKED for col in range(self.grid_cols + 2)] 
                           if row in range(1, self.grid_rows + 1) else [SquareType.BLOCKED for col in range(self.grid_cols + 2)] for row in range(self.grid_rows + 2)]
             # TODO (ESSENTIAL): Add Hexapod into the map
+            self.grid[self.grid_rows][self.grid_cols] = SquareType.HEXAPOD
         else:
             self.grid = [[SquareType.HEXAPOD]]
         self.updating_grid = False
@@ -371,13 +373,14 @@ class Yolov8Visualizer(Node):
     def print_grid(self):
         # Print the current grid formatted in a readable way
         blocked_row = [SquareType.BLOCKED.value for col in range(len(self.grid[0]) + 2)]
-        self.get_logger().info(f"{blocked_row}") 
+        if not custom_grid: self.get_logger().info(f"{blocked_row}") 
         
         for row in range(len(self.grid)):
-            row = [SquareType.BLOCKED.value] + [square.value for square in self.grid[row]] + [SquareType.BLOCKED.value]
+            if not custom_grid: row = [SquareType.BLOCKED.value] + [square.value for square in self.grid[row]] + [SquareType.BLOCKED.value]
+            else: row = [square.value for square in self.grid[row]]
             self.get_logger().info(f"{row}")
         
-        self.get_logger().info(f"{blocked_row}")
+        if not custom_grid: self.get_logger().info(f"{blocked_row}")
 
 
     def search_behavior(self, depth_img, cv2_img):
@@ -600,11 +603,34 @@ class Yolov8Visualizer(Node):
             return 0
 
     def main_callback(self, detections_msg, img_msg, depth_msg):
-        # self.get_logger().info(f"main_callback called")
         txt_color = (255, 0, 255)
 
         cv2_img = self._bridge.imgmsg_to_cv2(img_msg)
         depth_img = self._bridge.imgmsg_to_cv2(depth_msg)
+        if tuning:  # We are in calibration mode. TODO: Complete this
+            # Turn left 90. Stop, then walk forward while printing depth
+            if self.tuning_stage == 0:
+                if self.turning_start is not None:  # Already turning. Check elapsed time
+                    elapsed_time = time.time() - self.turning_start
+                    if elapsed_time > self.turn_time:  # Finished turn. 
+                        command.data = "stop_moving"
+                        self.turning_start = None
+                        self.tuning_stage = 1
+                    else:
+                        command = self.last_command
+                else:  # Initiate turning
+                    self.turning_start = time.time()
+                    self.last_command = 'turn_left'
+
+            centerx, centery = self.img_width/2, self.img_height/2 
+            leftx, rightx = self.img_width * (1/4), self.img_width * (3/4)
+            
+            depth_val_left = self.calculate_depth_avg(depth_img, leftx, centery)
+            depth_val_central = self.calculate_depth_avg(depth_img, centerx, centery)
+            depth_val_right = self.calculate_depth_avg(depth_img, rightx, centery)
+
+            self.get_logger().info(f"(left, center, right) = ({depth_val_left}, {depth_val_center}, {depth_val_right})")
+            return
         if self.current_state == States.SEARCH:
             person_detected = False
     
