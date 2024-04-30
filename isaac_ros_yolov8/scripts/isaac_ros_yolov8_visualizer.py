@@ -39,7 +39,7 @@ from std_msgs.msg import String
 import time
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.executors import SingleThreadedExecutor
-import numpy
+import numpy as np
 from std_msgs.msg import Int32MultiArray, MultiArrayLayout, MultiArrayDimension
 
 
@@ -62,6 +62,10 @@ class SquareType(Enum):
     HEXAPOD = 'ඬ'
     OTHER_HEXAPOD = '0'
 
+SquareType_Map = {'.': SquareType.VISITED, ' ': SquareType.EMPTY, 
+                  '*': SquareType.BLOCKED, '': SquareType.TARGET,
+                  'ඬ': SquareType.HEXAPOD, '0': SquareType.OTHER_HEXAPOD}
+
 class Direction(Enum):
     NORTH = (-1, 0, 0)  # d_row, d_col, compass heading in degrees
     EAST = (0, 1, 90)
@@ -73,6 +77,7 @@ visual_flag = True
 verbose = True
 optimize = True  # Avoid revisiting previous squares
 hardcode = True  # Hardcode turn directions instead of using vo_pose from VSLAM
+custom_grid = True  # Custom grid size for building dimensions we know
 
 names = {
         0: 'person',
@@ -180,9 +185,17 @@ class Yolov8Visualizer(Node):
         # Search state variables
         self.search_state = SearchState.READY
 
-        self.grid = [[SquareType.HEXAPOD]]
-        self.grid_rows = 4
-        self.grid_cols = 5
+        if custom_grid:
+            self.grid_rows = 8
+            self.grid_cols = 10
+            # I might have went overboard with list comprehension...
+            # The follwing creates a grid of size self.grid_rows x self.grid_cols
+            # Then adds a border of BLOCKED Squares
+            self.grid = [[SquareType.EMPTY if col in range(1, self.grid_cols + 1) else SquareType.BLOCKED for col in range(self.grid_cols + 2)] 
+                          if row in range(1, self.grid_rows + 1) else [SquareType.BLOCKED for col in range(self.grid_cols + 2)] for row in range(self.grid_rows + 2)]
+            # TODO (ESSENTIAL): Add Hexapod into the map
+        else:
+            self.grid = [[SquareType.HEXAPOD]]
         self.updating_grid = False
 
         self.moving_start = None  # Timestamp for when Hexapod starts moving
@@ -303,44 +316,57 @@ class Yolov8Visualizer(Node):
         return
 
     def message_callback(self, msg):
-        if verbose: self.get_logger().info(f'Entered Message Received Callback')
+        if verbose: self.get_logger().info(f'Entered Message Received Callback. Received {msg}')
         
-        self.updating_grid = True
-
-        grid_1d = np.array(msg.data)
-        grid_2d = grid_1d.reshape(self.grid_rows, self.grid_cols)
+        if not custom_grid:
+            # TODO: Implement dynamic map merging algorithm
+            return
         
-        received_grid = grid_2d.tolist()
-
-        for row in self.grid_rows:
-            for col in self.grid_cols:
-                if (not (self.grid[row][col] == received_grid[row][col])):
-                    if (self.grid[row][col] == SquareType[OTHER_HEXAPOD] and received_grid[row][col] != SquareType[HEXAPOD]):
-                        self.grid[row][col] = SquareType[VISITED]
-                    elif (self.grid[row][col] == SquareType[EMPTY]):
-                        if (received_grid[row][col] == SquareType[VISITED]):
-                            self.grid[row][col] = SquareType[VISITED]
-                        elif (received_grid[row][col] == SquareType[HEXAPOD]):
-                            self.grid[row][col] = SquareType[OTHER_HEXAPOD]
-                        elif (received_grid[row][col] == SquareType[BLOCKED]):
-                            self.grid[row][col] = SquareType[BLOCKED]
+        # TODO: Get correct types from msg
+        assert self.grid_rows == msg.rows and self.grid_cols == msg.cols
+        self.updating_grid = True 
+        received_grid = self.intArray_to_grid(msg.data, msg.rows, msg.cols)
+        
+        for row in range(msg.rows):
+            for col in range(msg.cols):
+                if not (self.grid[row][col] == received_grid[row][col]):
+                    if (self.grid[row][col] == SquareType.OTHER_HEXAPOD and received_grid[row][col] != SquareType.HEXAPOD):
+                        self.grid[row][col] = SquareType.VISITED
+                    elif (self.grid[row][col] == SquareType.EMPTY):
+                        if (received_grid[row][col] == SquareType.VISITED):
+                            self.grid[row][col] = SquareType.VISITED
+                        elif (received_grid[row][col] == SquareType.HEXAPOD):
+                            self.grid[row][col] = SquareType.OTHER_HEXAPOD
+                        elif (received_grid[row][col] == SquareType.BLOCKED):
+                            self.grid[row][col] = SquareType.BLOCKED
 
         self.updating_grid = False
                     
     def grid_to_intArray(self):
         """
-        Convert grid into a 1D array of integers
+        Convert self.grid into a 1D array of integers
+
+        Return: List[int]
         """
         msg = []
         for row in self.grid:
             msg.extend([ord(square.value) for square in row])
         return msg
 
-    def intArray_to_grid(self):
+    def intArray_to_grid(self, intArray, rows, cols):
         """
         Convert 1D array of integers back to 2D grid
+
+        intArray: List[int]
+        Return: List[List[SquareType]]
         """
-        pass
+
+        grid_1d = [chr(elem) for elem in intArray]  # Convert to SquareType.value
+        grid_1d = [SquareType_Map[elem] for elem in grid_1d]  # Convert to SquareType
+        grid_1d = np.array(grid_1d)  # Convert to np array for easy resize
+        grid_2d = grid_1d.reshape(rows, cols).to_list()
+        
+        return grid_2d
 
     def print_grid(self):
         # Print the current grid formatted in a readable way
@@ -372,7 +398,7 @@ class Yolov8Visualizer(Node):
 
         # Get current coordinates of hexapod robot
         curr_coords = self._find_obj(self.grid, SquareType.HEXAPOD)
-        assert(len(curr_coords) == 1)  # TODO (Comms): Make sure this is me! Not another Hexapod
+        assert(len(curr_coords) == 1)  # Make sure this is me! Not another Hexapod
         curr_row, curr_col = curr_coords[0]
 
         if self.search_state == SearchState.READY:  # Robot ready to search new square
@@ -541,8 +567,8 @@ class Yolov8Visualizer(Node):
                                 
                     # Create layout for a 2D array
                     layout = MultiArrayLayout()
-                    layout.dim.append(MultiArrayDimension(label="rows", size=self.grid_rows, stride=0))
-                    layout.dim.append(MultiArrayDimension(label="cols", size=self.grid_cols, stride=0))
+                    layout.dim.append(MultiArrayDimension(label="rows", size=len(self.grid), stride=0))
+                    layout.dim.append(MultiArrayDimension(label="cols", size=len(self.grid[0]), stride=0))
                     msg.layout = layout
                     
                     self._message_pub.publish(msg)
@@ -593,7 +619,6 @@ class Yolov8Visualizer(Node):
                 
                 # If person is detected with center within camera view
                 if (label == "person" and conf_score > 0.80 and self.img_height / 2 < center_y < self.img_height and 0 < center_x < self.img_width ):
-                    # TODO: Uncomment when we want tracking again
                     if verbose: self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
                     person_detected = True 
                     self.current_state = States.INVESTIGATE
