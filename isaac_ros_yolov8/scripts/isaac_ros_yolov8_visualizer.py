@@ -173,7 +173,7 @@ class Yolov8Visualizer(Node):
         super().__init__('yolov8_visualizer',namespace = "")
 
         self.current_state = States.SEARCH
-        
+        self.entered_found_state = False 
         #current target location for locking in
         self.current_target_x = -1
         self.current_target_y = -1
@@ -187,15 +187,15 @@ class Yolov8Visualizer(Node):
         self.search_state = SearchState.READY
 
         if custom_grid:
-            self.grid_rows = 8
-            self.grid_cols = 10
+            self.grid_rows = 12
+            self.grid_cols = 8
             # I might have went overboard with list comprehension...
-            # The follwing creates a grid of size self.grid_rows x self.grid_cols
+            # The following creates a grid of size self.grid_rows x self.grid_cols
             # Then adds a border of BLOCKED Squares
-            self.grid = [[SquareType.EMPTY if col in range(1, self.grid_cols + 1) else SquareType.BLOCKED for col in range(self.grid_cols + 2)] 
-                          if row in range(1, self.grid_rows + 1) else [SquareType.BLOCKED for col in range(self.grid_cols + 2)] for row in range(self.grid_rows + 2)]
+            self.grid = [[SquareType.EMPTY if col in range(1, self.grid_cols - 1) else SquareType.BLOCKED for col in range(self.grid_cols)] 
+                          if row in range(0, self.grid_rows-1) else [SquareType.BLOCKED for col in range(self.grid_cols)] for row in range(self.grid_rows)]
             # TODO (ESSENTIAL): Add Hexapod into the map
-            self.grid[self.grid_rows][self.grid_cols] = SquareType.HEXAPOD
+            self.grid[self.grid_rows - 2][self.grid_cols - 2] = SquareType.HEXAPOD
         else:
             self.grid = [[SquareType.HEXAPOD]]
         self.updating_grid = False
@@ -208,8 +208,8 @@ class Yolov8Visualizer(Node):
         
         # TODO (Bot dependent): Need to tune the following
         self.turn_90 = 8.5
-        self.obstacle_threshold = 600
-        self.moving_time = 15  # Length of ~2ft travel by e3h1.
+        self.obstacle_threshold = 500
+        self.moving_time = 7.5  # Length of ~2ft travel by e3h1.
 
         self.curr_dir = Direction.NORTH
         self.next_dir = Direction.NORTH
@@ -286,6 +286,15 @@ class Yolov8Visualizer(Node):
         if verbose: self.get_logger().info(f'PERSON LOCATED!')
         #send found message to other hexapods 
         #sound buzzer
+        if (not self.entered_found_state):  
+            command = String()
+            command.data = "start_buzzing"
+            self._hexapod_commands_pub.publish(command)
+            time.sleep(2)
+            command.data = "stop_buzzing"
+            self._hexapod_commands_pub.publish(command)
+        self.entered_found_state = True
+
         #play message through speaker?
 
     def _find_obj(self, grid, obj):
@@ -322,15 +331,15 @@ class Yolov8Visualizer(Node):
         
         if not custom_grid:
             # TODO: Implement dynamic map merging algorithm
+            self.get_logger().info(f"Not in custom grid. Do nothing")
             return
         
         # TODO: Get correct types from msg
-        assert self.grid_rows == msg.rows and self.grid_cols == msg.cols
         self.updating_grid = True 
-        received_grid = self.intArray_to_grid(msg.data, msg.rows, msg.cols)
-        
-        for row in range(msg.rows):
-            for col in range(msg.cols):
+        received_grid = self.intArray_to_grid(msg.data, self.grid_rows, self.grid_cols)
+        self.get_logger().info(f"Received grid: {received_grid}")
+        for row in range(self.grid_rows):
+            for col in range(self.grid_cols):
                 if not (self.grid[row][col] == received_grid[row][col]):
                     if (self.grid[row][col] == SquareType.OTHER_HEXAPOD and received_grid[row][col] != SquareType.HEXAPOD):
                         self.grid[row][col] = SquareType.VISITED
@@ -342,8 +351,12 @@ class Yolov8Visualizer(Node):
                         elif (received_grid[row][col] == SquareType.BLOCKED):
                             self.grid[row][col] = SquareType.BLOCKED
 
+        if verbose:
+            self.get_logger().info(f"Merged map: ")
+            self.print_grid()            
         self.updating_grid = False
-                    
+
+
     def grid_to_intArray(self):
         """
         Convert self.grid into a 1D array of integers
@@ -366,7 +379,7 @@ class Yolov8Visualizer(Node):
         grid_1d = [chr(elem) for elem in intArray]  # Convert to SquareType.value
         grid_1d = [SquareType_Map[elem] for elem in grid_1d]  # Convert to SquareType
         grid_1d = np.array(grid_1d)  # Convert to np array for easy resize
-        grid_2d = grid_1d.reshape(rows, cols).to_list()
+        grid_2d = grid_1d.reshape(rows, cols).tolist()
         
         return grid_2d
 
@@ -609,6 +622,7 @@ class Yolov8Visualizer(Node):
         depth_img = self._bridge.imgmsg_to_cv2(depth_msg)
         if tuning:  # We are in calibration mode. TODO: Complete this
             # Turn left 90. Stop, then walk forward while printing depth
+            """
             if self.tuning_stage == 0:
                 if self.turning_start is not None:  # Already turning. Check elapsed time
                     elapsed_time = time.time() - self.turning_start
@@ -621,7 +635,7 @@ class Yolov8Visualizer(Node):
                 else:  # Initiate turning
                     self.turning_start = time.time()
                     self.last_command = 'turn_left'
-
+            """
             centerx, centery = self.img_width/2, self.img_height/2 
             leftx, rightx = self.img_width * (1/4), self.img_width * (3/4)
             
@@ -629,7 +643,7 @@ class Yolov8Visualizer(Node):
             depth_val_central = self.calculate_depth_avg(depth_img, centerx, centery)
             depth_val_right = self.calculate_depth_avg(depth_img, rightx, centery)
 
-            self.get_logger().info(f"(left, center, right) = ({depth_val_left}, {depth_val_center}, {depth_val_right})")
+            self.get_logger().info(f"(left, center, right) = ({depth_val_left}, {depth_val_central}, {depth_val_right})")
             return
         if self.current_state == States.SEARCH:
             person_detected = False
@@ -644,7 +658,7 @@ class Yolov8Visualizer(Node):
                 conf_score = detection.results[0].hypothesis.score
                 
                 # If person is detected with center within camera view
-                if (label == "person" and conf_score > 0.80 and self.img_height / 2 < center_y < self.img_height and 0 < center_x < self.img_width ):
+                if (label == "person" and conf_score > 0.80 and 0 < center_y < self.img_height and 0 < center_x < self.img_width ):
                     if verbose: self.get_logger().info(f'DETECTED PERSON AT ({center_x},{center_y}) STATE: SEARCH -> INVESTIGATE')
                     person_detected = True 
                     self.current_state = States.INVESTIGATE
@@ -681,7 +695,7 @@ class Yolov8Visualizer(Node):
                         self.current_target_x, self.current_target_y = center_x, center_y
                         person_detected = True 
                     elif (abs(self.current_target_x - center_x) < self.target_delta_threshold) and (abs(self.current_target_y - center_y) < self.target_delta_threshold):
-                        if verbose: self.get_logger().info(f'PERSON DETECTED AT cx: {center_x} cy: {center_y} depth = {depth_val}')
+                        if verbose: self.get_logger().info(f'PERSON DETECTED AT cx: {center_x} cy: {center_y} depth = {depth_val} conf = {conf_score}')
                         command = self.adjust_heading(center_x,center_y,depth_val)
                         self._hexapod_commands_pub.publish(command)
                         person_detected = True 
