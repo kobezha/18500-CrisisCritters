@@ -63,7 +63,7 @@ class HexapodNode(Node):
         # file = open('IP.txt', 'r')
         # self.IP = str(file.readline())
         # file.close()
-        self.IP = "172.26.178.42"
+        self.IP = "172.26.188.201"
         self.cmd = "stop_moving"
         self.shutdown = threading.Event()
         

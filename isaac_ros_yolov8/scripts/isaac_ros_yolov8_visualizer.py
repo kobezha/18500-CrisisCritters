@@ -77,7 +77,7 @@ visual_flag = True
 verbose = True
 optimize = True  # Avoid revisiting previous squares
 hardcode = True  # Hardcode turn directions instead of using vo_pose from VSLAM
-custom_grid = True  # Custom grid size for building dimensions we know
+custom_grid = False  # Custom grid size for building dimensions we know
 tuning = False  # Set this to True to calibrate the robot (ie. turning, moving, depth)
 
 names = {
@@ -187,15 +187,15 @@ class Yolov8Visualizer(Node):
         self.search_state = SearchState.READY
 
         if custom_grid:
-            self.grid_rows = 12
-            self.grid_cols = 8
+            self.grid_rows = 10
+            self.grid_cols = 6
             # I might have went overboard with list comprehension...
             # The following creates a grid of size self.grid_rows x self.grid_cols
             # Then adds a border of BLOCKED Squares
             self.grid = [[SquareType.EMPTY if col in range(1, self.grid_cols - 1) else SquareType.BLOCKED for col in range(self.grid_cols)] 
-                          if row in range(0, self.grid_rows-1) else [SquareType.BLOCKED for col in range(self.grid_cols)] for row in range(self.grid_rows)]
+                          if row in range(1, self.grid_rows-1) else [SquareType.BLOCKED for col in range(self.grid_cols)] for row in range(self.grid_rows)]
             # TODO (ESSENTIAL): Add Hexapod into the map
-            self.grid[self.grid_rows - 2][self.grid_cols - 2] = SquareType.HEXAPOD
+            self.grid[self.grid_rows - 2][1] = SquareType.HEXAPOD
         else:
             self.grid = [[SquareType.HEXAPOD]]
         self.updating_grid = False
@@ -207,9 +207,9 @@ class Yolov8Visualizer(Node):
         self.settle_time = 0.5
         
         # TODO (Bot dependent): Need to tune the following
-        self.turn_90 = 8.5
-        self.obstacle_threshold = 500
-        self.moving_time = 7.5  # Length of ~2ft travel by e3h1.
+        self.turn_90 = 6.55
+        self.obstacle_threshold = 600
+        self.moving_time = 5  # Length of ~2ft travel by e3h1.
 
         self.curr_dir = Direction.NORTH
         self.next_dir = Direction.NORTH
@@ -327,11 +327,11 @@ class Yolov8Visualizer(Node):
         return
 
     def message_callback(self, msg):
-        if verbose: self.get_logger().info(f'Entered Message Received Callback. Received {msg}')
+        # if verbose: self.get_logger().info(f'Entered Message Received Callback. Received {msg}')
         
         if not custom_grid:
             # TODO: Implement dynamic map merging algorithm
-            self.get_logger().info(f"Not in custom grid. Do nothing")
+            # self.get_logger().info(f"Not in custom grid. Do nothing")
             return
         
         # TODO: Get correct types from msg

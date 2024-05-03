@@ -26,7 +26,7 @@ verbose = True
 class CommunicationNode(Node):
     def __init__(self):
         super().__init__('hexapod_control_node')
-        self.message_pub = self.create_publisher(Int32MultiArray, "/message_received", 10)
+        self.message_pub = self.create_publisher(Int32MultiArray, "message_received", 10)
 
         self.keep_running = True
 
@@ -139,7 +139,6 @@ class CommunicationNode(Node):
                                 layout.dim.append(MultiArrayDimension(label="cols", size=num_cols, stride=col_stride))
                                 msg.layout = layout
                                 
-                                if verbose: self.get_logger().info(f"message is {msg.data}")
                                 self.message_pub.publish(msg)
                                
                     except Exception as e:
@@ -173,7 +172,7 @@ class CommunicationNode(Node):
                 s = socket.socket()
 
                 # IMP: Hostname should be IP address of other hexapod || Change appropriately
-                hostname = '172.26.17.218' # Server Hostname
+                hostname = '172.26.165.27' # Server Hostname
                 port = 8000 # Server Port
     
     
